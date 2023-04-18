@@ -1,16 +1,25 @@
 <template>
     <Narbar></Narbar>
     <div class="container-fluid">
+        <ToastMessages></ToastMessages>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-import Narbar from '../components/NavBar.vue';
+import emitter from '@/methods/emitter';
+import Narbar from '@/components/NavBar.vue';
+import ToastMessages from '@/components/ToastMessages.vue';
 
 export default {
   components: {
     Narbar,
+    ToastMessages,
+  },
+  provide() {
+    return {
+      emitter,
+    };
   },
   created() {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
