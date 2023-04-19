@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">Harry的練習作品</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -10,13 +10,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  <router-link class="nav-link" to="/dashboard/products">產品</router-link>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                  <router-link class="nav-link" to="/dashboard/orders">訂單</router-link>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
+                  <router-link class="nav-link" to="/dashboard/coupons">優惠券</router-link>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#" @click.prevent="logout">登出</a>

@@ -10,6 +10,7 @@
 import emitter from '@/methods/emitter';
 import Narbar from '@/components/NavBar.vue';
 import ToastMessages from '@/components/ToastMessages.vue';
+import $httpMessageState from '@/methods/pushMessageState';
 
 export default {
   components: {
@@ -19,6 +20,7 @@ export default {
   provide() {
     return {
       emitter,
+      $httpMessageState,
     };
   },
   created() {

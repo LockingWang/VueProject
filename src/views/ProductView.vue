@@ -1,9 +1,9 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <text class="text-end">
+    <div class="text-end mt-3 pe-5">
         <button type="button" class="btn btn-primary"
         @click="openModal(true)">新增產品</button>
-    </text>
+    </div>
     <table class="table mt-4">
         <thead>
             <tr>
@@ -72,7 +72,7 @@ export default {
     DelModal,
     PaginationModel,
   },
-  inject: ['emitter'],
+  inject: ['emitter', '$httpMessageState'],
   methods: {
     getProducts(page = 1) {
       let toPage = '';
