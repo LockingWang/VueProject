@@ -38,12 +38,13 @@
       </div>
       <div class="col-md-5">
         <div class="sticky-top">
-          <table class="table align-middle">
+          <h5 class="text-center mt-3">我的購物車</h5>
+          <table class="table align-middle table-warning">
             <thead>
               <tr>
                 <th>刪除</th>
                 <th>品名</th>
-                <th style="width: 110px">數量</th>
+                <th style="width: 120px">數量</th>
                 <th>單價</th>
               </tr>
             </thead>
@@ -65,7 +66,9 @@
                 <td>
                   <div class="input-group input-group-sm">
                     <input type="number" class="form-control" aria-label="buy number"
-                          v-model.number="item.qty">
+                          v-model.number="item.qty" min="1"
+                          @change="updateCart(item)"
+                          :disabled="this.status.loadingItem === item.id">
                     <div class="input-group-text">/ {{ item.product.unit }}</div>
                   </div>
                 </td>
@@ -78,7 +81,11 @@
             </tbody>
             <tfoot>
             <tr>
-              <td colspan="3" class="text-end">總計</td>
+              <td colspan="1">
+                <button type="button" class="btn btn-outline-danger"
+                        @click="removeCartItem('all')">清空購物車</button>
+              </td>
+              <td colspan="2" class="text-end">總計</td>
               <td class="text-end">{{ $filters.currency(cart.total) }}</td>
             </tr>
             <tr v-if="cart.final_total !== cart.total">
@@ -88,9 +95,8 @@
             </tfoot>
           </table>
           <div class="input-group mb-3 input-group-sm">
-            <label for="#coupon_code">
-            <input id="coupon_code" type="text" class="form-control"
-            v-model="coupon_code" placeholder="請輸入優惠碼"></label>
+            <input id="coupon_code" type="text" class="form-control" aria-label="coupon_code"
+            v-model="coupon_code" placeholder="請輸入優惠碼">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">
                 套用優惠碼
@@ -118,6 +124,9 @@ export default {
       isLoading: false,
       cart: {},
       coupon_code: '',
+      status: {
+        loadingItem: '', // 對應品項 id
+      },
     };
   },
   inject: ['$httpMessageState'],
@@ -160,6 +169,7 @@ export default {
           this.isLoading = false;
           this.$httpMessageState(res, '加入購物車');
           this.$router.push('/user/cart');
+          this.getCart();
         })
         .catch((err) => {
           console.log(err);
@@ -172,6 +182,40 @@ export default {
         .then((res) => {
           this.cart = res.data.data;
           this.isLoading = false;
+        });
+    },
+    updateCart(item) {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
+      this.isLoading = true;
+      this.status.loadingItem = item.id;
+      const cart = {
+        product_id: item.product_id,
+        qty: item.qty,
+      };
+      this.$http.put(url, { data: cart })
+        .then(() => {
+          this.isLoading = false;
+          this.status.loadingItem = '';
+          this.getCart();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    removeCartItem(id) {
+      let target = 'carts';
+      if (id !== 'all') {
+        target = `cart/${id}`;
+      }
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/${target}`;
+      this.isLoading = true;
+      this.$http.delete(url)
+        .then(() => {
+          this.isLoading = false;
+          this.getCart();
+        })
+        .catch((err) => {
+          console.log(err.response);
         });
     },
   },
