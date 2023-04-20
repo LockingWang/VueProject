@@ -218,6 +218,21 @@ export default {
           console.log(err.response);
         });
     },
+    addCouponCode() {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`;
+      const coupon = {
+        code: this.coupon_code,
+      };
+      this.isLoading = true;
+      this.$http.post(url, { data: coupon })
+        .then(() => {
+          this.isLoading = false;
+          this.getCart();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
   },
   created() {
     this.getProducts();
