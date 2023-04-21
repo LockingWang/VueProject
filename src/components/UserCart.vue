@@ -106,6 +106,8 @@
         </div>
       </div>
     </div>
+    <PaginationModel :pages="pagination"
+      @emit-pages="getProducts"></PaginationModel>
     <div class="my-5 row justify-content-center">
       <v-form class="col-md-6" v-slot="{ errors }"
             @submit="createOrder">
@@ -155,8 +157,6 @@
         </div>
       </v-form>
     </div>
-    <PaginationModel :pages="pagination"
-      @emit-pages="getProducts"></PaginationModel>
 </template>
 
 <script>
@@ -296,9 +296,11 @@ export default {
       const order = this.form;
       this.$http.post(url, { data: order })
         .then((res) => {
-          console.log(res);
-          this.getCart();
-          this.$httpMessageState(res, '建立訂單');
+          if (res.data.success) {
+            this.getCart();
+            this.$httpMessageState(res, '建立訂單');
+            this.$router.push(`/user/userCheckout/${res.data.orderId}`);
+          }
         })
         .catch((err) => {
           console.log(err.response);
