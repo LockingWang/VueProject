@@ -60,8 +60,7 @@ export default {
     return {
       products: [],
       pagination: {},
-      tempProduct: {
-      },
+      tempProduct: {},
       isNew: false,
       delItem: {},
       isLoading: false,
@@ -99,7 +98,9 @@ export default {
     },
     openModal(isNew, item) {
       if (isNew) {
-        this.tempProduct = {};
+        this.tempProduct = {
+          imagesUrl: [],
+        };
       } else {
         this.tempProduct = { ...item };
       }

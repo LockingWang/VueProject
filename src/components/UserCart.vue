@@ -31,6 +31,14 @@
                 <button class="btn btn-outline-danger btn-sm"
                 @click="addToCart(item.id)">加到購物車</button>
                 </div>
+                <div>
+                  <button class="btn btn-sm btn-outline-danger" type="button"
+                  @click="addLoveProduct(item)"
+                  v-if="checkLoveList(item)">加到最愛</button>
+                  <button class="btn btn-sm btn-outline-danger active" type="button"
+                  @click="delLoveProduct(item)"
+                  v-else>喜歡的商品</button>
+                </div>
             </td>
             </tr>
         </tbody>
@@ -185,6 +193,8 @@ export default {
         },
         message: '',
       },
+      loveItemList: {},
+      loveList2: {},
     };
   },
   inject: ['$httpMessageState'],
@@ -207,6 +217,7 @@ export default {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
           }
+          this.loveItemList = JSON.parse(localStorage.getItem('loveItemList'));
         })
         .catch((err) => {
           console.log(err.response);
@@ -305,6 +316,20 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
+    },
+    addLoveProduct(item) {
+      this.loveItemList[`${item.title}:${item.id}`] = item.id;
+      localStorage.setItem('loveItemList', JSON.stringify(this.loveItemList));
+    },
+    delLoveProduct(item) {
+      delete this.loveItemList[`${item.title}:${item.id}`];
+      localStorage.setItem('loveItemList', JSON.stringify(this.loveItemList));
+    },
+    checkLoveList(item) {
+      if (this.loveItemList[`${item.title}:${item.id}`] === undefined) {
+        return true;
+      }
+      return false;
     },
   },
   created() {

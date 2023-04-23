@@ -12,39 +12,36 @@
                 <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-4">
-                    <div class="mb-3">
-                        <label for="image" class="form-label w-100">輸入圖片網址
-                        <input type="text" class="form-control" id="image"
-                        placeholder="請輸入圖片連結"
-                        v-model="tempProduct.imageUrl"
-                        ></label>
+                    <h5>商品封面</h5>
+                    <div class="main-img-box mx-auto mb-3 border position-relative">
+                      <img class="img-fluid"
+                      alt="" :src="tempProduct.imageUrl">
                     </div>
                     <div class="mb-3">
-                        <label for="customFile" class="form-label w-100">或 上傳圖片
+                        <label for="customFile" class="form-label w-100">
                         <i class="fas fa-spinner fa-spin"></i>
                         <input type="file" id="customFile"
                         class="form-control"
-                        ref="fileInput"
-                        @change="uploadFile"
+                        ref="mainFile"
+                        @change="uploadFile()"
                         ></label>
                     </div>
-                    <img class="img-fluid" alt="" :src="tempProduct.imageUrl">
                     <!-- 延伸技巧，多圖 -->
-                    <div class="mt-5">
+                    <div class="mt-2">
+                        <h5>商品參考圖</h5>
                         <div class="mb-3 input-group" >
                         <label for="imgURL">
-                            <input id="imgURL" type="url" class="form-control form-control"
-                            placeholder="請輸入連結">
+                            <input id="imgURL" type="file" class="form-control"
+                            ref="otherFile"
+                            @change="uploadOthers()">
                         </label>
-                        <button type="button" class="btn btn-outline-danger">
-                            移除
-                        </button>
                         </div>
-                        <div>
-                        <button class="btn btn-outline-primary btn-sm d-block w-100"
-                        type="button">
-                            新增圖片
-                        </button>
+                        <div class="row">
+                          <div class="col-3" v-for="url in tempProduct.imagesUrl" :key="url">
+                            <img class="img-fluid" :src="url" alt="">
+                            <button type="button"
+                            class="btn btn-sm btn-outline-danger mx-auto">刪除</button>
+                          </div>
                         </div>
                     </div>
                     </div>
@@ -156,7 +153,7 @@ export default {
   },
   methods: {
     uploadFile() {
-      const uploadFile = this.$refs.fileInput.files[0];
+      const uploadFile = this.$refs.mainFile.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadFile);
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
@@ -167,7 +164,22 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log('err : ', err);
+        });
+    },
+    uploadOthers() {
+      const uploadFile = this.$refs.otherFile.files[0];
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadFile);
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.$http.post(url, formData)
+        .then((res) => {
+          if (res.data.success) {
+            this.tempProduct.imagesUrl.push(res.data.imageUrl);
+          }
+        })
+        .catch((err) => {
+          console.log('err : ', err);
         });
     },
   },
