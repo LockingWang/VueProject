@@ -19,6 +19,11 @@
           <del class="h6" v-if="product.price">原價 {{ product.origin_price }} 元</del>
           <div class="h5" v-if="product.price">現在只要 {{ product.price }} 元</div>
           <hr>
+          <div class="mb-3">
+            <label class="form-label" for="itemNumber">數量 :
+              <input class="form-control" type="number" min="1" id="itemNumber" v-model="qty">
+            </label>
+          </div>
           <button type="button" class="btn btn-outline-danger"
                   @click="addToCart(product.id)">
             加到購物車
@@ -35,6 +40,7 @@ export default {
     return {
       product: {},
       id: '',
+      qty: 1,
     };
   },
   inject: ['emitter', '$httpMessageState'],
@@ -53,18 +59,17 @@ export default {
           console.log(err.response);
         });
     },
-    addToCart(id, qty = 1) {
+    addToCart() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       const cart = {
-        product_id: id,
-        qty,
+        product_id: this.id,
+        qty: this.qty,
       };
       this.isLoading = true;
       this.$http.post(url, { data: cart })
         .then((res) => {
           this.isLoading = false;
           this.$httpMessageState(res, '加入購物車');
-          this.$router.push('/user/cart');
         })
         .catch((err) => {
           console.log(err);

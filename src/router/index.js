@@ -42,16 +42,46 @@ const routes = [
     component: () => import('../views/UserBoard.vue'),
     children: [
       {
-        path: 'cart',
-        component: () => import('../components/UserCart.vue'),
+        path: 'home',
+        component: () => import('../components/UserHome.vue'),
+      },
+      {
+        path: 'products',
+        component: () => import('../components/UserProducts.vue'),
       },
       {
         path: 'product/:productId',
         component: () => import('../components/UserProduct.vue'),
       },
       {
-        path: 'userCheckout/:orderId',
+        path: 'favorite',
+        component: () => import('../components/UserFavorite.vue'),
+      },
+      {
+        path: 'searchOrder',
+        component: () => import('../components/UserSearchOrder.vue'),
+      },
+      {
+        path: 'userCheckout',
         component: () => import('../views/UserCheckout.vue'),
+        children: [
+          {
+            path: 'cart',
+            component: () => import('../components/UserCart.vue'),
+          },
+          {
+            path: 'userInfo',
+            component: () => import('../components/UserInfo.vue'),
+          },
+          {
+            path: 'order/:orderId',
+            component: () => import('../components/UserOrder.vue'),
+          },
+          {
+            path: 'payment',
+            component: () => import('../components/UserPayment.vue'),
+          },
+        ],
       },
     ],
   },

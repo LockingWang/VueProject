@@ -1,10 +1,11 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <router-view></router-view>
-    <!-- <div class="row justify-content-center">
-        <form @submit.prevent="payOrder" class="col-md-6 my-3 py-3 border rounded">
-
-            <h5 class="text-center bg-info mb-0 py-1 rounded-top">訂單內容</h5>
+    <div class="row justify-content-center">
+        <h2 class="text-center text-success mt-3">成功建立訂單</h2>
+        <form class="col-md-6 mb-3 py-3 border rounded">
+            <h5 class="text-center bg-info mb-0 py-1 rounded-top">
+              訂單編號  <span class="fs-6">({{ this.$route.params.orderId }})</span>
+            </h5>
             <table class="table text-center">
                 <thead class="table-secondary">
                     <th>品名</th>
@@ -51,10 +52,11 @@
                 </tbody>
             </table>
             <div class="text-end" v-if="!order.is_paid">
-                <button class="btn btn-danger">付款去</button>
+                <router-link to="/user/userCheckout/payment" class="btn btn-primary w-100">
+                    下一步 : 付款去</router-link>
             </div>
         </form>
-    </div> -->
+    </div>
 </template>
 
 <script>
@@ -66,48 +68,27 @@ export default {
         user: {},
       },
       isLoading: false,
-      test: {
-        apple: 'apple',
-      },
     };
   },
-  // inject: ['$httpMessageState'],
   methods: {
-    // getOrder() {
-    //   const url = `${process.env.VUE_APP_API}api
-    // /${process.env.VUE_APP_PATH}/order/${this.orderId}`;
-    //   this.isLoading = true;
-    //   this.$http.get(url)
-    //     .then((res) => {
-    //       this.isLoading = false;
-    //       if (res.data.success) {
-    //         this.order = res.data.order;
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.response);
-    //     });
-    // },
-    // payOrder() {
-    //   const url = `${process.env.VUE_APP_API}api
-    // /${process.env.VUE_APP_PATH}/pay/${this.orderId}`;
-    //   this.isLoading = true;
-    //   this.$http.post(url)
-    //     .then((res) => {
-    //       this.isLoading = false;
-    //       if (res.data.success) {
-    //         this.$httpMessageState(res, '付款');
-    //         this.getOrder();
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.response);
-    //     });
-    // },
+    getOrder() {
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order/${this.orderId}`;
+      this.isLoading = true;
+      this.$http.get(url)
+        .then((res) => {
+          this.isLoading = false;
+          if (res.data.success) {
+            this.order = res.data.order;
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
   },
   created() {
-    // this.orderId = this.$route.params.orderId;
-    // this.getOrder();
+    this.orderId = this.$route.params.orderId;
+    this.getOrder();
   },
 };
 </script>
