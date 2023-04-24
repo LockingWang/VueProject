@@ -1,9 +1,9 @@
 <template>
-      <UserNavBar></UserNavBar>
-      <div class="container-fluid">
-        <ToastMessages></ToastMessages>
+      <UserNavBar class="fixed-top"></UserNavBar>
+      <div style="margin-top: 60px;">
         <router-view></router-view>
       </div>
+      <ToastMessages></ToastMessages>
 </template>
 
 <script>

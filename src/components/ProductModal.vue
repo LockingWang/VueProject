@@ -13,9 +13,15 @@
                 <div class="row">
                     <div class="col-sm-4">
                     <h5>商品封面</h5>
-                    <div class="main-img-box mx-auto mb-3 border position-relative">
+                    <div class="mb-3">
                       <img class="img-fluid"
                       alt="" :src="tempProduct.imageUrl">
+                    </div>
+                    <div>
+                      <label class="form-label w-100" for="img-url">圖片網址 :
+                        <input class="form-control" type="text" id="img-url"
+                        v-model="tempProduct.imageUrl">
+                      </label>
                     </div>
                     <div class="mb-3">
                         <label for="customFile" class="form-label w-100">
