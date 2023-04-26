@@ -3,3 +3,18 @@
     height: 200px;
     overflow: hidden;
 }
+
+.products-banner {
+    min-height: 35vh;
+    position: relative;
+    background-size: cover;
+    background-position: center 80%;
+    background-repeat: no-repeat;
+    background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+}
+
+.products-banner .banner-text {
+    min-height: 35vh;
+    width: 100%;
+    background-color: rgba(91, 87, 81, 0.267);
+}

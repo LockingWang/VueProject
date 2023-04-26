@@ -14,8 +14,8 @@
           </a>
         </li>
         <li class="page-item" v-if="pages.has_next">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true" @click.prevent="updatePage('next')">&raquo;</span>
+          <a class="page-link" href="#" aria-label="Next" @click.prevent="updatePage('next')">
+            <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
       </ul>

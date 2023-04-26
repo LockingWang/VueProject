@@ -96,12 +96,6 @@
                   </ul>
               </div>
             </div>
-            <p class="text-center">
-                <i class="bi bi-pencil"></i>
-                2023 by CongRen Wang 王琮仁.
-                <br>
-                created with Vue.
-            </p>
         </div>
     </footer>
 </template>
@@ -116,20 +110,11 @@ export default {
   },
   methods: {
     getProducts() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products`;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
-            for (let i = 1; i <= res.data.pagination.total_pages; i += 1) {
-              this.$http.get(`${api}/?page=${i}`)
-                .then((res2) => {
-                  console.log(res2.data);
-                  this.products = this.products.concat(res2.data.products);
-                })
-                .catch((err2) => {
-                  console.log(err2);
-                });
-            }
+            this.products = res.data.products;
           }
         })
         .catch((err) => {

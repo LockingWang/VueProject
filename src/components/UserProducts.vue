@@ -1,121 +1,262 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <div class="row">
-      <div class="col-md-7">
-        <table class="table mt-4">
-        <thead>
-            <tr>
-            <th width="120">圖片</th>
-            <th width="120">商品名稱</th>
-            <th width="120">價格</th>
-            <th width="120">選項</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in products" :key="item.id">
-            <td>
-              <img class="img-fluid" :src="item.imageUrl" :alt="item.title">
-            </td>
-            <td>{{ item.title }}</td>
-            <td class="text-right">
-              <div class="h5" v-if="!item.price">{{ $filters.currency(item.origin_price) }} 元</div>
-              <del class="h6" v-if="item.price">
-                原價 {{ $filters.currency(item.origin_price) }} 元
-              </del>
-              <div class="h5" v-if="item.price">現在只要 {{ $filters.currency(item.price) }} 元</div>
-            </td>
-            <td>
-                <div class="btn-group">
-                <button class="btn btn-outline-primary btn-sm"
-                @click="getProduct(item.id)">查看更多</button>
-                <button class="btn btn-outline-danger btn-sm"
-                @click="addToCart(item.id)">加到購物車</button>
-                </div>
-                <div>
-                  <button class="btn btn-sm btn-outline-danger" type="button"
-                  @click="toggleLoveProduct(item, 'add')"
-                  v-if="checkLoveList(item)">加到最愛</button>
-                  <button class="btn btn-sm btn-outline-danger active" type="button"
-                  @click="toggleLoveProduct(item, 'del')"
-                  v-else>喜歡的商品</button>
-                </div>
-            </td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="products-banner mb-3">
+      <div class="banner-text d-flex align-items-center justify-content-center">
+        <h1 class="text-white">商品專區</h1>
       </div>
-      <div class="col-md-5">
-        <div class="sticky-top">
-          <h5 class="text-center mt-3">我的購物車</h5>
-          <table class="table align-middle table-warning">
-            <thead>
-              <tr>
-                <th>刪除</th>
-                <th>品名</th>
-                <th style="width: 120px">數量</th>
-                <th>單價</th>
-              </tr>
-            </thead>
-            <tbody>
-            <template v-if="cart.carts.length">
-              <tr v-for="item in cart.carts" :key="item.id">
-                <td>
-                  <button type="button" class="btn btn-outline-danger btn-sm"
-                          @click="removeCartItem(item.id)">
-                    <i class="bi bi-x"></i>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+          <section>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="fs-5 mb-3">
+                  <a class="link-deco-none link-info" href="#">首頁 / </a>
+                  <a class="link-deco-none link-info" href="#">商品專區 / </a>
+                  <a class="link-deco-none link-danger" href="#">{{ filter }}</a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group mb-3">
+                  <button class="input-group-text border-0 bg-light">
+                    <i class="bi bi-search"></i>
                   </button>
-                </td>
-                <td>
-                  {{ item.product.title }}
-                  <div class="text-success" v-if="item.coupon">
-                    已套用優惠券
+                  <input type="text" class="form-control"
+                  placeholder="進一步搜尋商品" aria-label="search" v-model="searchText"
+                  @change="filtProducts">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-3">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="list-group text-center sticky-top" style="top: 70px;">
+                  <button type="button" class="list-group-item list-group-item-action"
+                  :class="{'active': filter == ''}" @click="changeFilter('')">全部商品</button>
+                  <button type="button" class="list-group-item list-group-item-action"
+                  :class="{'active': filter == '化妝品'}" @click="changeFilter('化妝品')">化妝品</button>
+                  <button type="button" class="list-group-item list-group-item-action"
+                  :class="{'active': filter == '醫藥'}" @click="changeFilter('醫藥')">醫藥</button>
+                  <button type="button" class="list-group-item list-group-item-action"
+                  :class="{'active': filter == '零食'}" @click="changeFilter('零食')">零食</button>
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                  <div class="col" v-for="item in filtedProducts" :key="item.id">
+                    <div class="card h-100">
+                      <div class="position-absolute end-0" style="z-index: 2;">
+                        <button type="button"
+                        class="border-0 rounded"
+                        style="background-color: rgba(255, 0, 0, 0.62);"
+                        @click="toggleLoveProduct(item, 'add')" v-if="checkLoveList(item)">
+                          <i class="bi bi-heart text-white fs-5"></i>
+                          <span class="ms-1 text-white fs-5">加入收藏</span>
+                        </button>
+                        <button type="button"
+                        class="border-0 rounded"
+                        style="background-color: white;"
+                        @click="toggleLoveProduct(item, 'del')" v-else>
+                          <i class="bi bi-heart-fill text-danger fs-5"></i>
+                          <span class="ms-1 text-danger fs-5">喜歡的商品</span>
+                        </button>
+                      </div>
+                      <img :src="item.imageUrl"
+                      class="card-img-top object-fit-cover" alt="..." style="height: 250px;">
+                      <div class="card-body position-relative pb-0 border-top">
+                        <p class="text-white bg-danger d-inline px-1 position-absolute top-0 end-0">
+                          {{ item.category }}</p>
+                        <h5 class="mt-2 overflow-hidden" style="height: 48px">{{ item.title }}</h5>
+                        <p class="overflow-hidden" style="height: 70px">
+                          {{ item.description }}</p>
+                        <div class="d-flex justify-content-between align-items-end">
+                          <span class="text-secondary fs-6 text-decoration-line-through">
+                            原價{{ $filters.currency(item.origin_price) }}元</span>
+                          <span class="text-danger fs-4">
+                            售價{{ $filters.currency(item.price) }}元</span>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        <a class="btn btn-outline-primary btn-sm stretched-link w-100" href="#"
+                        @click.prevent="getProduct(item.id)">商品頁</a>
+                      </div>
+                    </div>
                   </div>
-                </td>
-                <td>
-                  <div class="input-group input-group-sm">
-                    <input type="number" class="form-control" aria-label="buy number"
-                          v-model.number="item.qty" min="1"
-                          @change="updateCart(item)"
-                          :disabled="this.status.loadingItem === item.id">
-                    <div class="input-group-text">/ {{ item.product.unit }}</div>
-                  </div>
-                </td>
-                <td class="text-end">
-                  <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
-                  {{ $filters.currency(item.final_total) }}
-                </td>
-              </tr>
-            </template>
-            <template v-else>
-              <tr>
-                <td colspan="4" class="text-center">尚未加入任何商品</td>
-              </tr>
-            </template>
-            </tbody>
-            <tfoot>
-            <tr>
-              <td colspan="1">
-                <button type="button" class="btn btn-outline-danger"
-                        @click="removeCartItem('all')">清空購物車</button>
-              </td>
-              <td colspan="2" class="text-end">總計</td>
-              <td class="text-end">{{ $filters.currency(cart.total) }}</td>
-            </tr>
-            <tr v-if="cart.final_total !== cart.total">
-              <td colspan="3" class="text-end text-success">折扣價</td>
-              <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
-            </tr>
-            </tfoot>
-          </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <PaginationModel :pages="pagination"
+          @emit-pages="filtProducts"></PaginationModel>
         </div>
       </div>
     </div>
-    <PaginationModel :pages="pagination"
-      @emit-pages="getProducts"></PaginationModel>
+
+    <!-- <button class="fixed-cart"
+    type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+    @click="toggleCanvas"><img src="https://img-bsy.txrpic.com/preview/Element/00/00/96/60/E-966041-F44B8F15.png?imageMogr2/quality/90/thumbnail/!800x%3E" alt="cart"></button> -->
+
+    <div class="fixed-cart">
+      <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions"
+      role="button" aria-controls="offcanvasExample">
+        <img src="https://img-bsy.txrpic.com/preview/Element/00/00/96/60/E-966041-F44B8F15.png?imageMogr2/quality/90/thumbnail/!800x%3E" alt="cart"
+        class="img-fluid">
+        <span class="position-absolute start-50 translate-middle badge rounded-pill bg-info"
+        style="top: 10%;">
+          {{ cart.carts.length }}
+        </span>
+      </a>
+    </div>
+    <div class="offcanvas offcanvas-start text-bg-danger" data-bs-scroll="true" tabindex="-1"
+    id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel"
+    ref="offCanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel">我的購物車</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+
+        <table class="table align-middle table-light">
+          <thead>
+            <tr>
+              <th>刪除</th>
+              <th>品名</th>
+              <th style="width: 120px">數量</th>
+              <th>單價</th>
+            </tr>
+          </thead>
+          <tbody>
+          <template v-if="cart.carts.length">
+            <tr v-for="item in cart.carts" :key="item.id">
+              <td>
+                <button type="button" class="btn btn-outline-danger btn-sm"
+                        @click="removeCartItem(item.id)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </td>
+              <td>
+                {{ item.product.title }}
+                <div class="text-success" v-if="item.coupon">
+                  已套用優惠券
+                </div>
+              </td>
+              <td>
+                <div class="input-group input-group-sm">
+                  <input type="number" class="form-control" aria-label="buy number"
+                        v-model.number="item.qty" min="1"
+                        @change="updateCart(item)"
+                        :disabled="this.status.loadingItem === item.id">
+                  <div class="input-group-text">/ {{ item.product.unit }}</div>
+                </div>
+              </td>
+              <td class="text-end">
+                <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
+                {{ $filters.currency(item.final_total) }}
+              </td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr>
+              <td colspan="4" class="text-center">尚未加入任何商品</td>
+            </tr>
+          </template>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="2">
+              <button type="button" class="btn btn-outline-danger"
+                      @click="removeCartItem('all')">清空購物車</button>
+            </td>
+            <td colspan="1" class="text-end">總計</td>
+            <td class="text-end">{{ $filters.currency(cart.total) }}</td>
+          </tr>
+          <tr v-if="cart.final_total !== cart.total">
+            <td colspan="3" class="text-end text-success">折扣價</td>
+            <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
+          </tr>
+          </tfoot>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="position-absolute top-0 bottom-0 d-none">
+      <h5 class="text-center mt-3">我的購物車</h5>
+      <table class="table align-middle table-warning">
+        <thead>
+          <tr>
+            <th>刪除</th>
+            <th>品名</th>
+            <th style="width: 120px">數量</th>
+            <th>單價</th>
+          </tr>
+        </thead>
+        <tbody>
+        <template v-if="cart.carts.length">
+          <tr v-for="item in cart.carts" :key="item.id">
+            <td>
+              <button type="button" class="btn btn-outline-danger btn-sm"
+                      @click="removeCartItem(item.id)">
+                <i class="bi bi-x"></i>
+              </button>
+            </td>
+            <td>
+              {{ item.product.title }}
+              <div class="text-success" v-if="item.coupon">
+                已套用優惠券
+              </div>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <input type="number" class="form-control" aria-label="buy number"
+                      v-model.number="item.qty" min="1"
+                      @change="updateCart(item)"
+                      :disabled="this.status.loadingItem === item.id">
+                <div class="input-group-text">/ {{ item.product.unit }}</div>
+              </div>
+            </td>
+            <td class="text-end">
+              <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
+              {{ $filters.currency(item.final_total) }}
+            </td>
+          </tr>
+        </template>
+        <template v-else>
+          <tr>
+            <td colspan="4" class="text-center">尚未加入任何商品</td>
+          </tr>
+        </template>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="1">
+            <button type="button" class="btn btn-outline-danger"
+                    @click="removeCartItem('all')">清空購物車</button>
+          </td>
+          <td colspan="2" class="text-end">總計</td>
+          <td class="text-end">{{ $filters.currency(cart.total) }}</td>
+        </tr>
+        <tr v-if="cart.final_total !== cart.total">
+          <td colspan="3" class="text-end text-success">折扣價</td>
+          <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
 </template>
 
 <script>
 import PaginationModel from '@/components/PaginationModel.vue';
+import OffCanvas from 'bootstrap/js/dist/offcanvas';
 
 export default {
   components: {
@@ -124,41 +265,82 @@ export default {
   data() {
     return {
       products: [],
-      cart: {},
+      filtedProducts: [],
+      cart: {
+        carts: [],
+      },
       loveItemList: {},
-      pagination: {},
+      pagination: {
+        total_pages: '',
+        current_page: 1,
+        has_pre: false,
+        has_next: false,
+      },
+      filter: '',
+      searchText: '',
 
       isLoading: false,
       status: {
         loadingItem: '', // 對應品項 id
       },
+      offCanvas: {},
     };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getProducts(page = 1) {
-      let toPage = '';
-      if (page === 'previous' && this.pagination.has_pre) {
-        toPage = this.pagination.current_page - 1;
-      } else if (page === 'next' && this.pagination.has_next) {
-        toPage = this.pagination.current_page + 1;
-      } else {
-        toPage = page;
-      }
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products?page=${toPage}`;
-      this.isLoading = true;
+    getProducts() {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
-          this.isLoading = false;
           if (res.data.success) {
             this.products = res.data.products;
-            this.pagination = res.data.pagination;
-            this.updateLovedItem();
+            this.filtProducts();
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
+    },
+    filtProducts(page = 1) {
+      if (this.filter === '') {
+        this.filtedProducts = this.products.filter((i) => i.title.match(this.searchText));
+      } else {
+        this.filtedProducts = this.products.filter((i) => i.category === this.filter);
+        this.filtedProducts = this.filtedProducts.filter((i) => i.title.match(this.searchText));
+      }
+
+      if (page === 'previous') {
+        this.pagination.current_page -= 1;
+      } else if (page === 'next') {
+        this.pagination.current_page += 1;
+      } else {
+        this.pagination.current_page = page;
+      }
+
+      const pageItems = 9;
+      this.pagination.total_pages = Math.ceil(this.filtedProducts.length / pageItems);
+      console.log(this.pagination.total_pages);
+      if (this.pagination.current_page === 1) {
+        this.pagination.has_pre = false;
+        this.pagination.has_next = true;
+        if (this.pagination.total_pages === 1) {
+          this.pagination.has_next = false;
+        }
+      } else if (this.pagination.current_page === this.pagination.total_pages) {
+        this.pagination.has_next = false;
+        this.pagination.has_pre = true;
+      } else {
+        this.pagination.has_next = true;
+        this.pagination.has_pre = true;
+      }
+      const showItems = [];
+      const CP = this.pagination.current_page;
+      this.filtedProducts.forEach((item, i) => {
+        if (i <= CP * 9 - 1 && i >= CP * 9 - 9) {
+          showItems.push(item);
+        }
+      });
+      this.filtedProducts = showItems;
     },
     getProduct(id) {
       this.$router.push(`/user/product/${id}`);
@@ -245,6 +427,16 @@ export default {
         this.loveItemList = JSON.parse(localStorage.getItem('loveItemList'));
       }
     },
+    changeFilter(sign) {
+      this.filter = sign;
+      this.filtProducts();
+    },
+    toggleCanvas() {
+      this.offCanvas.show();
+    },
+  },
+  mounted() {
+    this.offCanvas = new OffCanvas(this.$refs.offCanvas);
   },
   created() {
     this.getProducts();
