@@ -63,7 +63,8 @@
                   v-model="form.message"></textarea>
       </div>
       <div class="text-end d-flex justify-content-between">
-        <button class="btn btn-outline-secondary">
+        <button class="btn btn-outline-secondary" type="button"
+        @click="backToCart">
           <i class="bi bi-arrow-bar-left"></i>回到購物車
         </button>
         <button class="btn btn-danger w-50">
@@ -109,6 +110,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    backToCart() {
+      this.$router.go(-1);
     },
   },
 };
