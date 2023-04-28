@@ -15,9 +15,11 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="fs-5 mb-3">
-                  <a class="link-deco-none link-info" href="#">首頁 / </a>
-                  <a class="link-deco-none link-info" href="#">商品專區 / </a>
-                  <a class="link-deco-none link-danger" href="#">{{ filter }}</a>
+                  <ul class="d-flex list-unstyled">
+                    <li class="link-info">首頁 / </li>
+                    <li class="link-info">商品專區 / </li>
+                    <li class="link-danger">{{ filter }}</li>
+                  </ul>
                 </div>
               </div>
               <div class="col-md-6">
@@ -27,7 +29,7 @@
                   </button>
                   <input type="text" class="form-control"
                   placeholder="進一步搜尋商品" aria-label="search" v-model="searchText"
-                  @change="filtProducts">
+                  @change="filtProducts(1)">
                 </div>
               </div>
             </div>
@@ -48,7 +50,8 @@
                 </div>
               </div>
               <div class="col-md-10">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3"
+                v-if="filtedProducts.length !== 0">
                   <div class="col" v-for="item in filtedProducts" :key="item.id">
                     <div class="card h-100">
                       <div class="position-absolute end-0" style="z-index: 2;">
@@ -89,6 +92,12 @@
                     </div>
                   </div>
                 </div>
+                <div v-else>
+                  <div class="d-flex text-secondary justify-content-center align-items-center mt-3">
+                    <i class="bi bi-cloud-slash fs-1 me-3"></i>
+                    <h5 class="text-center">歐歐~ 好像找不到相關的商品呢 ! <br>再試試看其他關鍵字吧 !</h5>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -98,11 +107,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <button class="fixed-cart"
-    type="button" data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
-    @click="toggleCanvas"><img src="https://img-bsy.txrpic.com/preview/Element/00/00/96/60/E-966041-F44B8F15.png?imageMogr2/quality/90/thumbnail/!800x%3E" alt="cart"></button> -->
 
     <div class="fixed-cart">
       <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions"
@@ -308,18 +312,18 @@ export default {
         this.filtedProducts = this.products.filter((i) => i.category === this.filter);
         this.filtedProducts = this.filtedProducts.filter((i) => i.title.match(this.searchText));
       }
-
       if (page === 'previous') {
         this.pagination.current_page -= 1;
       } else if (page === 'next') {
         this.pagination.current_page += 1;
+      } else if (page === 1) {
+        this.pagination.current_page = 1;
       } else {
         this.pagination.current_page = page;
       }
 
       const pageItems = 9;
       this.pagination.total_pages = Math.ceil(this.filtedProducts.length / pageItems);
-      console.log(this.pagination.total_pages);
       if (this.pagination.current_page === 1) {
         this.pagination.has_pre = false;
         this.pagination.has_next = true;
@@ -441,6 +445,7 @@ export default {
   created() {
     this.getProducts();
     this.getCart();
+    this.updateLovedItem();
   },
 };
 </script>

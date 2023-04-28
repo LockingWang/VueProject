@@ -2,9 +2,7 @@
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <router-link class="nav-link text-danger" to="/user/home">日本代購網</router-link>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-            aria-label="Toggle navigation" @click="toggleCollapse">
+            <button class="navbar-toggler" type="button" @click="toggleCollapse">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav" ref="collapse">
@@ -37,22 +35,13 @@ export default {
   data() {
     return {
       collapse: {},
-      isCollapse: true,
     };
   },
   methods: {
     toggleCollapse() {
-      if (this.isCollapse) {
-        this.collapse.show();
-        this.isCollapse = false;
-      } else {
-        this.collapse.hide();
-        this.isCollapse = true;
-      }
+      this.collapse = new Collapse(this.$refs.collapse);
+      this.collapse.toggle();
     },
-  },
-  mounted() {
-    this.collapse = new Collapse(this.$refs.collapse);
   },
 };
 </script>

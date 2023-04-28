@@ -18,3 +18,22 @@
     width: 100%;
     background-color: rgba(91, 87, 81, 0.267);
 }
+
+.img-box {
+    margin: 0 auto;
+    padding-bottom: 100%;
+    width: 100%;
+    position: relative;
+    border: 1px solid rgba(128, 128, 128, 0.747);
+}
+
+.img-box .bg-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
