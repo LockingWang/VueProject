@@ -1,28 +1,25 @@
 <template>
-    <div class="container-fluid">
-        <div class="row justify-content-center mt-3">
+    <div class="container-fluid border-bottom">
+        <div class="row justify-content-center bg-light">
             <div class="col-md-6">
-                <div class="card text-center">
-                    <div class="card-header">
-                        訂單查詢
+                <div class="card text-center bg-white my-5 p-5 border border-success border-3">
+                    <div class="card-body bg-white">
+                        <h5>訂單查詢</h5>
+                        <input type="text" required aria-label="orderId"
+                        class="form-control"
+                        v-model="orderId"
+                        @change="warning = false"
+                        placeholder="請輸入訂單編號">
                     </div>
+                    <p class="text-danger" v-if="warning">查詢不到該筆訂單，請重新輸入。</p>
                     <div>
-                        <div class="w-100">
-                            <label for="floatingInputGroup2" class="input-group-text">
-                                訂單編號:
-                            <input type="text" class="form-control"
-                            v-model="orderId" @change="warning = false"
-                            id="floatingInputGroup2" placeholder="訂單編號" required>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="card-footer text-body-secondary">
-                        <button class="btn btn-primary w-100" @click="getOrder"
-                        v-if="orderId">搜尋訂單</button>
-                        <p v-else>請輸入訂單編號</p>
+                      <button class="btn btn-success w-50" @click="getOrder"
+                      v-if="orderId">搜尋訂單</button>
+                      <p v-else>忘記訂單編號 ? 請聯絡我們
+                        <i class="bi bi-telephone-fill ms-1 text-success"></i>
+                      </p>
                     </div>
                 </div>
-                <p class="text-danger" v-if="warning">查詢不到該筆訂單，請重新輸入。</p>
             </div>
         </div>
     </div>
