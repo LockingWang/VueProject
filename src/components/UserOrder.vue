@@ -1,9 +1,31 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <div class="row justify-content-center">
-        <h2 class="text-center text-success mt-3">成功建立訂單</h2>
-        <form class="col-md-6 mb-3 py-3 border rounded">
-            <h5 class="text-center bg-info mb-0 py-1 rounded-top">
+  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <div class="container-fluid">
+    <div class="row justify-content-center bg-light">
+      <div class="col-md-6 bg-white mt-5">
+        <h5 class="text-center mt-3">訂購流程</h5>
+        <div class="row justify-content-center">
+          <div class="col-sm-4 mt-3" style="max-width: 200px;">
+            <div class="border border-3 border-secondary rounded">
+              <p class="text-center text-secondary mb-0">確認購物車</p>
+            </div>
+          </div>
+          <div class="col-sm-4 mt-3" style="max-width: 200px;">
+            <div class="border border-3 border-secondary rounded">
+              <p class="text-center text-secondary mb-0">填寫訂購資訊</p>
+            </div>
+          </div>
+          <div class="col-sm-4 mt-3" style="max-width: 200px;">
+            <div class="border border-3 border-danger rounded">
+              <p class="text-center text-danger mb-0">建立訂單</p>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+        <h5 class="text-center mt-3">訂單成立</h5>
+        <form class="py-3 rounded">
+            <h5 class="text-center bg-warning mb-0 py-1 rounded-top">
               訂單編號  <span class="fs-6">({{ this.$route.params.orderId }})</span>
             </h5>
             <table class="table text-center">
@@ -25,7 +47,7 @@
                 </tfoot>
             </table>
             <hr>
-            <h5 class="text-center bg-info mb-0 py-1 rounded-top">訂購人資訊</h5>
+            <h5 class="text-center bg-warning mb-0 py-1 rounded-top">訂購人資訊</h5>
             <table class="table">
                 <tbody>
                     <tr>
@@ -52,11 +74,13 @@
                 </tbody>
             </table>
             <div class="text-end" v-if="!order.is_paid">
-                <router-link to="/user/userCheckout/payment" class="btn btn-primary w-100">
+                <router-link to="/user/userCheckout/payment" class="btn btn-danger w-50">
                     下一步 : 付款去</router-link>
             </div>
         </form>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
