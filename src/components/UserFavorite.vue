@@ -1,131 +1,126 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <div class="row">
-      <div class="col-md-7">
-        <table class="table mt-4">
-        <thead>
-            <tr>
-            <th width="120">圖片</th>
-            <th width="120">商品名稱</th>
-            <th width="120">價格</th>
-            <th width="120">選項</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in loveItemList" :key="item.id">
-            <td>
-              <img class="img-fluid" :src="item.imageUrl" :alt="item.title">
-            </td>
-            <td>{{ item.title }}</td>
-            <td class="text-right">
-              <div class="h5" v-if="!item.price">{{ $filters.currency(item.origin_price) }} 元</div>
-              <del class="h6" v-if="item.price">
-                原價 {{ $filters.currency(item.origin_price) }} 元
-              </del>
-              <div class="h5" v-if="item.price">現在只要 {{ $filters.currency(item.price) }} 元</div>
-            </td>
-            <td>
-                <div class="btn-group">
-                <button class="btn btn-outline-primary btn-sm"
-                @click="getProduct(item.id)">查看更多</button>
-                <button class="btn btn-outline-danger btn-sm"
-                @click="addToCart(item.id)">加到購物車</button>
-                </div>
-                <div>
-                  <button class="btn btn-sm btn-outline-danger" type="button"
-                  @click="addLoveProduct(item)"
-                  v-if="checkLoveList(item)">加到最愛</button>
-                  <button class="btn btn-sm btn-outline-danger active" type="button"
-                  @click="delLoveProduct(item)"
-                  v-else>喜歡的商品</button>
-                </div>
-            </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="favorite-banner mb-3">
+      <div class="banner-text d-flex align-items-center justify-content-center">
+        <h1 class="text-white">喜歡的商品</h1>
       </div>
-      <div class="col-md-5">
-        <div class="sticky-top">
-          <h5 class="text-center mt-3">我的購物車</h5>
-          <table class="table align-middle table-warning">
-            <thead>
-              <tr>
-                <th>刪除</th>
-                <th>品名</th>
-                <th style="width: 120px">數量</th>
-                <th>單價</th>
-              </tr>
-            </thead>
-            <tbody>
-            <template v-if="cart.carts">
-              <tr v-for="item in cart.carts" :key="item.id">
-                <td>
-                  <button type="button" class="btn btn-outline-danger btn-sm"
-                          @click="removeCartItem(item.id)">
-                    <i class="bi bi-x"></i>
-                  </button>
-                </td>
-                <td>
-                  {{ item.product.title }}
-                  <div class="text-success" v-if="item.coupon">
-                    已套用優惠券
+    </div>
+    <h5 class="text-center">一共收藏了 {{ loveItemList.length }} 項商品</h5>
+    <div class="container mb-3">
+      <div class="row g-3">
+        <div class="col-6" v-for="item in filtedProducts" :key="item.id">
+          <div class="card mb-3 h-100">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img :src="item.imageUrl" :alt="item.title"
+                class="rounded-start w-100 h-100 object-fit-cover">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title mt-3 overflow-hidden"
+                  style="height: 50px;">{{ item.title }}</h5>
+                  <p class="card-text overflow-hidden text-secondary d-none d-md-block"
+                  style="height: 50px;">{{ item.description }}</p>
+                  <div>
+                    <div class="h5" v-if="!item.price">
+                      {{ $filters.currency(item.origin_price) }} 元
+                    </div>
+                    <del class="h6 d-none d-md-block" v-if="item.price">
+                      原價 {{ $filters.currency(item.origin_price) }} 元
+                    </del>
+                    <div class="h5" v-if="item.price">
+                      售價 {{ $filters.currency(item.price) }} 元
+                    </div>
                   </div>
-                </td>
-                <td>
-                  <div class="input-group input-group-sm">
-                    <input type="number" class="form-control" aria-label="buy number"
-                          v-model.number="item.qty" min="1"
-                          @change="updateCart(item)"
-                          :disabled="this.status.loadingItem === item.id">
-                    <div class="input-group-text">/ {{ item.product.unit }}</div>
-                  </div>
-                </td>
-                <td class="text-end">
-                  <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
-                  {{ $filters.currency(item.final_total) }}
-                </td>
-              </tr>
-            </template>
-            </tbody>
-            <tfoot>
-            <tr>
-              <td colspan="1">
-                <button type="button" class="btn btn-outline-danger"
-                        @click="removeCartItem('all')">清空購物車</button>
-              </td>
-              <td colspan="2" class="text-end">總計</td>
-              <td class="text-end">{{ $filters.currency(cart.total) }}</td>
-            </tr>
-            <tr v-if="cart.final_total !== cart.total">
-              <td colspan="3" class="text-end text-success">折扣價</td>
-              <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
-            </tr>
-            </tfoot>
-          </table>
+                  <div class="btn-group">
+                    <button class="btn btn-outline-primary btn-sm"
+                    @click="getProduct(item.id)">查看更多</button>
+                    <button class="btn btn-outline-danger btn-sm"
+                    @click="addToCart(item.id)">加到購物車</button>
+                    </div>
+                    <div class="position-absolute top-0 end-0">
+                      <button class="btn btn-sm btn-danger" type="button"
+                      @click="delLoveProduct(item)"><i class="bi bi-heartbreak"></i></button>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <PaginationModel :pages="pagination"
+          @emit-pages="filtProducts"></PaginationModel>
       </div>
     </div>
 </template>
 
 <script>
+import PaginationModel from '@/components/PaginationModel.vue';
 
 export default {
+  components: {
+    PaginationModel,
+  },
   data() {
     return {
+      loveItemList: [],
+      filtedProducts: [],
       isLoading: false,
       cart: {},
       status: {
         loadingItem: '', // 對應品項 id
       },
-      loveItemList: {},
+      pagination: {
+        total_pages: '',
+        current_page: 1,
+        has_pre: false,
+        has_next: false,
+      },
     };
   },
   inject: ['$httpMessageState'],
   methods: {
     getLovedProducts() {
       if (localStorage.getItem('loveItemList')) {
-        this.loveItemList = JSON.parse(localStorage.getItem('loveItemList'));
+        const loveItemObject = JSON.parse(localStorage.getItem('loveItemList'));
+        this.loveItemList = Object.values(loveItemObject);
       }
+      this.filtProducts();
+    },
+    filtProducts(page = 1) {
+      if (page === 'previous') {
+        this.pagination.current_page -= 1;
+      } else if (page === 'next') {
+        this.pagination.current_page += 1;
+      } else if (page === 1) {
+        this.pagination.current_page = 1;
+      } else {
+        this.pagination.current_page = page;
+      }
+
+      const pageItems = 8;
+      this.pagination.total_pages = Math.ceil(this.loveItemList.length / pageItems);
+      if (this.pagination.current_page === 1) {
+        this.pagination.has_pre = false;
+        this.pagination.has_next = true;
+        if (this.pagination.total_pages === 1) {
+          this.pagination.has_next = false;
+        }
+      } else if (this.pagination.current_page === this.pagination.total_pages) {
+        this.pagination.has_next = false;
+        this.pagination.has_pre = true;
+      } else {
+        this.pagination.has_next = true;
+        this.pagination.has_pre = true;
+      }
+      const showItems = [];
+      const CP = this.pagination.current_page;
+      this.loveItemList.forEach((item, i) => {
+        if (i <= CP * 8 - 1 && i >= CP * 8 - 8) {
+          showItems.push(item);
+        }
+      });
+
+      this.filtedProducts = showItems;
     },
     getProduct(id) {
       this.$router.push(`/user/product/${id}`);
