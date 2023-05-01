@@ -51,21 +51,24 @@
           @emit-pages="filtProducts"></PaginationModel>
       </div>
     </div>
+    <UserCart :cart="cart" @change-cart="getCart"></UserCart>
 </template>
 
 <script>
 import PaginationModel from '@/components/PaginationModel.vue';
+import UserCart from '@/components/UserCartOffcanvas.vue';
+import CartMixin from '@/mixins/CartMixin';
 
 export default {
   components: {
     PaginationModel,
+    UserCart,
   },
   data() {
     return {
       loveItemList: [],
       filtedProducts: [],
       isLoading: false,
-      cart: {},
       status: {
         loadingItem: '', // 對應品項 id
       },
@@ -125,66 +128,6 @@ export default {
     getProduct(id) {
       this.$router.push(`/user/product/${id}`);
     },
-    addToCart(id, qty = 1) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
-      const cart = {
-        product_id: id,
-        qty,
-      };
-      this.isLoading = true;
-      this.$http.post(url, { data: cart })
-        .then((res) => {
-          this.isLoading = false;
-          this.$httpMessageState(res, '加入購物車');
-          this.getCart();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getCart() {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
-      this.isLoading = true;
-      this.$http.get(url)
-        .then((res) => {
-          this.cart = res.data.data;
-          this.isLoading = false;
-        });
-    },
-    updateCart(item) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
-      this.isLoading = true;
-      this.status.loadingItem = item.id;
-      const cart = {
-        product_id: item.product_id,
-        qty: item.qty,
-      };
-      this.$http.put(url, { data: cart })
-        .then(() => {
-          this.isLoading = false;
-          this.status.loadingItem = '';
-          this.getCart();
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
-    },
-    removeCartItem(id) {
-      let target = 'carts';
-      if (id !== 'all') {
-        target = `cart/${id}`;
-      }
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/${target}`;
-      this.isLoading = true;
-      this.$http.delete(url)
-        .then(() => {
-          this.isLoading = false;
-          this.getCart();
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
-    },
     addLoveProduct(item) {
       this.loveItemList[item.id] = item;
       localStorage.setItem('loveItemList', JSON.stringify(this.loveItemList));
@@ -202,7 +145,7 @@ export default {
   },
   created() {
     this.getLovedProducts();
-    this.getCart();
   },
+  mixins: [CartMixin],
 };
 </script>
