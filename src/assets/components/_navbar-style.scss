@@ -1,0 +1,30 @@
+.user-navbar {
+    background-color: #e3f2fd;
+}
+
+.user-navbar .nav-li {
+    width: 100%;
+    @include BS-lg {
+        width: 100px;
+    }
+}
+
+.user-navbar .nav-link-style {
+    color: red;
+    font-weight: bold;
+    transition: all 0.3s;
+    &:hover {
+        border-bottom: 3px solid red;
+    }
+}
+
+.user-navbar .nav-item .router-link-active {
+    background: rgba(255, 0, 0, 0.723);
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 0 3px grey;;
+}
+
+.user-navbar .navbar-toggler {
+    background-color: rgba(255, 0, 0, 0.307);
+}

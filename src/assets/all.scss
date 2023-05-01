@@ -33,6 +33,8 @@
 
 
 @import "~bootstrap/scss/bootstrap";
+@import "../assets/mixins/bootstrap-view-width";
 @import "../assets/components/img-control";
 @import "../assets/components/deco-box";
 @import "../assets/components/utilities";
+@import "../assets/components/navbar-style";
