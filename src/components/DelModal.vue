@@ -18,7 +18,7 @@
                   data-bs-dismiss="modal">取消
           </button>
           <button type="button" class="btn btn-danger"
-                  @click="$emit('del-item')">確認刪除
+                  @click="deleteTarget">確認刪除
           </button>
         </div>
       </div>
@@ -37,6 +37,15 @@ export default {
     return {
       modal: {},
     };
+  },
+  methods: {
+    deleteTarget() {
+      if (this.item.title === '全部訂單') {
+        this.$emit('del-all');
+      } else {
+        this.$emit('del-item');
+      }
+    },
   },
   mixins: [modalMixin],
 };

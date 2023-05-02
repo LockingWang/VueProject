@@ -82,7 +82,8 @@
             <div class="input-group input-group-sm mb-1" style="max-width: 300px;">
               <input type="text" class="form-control" aria-label="coupon_code"
               v-model="coupon_code" placeholder="請輸入優惠碼">
-              <button class="btn btn-warning" type="button" @click="addCouponCode">
+              <button class="btn btn-warning" type="button" @click="addCouponCode"
+              :disabled="coupon_code === ''">
                   套用優惠碼
               </button>
             </div>
@@ -182,9 +183,14 @@ export default {
       };
       this.isLoading = true;
       this.$http.post(url, { data: coupon })
-        .then(() => {
+        .then((res) => {
           this.isLoading = false;
-          this.getCart();
+          if (res.data.success) {
+            this.$httpMessageState(res, '套用優惠券', '確認商品後，點擊下一步填寫資料。');
+            this.getCart();
+          } else {
+            this.$httpMessageState(res, '套用優惠券');
+          }
         })
         .catch((err) => {
           console.log(err.response);
