@@ -17,7 +17,7 @@ export default {
       this.$http.post(url, { data: cart })
         .then((res) => {
           this.isLoading = false;
-          this.$httpMessageState(res, '加入購物車');
+          this.$httpMessageState(res, '加入購物車', '購物車感到很高興~');
           this.getCart();
         })
         .catch((err) => {

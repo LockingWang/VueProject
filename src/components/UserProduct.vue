@@ -18,43 +18,38 @@
         <section class="bg-white p-3 mb-3">
           <div class="row">
             <div class="col-md-4 mb-3 border-bottom pb-3">
-              <div class="img-box mb-1">
+              <div class="img-box mb-1 position-relative">
+                <LightBox :product="product"></LightBox>
                 <div class="bg-img"
-                :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
+                :style="{ 'background-image': 'url(' + mainImgUrl + ')' }"></div>
               </div>
 
-              <div class="row g-0 justify-content-between mb-2">
-                <div class="col-2">
-                  <div class="img-box">
-                    <div class="bg-img"
-                    :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div class="img-box">
-                    <div class="bg-img"
-                    :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div class="img-box">
-                    <div class="bg-img"
-                    :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div class="img-box">
-                    <div class="bg-img"
-                    :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div class="img-box">
-                    <div class="bg-img"
-                    :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
-                  </div>
-                </div>
-              </div>
+              <swiper
+                :modules="modules"
+                :slides-per-view="4"
+                :space-between="5"
+                navigation
+                :scrollbar="{ draggable: true }"
+                @swiper="onSwiper"
+                @slideChange="onSlideChange"
+                class="mb-2">
+                  <swiper-slide>
+                    <div class="img-box">
+                      <div class="bg-img"
+                      :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
+                      <a class="side-img-link"
+                      @click.prevent="changeMainImg(product.imageUrl, $event)" href="#">主圖</a>
+                    </div>
+                  </swiper-slide>
+                  <swiper-slide v-for="item in product.imagesUrl" :key="item">
+                    <div class="img-box position-relative">
+                      <div class="bg-img"
+                      :style="{ 'background-image': 'url(' + item + ')' }"></div>
+                      <a class="side-img-link"
+                      @click.prevent="changeMainImg(item, $event)" href="#">主圖</a>
+                    </div>
+                  </swiper-slide>
+              </swiper>
 
               <div class="row">
                 <div class="col-sm-7 d-flex flex-wrap fs-4 justify-content-center">
@@ -169,11 +164,11 @@
         <section class="bg-white p-3 mb-3">
           <div>
             <h5 class="bg-light p-3">商品說明</h5>
-            <p>{{ product.description }}</p>
+            <p class="descripe-preLine ps-3">{{ product.description }}</p>
           </div>
           <div>
             <h5 class="bg-light p-3">商品規格</h5>
-            <p style="white-space: pre-line;">{{ product.content }}</p>
+            <p class="descripe-preLine ps-3">{{ product.content }}</p>
           </div>
         </section>
 
@@ -285,21 +280,8 @@
             </router-link>
           </div>
 
-          <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-2 flex-nowrap overflow-hidden">
-            <div class="col" v-for="(item) in products.filter(i => i.category === '零食')"
-            :key="item.id">
-              <div class="card h-100 border border-5">
-                <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                style="max-height: 300px;" alt="...">
-                <div class="card-body border-top d-flex flex-column">
-                    <h5 class="card-title text-center d-block">{{ item.title }}</h5>
-                    <a href="#"
-                    class="btn btn-outline-danger stretched-link d-block mt-auto"
-                    @click.prevent="toProductPage(item)">看更多</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SwiperItems class="container"
+          :items="products.filter(i => i.category === product.category)"></SwiperItems>
         </section>
 
       </div>
@@ -332,10 +314,22 @@
 <script>
 import UserCart from '@/components/UserCartOffcanvas.vue';
 import CartMixin from '@/mixins/CartMixin';
+import SwiperItems from '@/components/SwiperItems.vue';
+import LightBox from '@/components/LightBox.vue';
+
+import {
+  Navigation, Pagination, Scrollbar, A11y,
+} from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
 
 export default {
   components: {
     UserCart,
+    SwiperItems,
+    LightBox,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -343,6 +337,7 @@ export default {
       product: {},
       id: '',
       qty: 1,
+      mainImgUrl: '',
       loveItemList: {},
 
       isLoading: false,
@@ -373,6 +368,7 @@ export default {
           this.isLoading = false;
           if (res.data.success) {
             this.product = res.data.product;
+            this.mainImgUrl = this.product.imageUrl;
           }
         })
         .catch((err) => {
@@ -422,12 +418,33 @@ export default {
         this.qty += 1;
       }
     },
+    changeMainImg(imgUrl, event) {
+      this.mainImgUrl = imgUrl;
+      const sideImgLink = document.querySelectorAll('.side-img-link');
+      sideImgLink.forEach((i) => {
+        i.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    },
   },
   created() {
     this.id = this.$route.params.productId;
     this.getProduct();
     this.getProducts();
     this.updateLovedItem();
+  },
+  setup() {
+    const onSwiper = (swiper) => {
+      console.log(swiper);
+    };
+    const onSlideChange = () => {
+      console.log('slide change');
+    };
+    return {
+      onSwiper,
+      onSlideChange,
+      modules: [Navigation, Pagination, Scrollbar, A11y],
+    };
   },
   mixins: [CartMixin],
 };

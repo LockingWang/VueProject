@@ -4,8 +4,9 @@
         <button type="button" class="btn btn-primary"
         @click="openModal(true)">新增產品</button>
     </div>
-    <table class="table mt-4">
-        <thead>
+    <div class="overflow-scroll">
+      <table class="table mt-4">
+        <thead class="text-nowrap">
             <tr>
             <th width="120">分類</th>
             <th>產品名稱</th>
@@ -31,15 +32,17 @@
             </td>
             <td>
                 <div class="btn-group">
-                <button class="btn btn-outline-primary btn-sm"
+                <button class="btn btn-outline-primary btn-sm text-nowrap"
                 @click="openModal(false, item)">編輯</button>
-                <button class="btn btn-outline-danger btn-sm"
+                <button class="btn btn-outline-danger btn-sm text-nowrap"
                 @click="openDelModal(item)">刪除</button>
                 </div>
             </td>
             </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
+
     <PaginationModel :pages="pagination"
       @emit-pages="getProducts"></PaginationModel>
     <ProductModal ref="productModal"
@@ -130,7 +133,7 @@ export default {
         .then((res) => {
           this.isLoading = false;
           productComponent.hideModal();
-          this.$httpMessageState(res, '更新');
+          this.$httpMessageState(res, '更新', '繼續整理商品吧~');
           this.getProducts();
         })
         .catch((err) => {

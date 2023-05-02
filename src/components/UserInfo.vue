@@ -103,7 +103,7 @@ export default {
       this.$http.post(url, { data: order })
         .then((res) => {
           if (res.data.success) {
-            this.$httpMessageState(res, '建立訂單');
+            this.$httpMessageState(res, '建立訂單', '感謝您的訂購 !');
             this.$router.push(`/user/userCheckout/order/${res.data.orderId}`);
           }
         })

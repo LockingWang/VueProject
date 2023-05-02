@@ -18,7 +18,7 @@
                   <ul class="d-flex list-unstyled">
                     <li class="link-info">首頁 / </li>
                     <li class="link-info">商品專區 / </li>
-                    <li class="link-danger">{{ filter }}</li>
+                    <li class="link-danger ms-2">{{ filter }}</li>
                   </ul>
                 </div>
               </div>
@@ -86,8 +86,8 @@
                         </div>
                       </div>
                       <div class="card-footer">
-                        <a class="btn btn-outline-primary btn-sm stretched-link w-100" href="#"
-                        @click.prevent="getProduct(item.id)">商品頁</a>
+                        <a class="btn btn-outline-primary btn-lg-sm stretched-link w-100 py-3"
+                        href="#" @click.prevent="getProduct(item.id)">商品頁</a>
                       </div>
                     </div>
                   </div>
@@ -141,7 +141,7 @@ export default {
       },
     };
   },
-  inject: ['$httpMessageState'],
+  inject: ['emitter', '$httpMessageState'],
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;

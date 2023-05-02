@@ -1,4 +1,5 @@
 <template>
+    <LoadingOverlay :active="isLoading"></LoadingOverlay>
     <div class="container-fluid border-bottom">
         <div class="row justify-content-center bg-light">
             <div class="col-md-6">
@@ -31,13 +32,16 @@ export default {
     return {
       orderId: '',
       warning: false,
+      isLoading: false,
     };
   },
   methods: {
     getOrder() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order/${this.orderId}`;
+      this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             if (!res.data.order) {
               this.warning = true;
@@ -47,6 +51,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.isLoading = false;
           console.log(err);
         });
     },

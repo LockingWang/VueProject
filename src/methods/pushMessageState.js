@@ -1,10 +1,11 @@
 import emitter from '@/methods/emitter';
 
-export default (response, title = '更新') => {
+export default (response, title = '更新', content = '...') => {
   if (response.data.success) {
     emitter.emit('push-message', {
       style: 'success',
       title: `${title}成功`,
+      content,
     });
   } else {
     // 有些訊息是字串，有些則是陣列，在此統一格式

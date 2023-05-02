@@ -1,138 +1,151 @@
 <template>
     <div class="modal fade" ref="modal">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content border-0">
-                <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    <span>新增產品</span>
-                </h5>
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-4">
-                    <h5>商品封面</h5>
-                    <div class="mb-3">
-                      <img class="img-fluid"
-                      alt="" :src="tempProduct.imageUrl">
-                    </div>
-                    <div>
-                      <label class="form-label w-100" for="img-url">圖片網址 :
-                        <input class="form-control" type="text" id="img-url"
-                        v-model="tempProduct.imageUrl">
+      <LoadingOverlay :active="isLoading"></LoadingOverlay>
+      <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content border-0">
+              <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="exampleModalLabel">
+                  <span>新增產品</span>
+              </h5>
+              <button type="button" class="btn-close"
+                      data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+              <div class="row">
+
+                  <div class="col-sm-4">
+                  <h5>商品封面</h5>
+                  <div class="mb-3">
+                    <img class="img-fluid"
+                    alt="" :src="tempProduct.imageUrl">
+                  </div>
+                  <div>
+                    <label class="form-label w-100" for="img-url">圖片網址 :
+                      <input class="form-control" type="text" id="img-url"
+                      v-model="tempProduct.imageUrl">
+                    </label>
+                  </div>
+                  <div class="mb-3">
+                      <label for="customFile" class="form-label w-100">
+                      <i class="fas fa-spinner fa-spin"></i>
+                      <input type="file" id="customFile"
+                      class="form-control"
+                      ref="mainFile"
+                      @change="uploadFile()"
+                      ></label>
+                  </div>
+                  <!-- 延伸技巧，多圖 -->
+                  <div class="my-3">
+                      <h5>商品參考圖</h5>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="請輸入圖片網址"
+                        aria-label="imageUrl" v-model="tempImagesUrl">
+                        <button class="btn btn-outline-secondary" type="button"
+                        id="button-addon2" @click="uploadOthers('url')">新增參考圖</button>
+                      </div>
+                      <div class="input-group mb-3">
+                        <input type="file" class="form-control" aria-label="imageFile"
+                        ref="otherFile">
+                        <button class="btn btn-outline-secondary" type="button"
+                        @click="uploadOthers('file')">上傳參考圖</button>
+                      </div>
+
+                      <div class="row g-2 justify-content-center">
+                        <div class="col-6 col-lg-4 position-relative"
+                        v-for="(url, i) in tempProduct.imagesUrl" :key="url">
+                          <img class="img-fluid" :src="url" alt="">
+                          <button type="button"
+                          class="btn btn-danger position-absolute p-0 img-del-btn"
+                          @click="delImages(i)">
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="col-sm-8">
+                  <div class="my-3">
+                      <label for="title" class="form-label w-100">標題
+                      <input type="text" class="form-control" id="title"
+                      placeholder="請輸入標題"
+                      v-model="tempProduct.title"
+                      ></label>
+                  </div>
+
+                  <div class="row gx-2">
+                      <div class="mb-3 col-md-6">
+                      <label for="category" class="form-label w-100">分類
+                      <input type="text" class="form-control" id="category"
+                      placeholder="請輸入分類"
+                      v-model="tempProduct.category"
+                      ></label>
+                      </div>
+                      <div class="mb-3 col-md-6">
+                      <label for="price" class="form-label w-100">單位
+                      <input type="text" class="form-control" id="unit"
+                      placeholder="請輸入單位"
+                      v-model="tempProduct.unit"
+                      ></label>
+                      </div>
+                  </div>
+
+                  <div class="row gx-2">
+                      <div class="mb-3 col-md-6">
+                      <label for="origin_price" class="form-label w-100">原價
+                      <input type="number" class="form-control" id="origin_price"
+                      placeholder="請輸入原價"
+                      v-model="tempProduct.origin_price"
+                      ></label>
+                      </div>
+                      <div class="mb-3 col-md-6">
+                      <label for="price" class="form-label w-100">售價
+                      <input type="number" class="form-control" id="price"
+                      placeholder="請輸入售價"
+                      v-model="tempProduct.price"
+                      ></label>
+                      </div>
+                  </div>
+                  <hr>
+
+                  <div class="mb-3">
+                      <label for="description" class="form-label w-100">產品描述
+                      <textarea type="text" class="form-control" id="description"
+                      placeholder="請輸入產品描述"
+                      v-model="tempProduct.description"
+                      ></textarea></label>
+                  </div>
+                  <div class="mb-3">
+                      <label for="content" class="form-label w-100">說明內容
+                      <textarea type="text" class="form-control" id="content"
+                      placeholder="請輸入產品說明內容"
+                      v-model="tempProduct.content"
+                      ></textarea></label>
+                  </div>
+                  <div class="mb-3">
+                      <div class="form-check">
+                      <label class="form-check-label" for="is_enabled">
+                          <input class="form-check-input" type="checkbox"
+                              :true-value="1"
+                              :false-value="0"
+                              id="is_enabled"
+                              v-model="tempProduct.is_enabled">
+                          是否啟用
                       </label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="customFile" class="form-label w-100">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <input type="file" id="customFile"
-                        class="form-control"
-                        ref="mainFile"
-                        @change="uploadFile()"
-                        ></label>
-                    </div>
-                    <!-- 延伸技巧，多圖 -->
-                    <div class="mt-2">
-                        <h5>商品參考圖</h5>
-                        <div class="mb-3 input-group" >
-                        <label for="imgURL">
-                            <input id="imgURL" type="file" class="form-control"
-                            ref="otherFile"
-                            @change="uploadOthers()">
-                        </label>
-                        </div>
-                        <div class="row">
-                          <div class="col-3" v-for="url in tempProduct.imagesUrl" :key="url">
-                            <img class="img-fluid" :src="url" alt="">
-                            <button type="button"
-                            class="btn btn-sm btn-outline-danger mx-auto">刪除</button>
-                          </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-sm-8">
-                    <div class="mb-3">
-                        <label for="title" class="form-label w-100">標題
-                        <input type="text" class="form-control" id="title"
-                        placeholder="請輸入標題"
-                        v-model="tempProduct.title"
-                        ></label>
-                    </div>
-
-                    <div class="row gx-2">
-                        <div class="mb-3 col-md-6">
-                        <label for="category" class="form-label w-100">分類
-                        <input type="text" class="form-control" id="category"
-                        placeholder="請輸入分類"
-                        v-model="tempProduct.category"
-                        ></label>
-                        </div>
-                        <div class="mb-3 col-md-6">
-                        <label for="price" class="form-label w-100">單位
-                        <input type="text" class="form-control" id="unit"
-                        placeholder="請輸入單位"
-                        v-model="tempProduct.unit"
-                        ></label>
-                        </div>
-                    </div>
-
-                    <div class="row gx-2">
-                        <div class="mb-3 col-md-6">
-                        <label for="origin_price" class="form-label w-100">原價
-                        <input type="number" class="form-control" id="origin_price"
-                        placeholder="請輸入原價"
-                        v-model="tempProduct.origin_price"
-                        ></label>
-                        </div>
-                        <div class="mb-3 col-md-6">
-                        <label for="price" class="form-label w-100">售價
-                        <input type="number" class="form-control" id="price"
-                        placeholder="請輸入售價"
-                        v-model="tempProduct.price"
-                        ></label>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <div class="mb-3">
-                        <label for="description" class="form-label w-100">產品描述
-                        <textarea type="text" class="form-control" id="description"
-                        placeholder="請輸入產品描述"
-                        v-model="tempProduct.description"
-                        ></textarea></label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="content" class="form-label w-100">說明內容
-                        <textarea type="text" class="form-control" id="content"
-                        placeholder="請輸入產品說明內容"
-                        v-model="tempProduct.content"
-                        ></textarea></label>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
-                        <label class="form-check-label" for="is_enabled">
-                            <input class="form-check-input" type="checkbox"
-                                :true-value="1"
-                                :false-value="0"
-                                id="is_enabled"
-                                v-model="tempProduct.is_enabled">
-                            是否啟用
-                        </label>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary"
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-lg btn-outline-secondary d-block"
                         data-bs-dismiss="modal">取消
                 </button>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-lg btn-danger w-50"
                 @click="$emit('update-product', tempProduct)">確認</button>
-                </div>
-            </div>
-        </div>
+              </div>
+          </div>
+      </div>
     </div>
 </template>
 
@@ -155,6 +168,8 @@ export default {
     return {
       modal: {},
       tempProduct: {},
+      tempImagesUrl: '',
+      isLoading: false,
     };
   },
   methods: {
@@ -173,22 +188,56 @@ export default {
           console.log('err : ', err);
         });
     },
-    uploadOthers() {
-      const uploadFile = this.$refs.otherFile.files[0];
-      const formData = new FormData();
-      formData.append('file-to-upload', uploadFile);
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
-      this.$http.post(url, formData)
-        .then((res) => {
-          if (res.data.success) {
-            this.tempProduct.imagesUrl.push(res.data.imageUrl);
-          }
-        })
-        .catch((err) => {
-          console.log('err : ', err);
-        });
+    uploadOthers(sign) {
+      if (this.tempProduct.imagesUrl.length >= 5) {
+        const errMessage = {
+          data: {
+            message: '商品參考圖最多5張，請刪除先刪除不要的圖片。',
+          },
+        };
+        this.$httpMessageState(errMessage, '上傳圖片');
+        return;
+      }
+
+      if (sign === 'url') {
+        this.tempProduct.imagesUrl.push(this.tempImagesUrl);
+      } else {
+        const uploadFile = this.$refs.otherFile.files[0];
+        const formData = new FormData();
+        formData.append('file-to-upload', uploadFile);
+        const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
+        this.isLoading = true;
+        this.$http.post(url, formData)
+          .then((res) => {
+            this.isLoading = false;
+            if (res.data.success) {
+              this.tempProduct.imagesUrl.push(res.data.imageUrl);
+              this.$httpMessageState(res, '上傳圖片', '繼續新增產品內容吧~!');
+            } else {
+              const errMessage = {
+                data: {
+                  message: '出現錯誤，請確認上傳的檔案為圖片檔以及檔案小於1MB。',
+                },
+              };
+              this.$httpMessageState(errMessage, '上傳圖片');
+            }
+          })
+          .catch(() => {
+            this.isLoading = false;
+            const errMessage = {
+              data: {
+                message: '出現錯誤，請確認上傳的檔案為圖片檔以及檔案小於1MB。',
+              },
+            };
+            this.$httpMessageState(errMessage, '上傳圖片');
+          });
+      }
+    },
+    delImages(i) {
+      this.tempProduct.imagesUrl.splice(i, 1);
     },
   },
   mixins: [modalMixin],
+  inject: ['$httpMessageState'],
 };
 </script>

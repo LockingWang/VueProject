@@ -32,38 +32,14 @@
 
     <div class="container bg-light p-md-5 py-5">
         <h2 class="display-4 text-center mb-4">人氣零食</h2>
-        <div class="row row-cols-1 row-cols-lg-3 g-4 flex-nowrap overflow-hidden">
-            <div class="col" v-for="(item) in products.filter(i => i.category === '零食')"
-                :key="item.id">
-                <div class="card h-100 border border-5">
-                    <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                    style="max-height: 300px;" alt="...">
-                    <div class="card-body border-top d-flex flex-column">
-                        <h5 class="card-title text-center d-block">{{ item.title }}</h5>
-                        <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
-                      @click.prevent="toProductPage(item)">看更多</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <SwiperItems class="container"
+        :items="products.filter(i => i.category === '零食')"></SwiperItems>
     </div>
 
     <div class="container bg-white p-md-5 py-5">
         <h2 class="display-4 text-center mb-4">熱門藥妝</h2>
-        <div class="row row-cols-1 row-cols-lg-3 g-4 flex-nowrap overflow-hidden">
-            <div class="col" v-for="(item) in products.filter(i => i.category === '醫藥')"
-                :key="item.id">
-                <div class="card h-100 border border-5">
-                    <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                    style="max-height: 300px;" alt="...">
-                    <div class="card-body border-top d-flex flex-column">
-                        <h5 class="card-title text-center d-block">{{ item.title }}</h5>
-                        <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
-                      @click.prevent="toProductPage(item)">看更多</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <SwiperItems class="container"
+        :items="products.filter(i => i.category === '醫藥')"></SwiperItems>
     </div>
 
     <footer class="bg-danger p-3 text-white">
@@ -101,8 +77,12 @@
 </template>
 
 <script>
+import SwiperItems from '@/components/SwiperItems.vue';
 
 export default {
+  components: {
+    SwiperItems,
+  },
   data() {
     return {
       products: [],

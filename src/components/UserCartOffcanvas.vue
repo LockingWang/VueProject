@@ -79,6 +79,12 @@
                 </tr>
                 </tfoot>
             </table>
+            <div>
+              <router-link class="btn btn-warning w-50 shadow-sm d-block mx-auto go-checkout-btn"
+              to="/user/userCheckout/cart" @click="offCanvas.hide()">
+                <i class="bi bi-coin mx-3"></i>我要結帳<i class="bi bi-coin mx-3"></i>
+              </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -88,6 +94,7 @@ import OffCanvas from 'bootstrap/js/dist/offcanvas';
 
 export default {
   props: ['cart'],
+  emits: ['change-cart'],
   data() {
     return {
       isLoading: false,
@@ -127,7 +134,7 @@ export default {
       this.$http.delete(url)
         .then((res) => {
           this.isLoading = false;
-          this.$httpMessageState(res, '刪除');
+          this.$httpMessageState(res, '刪除', '快去尋找更適合的商品吧 ~ !');
           this.$emit('change-cart');
         })
         .catch((err) => {
