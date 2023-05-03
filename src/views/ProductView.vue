@@ -4,7 +4,7 @@
         <button type="button" class="btn btn-primary"
         @click="openModal(true)">新增產品</button>
     </div>
-    <div class="overflow-scroll">
+    <div class="overflow-auto">
       <table class="table mt-4">
         <thead class="text-nowrap">
             <tr>

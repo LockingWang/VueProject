@@ -7,30 +7,30 @@
   <table class="table mt-4">
       <thead>
           <tr>
-          <th width="120">名稱</th>
-          <th width="120">折扣百分比</th>
-          <th width="120">到期日</th>
-          <th width="100">是否啟用</th>
-          <th width="200">編輯</th>
+            <th>名稱</th>
+            <th>折扣百分比</th>
+            <th>到期日</th>
+            <th>是否啟用</th>
+            <th>編輯</th>
           </tr>
       </thead>
       <tbody>
           <tr v-for="item in coupons" :key="item.id">
-          <td>{{item.title}}</td>
-          <td>{{ `${item.percent}%` }}</td>
-          <td>{{ $filters.date(item.due_date) }}</td>
-          <td>
-              <span class="text-success" v-if="item.is_enabled">啟用</span>
-              <span class="text-muted" v-else>未啟用</span>
-          </td>
-          <td>
-              <div class="btn-group">
-              <button class="btn btn-outline-primary btn-sm"
-              @click="openModal(false, item)">編輯</button>
-              <button class="btn btn-outline-danger btn-sm"
-              @click="openDelModal(item)">刪除</button>
-              </div>
-          </td>
+            <td>{{item.title}}</td>
+            <td>{{ `${item.percent}%` }}</td>
+            <td>{{ $filters.date(item.due_date) }}</td>
+            <td>
+                <span class="text-success" v-if="item.is_enabled">啟用</span>
+                <span class="text-muted" v-else>未啟用</span>
+            </td>
+            <td>
+                <div class="btn-group">
+                <button class="btn btn-outline-primary btn-sm"
+                @click="openModal(false, item)">編輯</button>
+                <button class="btn btn-outline-danger btn-sm"
+                @click="openDelModal(item)">刪除</button>
+                </div>
+            </td>
           </tr>
       </tbody>
   </table>
