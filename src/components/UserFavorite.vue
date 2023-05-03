@@ -128,13 +128,11 @@ export default {
     getProduct(id) {
       this.$router.push(`/user/product/${id}`);
     },
-    addLoveProduct(item) {
-      this.loveItemList[item.id] = item;
-      localStorage.setItem('loveItemList', JSON.stringify(this.loveItemList));
-    },
     delLoveProduct(item) {
+      this.loveItemList = JSON.parse(localStorage.getItem('loveItemList'));
       delete this.loveItemList[item.id];
       localStorage.setItem('loveItemList', JSON.stringify(this.loveItemList));
+      this.getLovedProducts();
     },
     checkLoveList(item) {
       if (this.loveItemList[item.id] === undefined) {

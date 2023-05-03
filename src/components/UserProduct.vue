@@ -281,7 +281,8 @@
           </div>
 
           <SwiperItems class="container"
-          :items="products.filter(i => i.category === product.category)"></SwiperItems>
+          :items="products.filter(i => i.category === product.category)"
+          @changeProduct="toProductPage"></SwiperItems>
         </section>
 
       </div>

@@ -16,7 +16,7 @@
                 <div class="card-body border-top d-flex flex-column">
                     <h5 class="card-title text-center d-block">{{ item.title }}</h5>
                     <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
-                    @click.prevent="toProductPage(item)">看更多</a>
+                    @click.prevent="emitChangeSign(item)">看更多</a>
                 </div>
             </div>
         </swiper-slide>
@@ -54,8 +54,8 @@ export default {
         this.itemsNum = 1;
       }
     },
-    toProductPage(item) {
-      this.$router.push(`/user/product/${item.id}`);
+    emitChangeSign(item) {
+      this.$emit('changeProduct', item);
     },
   },
   created() {
