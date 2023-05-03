@@ -113,20 +113,15 @@ export default {
           this.isLoading = false;
           if (res.data.success) {
             orderComponent.hideModal();
-            this.$httpMessageState(res, '更新', '可以繼續管理訂單囉!');
+            this.$httpMessageState('success', '更新成功', res.data.message);
             this.getOrders();
           } else {
-            this.$httpMessageState(res, '更新');
+            this.$httpMessageState('warning', '更新失敗', '請重新檢查內容，並再次嘗試。');
           }
         })
         .catch(() => {
           this.isLoading = false;
-          const errMessage = {
-            data: {
-              message: '發生錯誤，請聯繫工程師。',
-            },
-          };
-          this.$httpMessageState(errMessage, '更新');
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     openDelModal(order) {
@@ -152,26 +147,14 @@ export default {
           if (res.data.success) {
             this.getOrders();
             orderComponent.hideModal();
-            this.emitter.emit('push-message', {
-              style: 'warning',
-              title: '訂單刪除成功',
-              content: '繼續管理訂單',
-            });
+            this.$httpMessageState('success', '刪除訂單成功', res.data.message);
           } else {
-            this.emitter.emit('push-message', {
-              style: 'danger',
-              title: '訂單刪除失敗',
-              content: res.data.message,
-            });
+            this.$httpMessageState('warning', '刪除訂單失敗', res.data.message);
           }
         })
         .catch(() => {
           this.isLoading = false;
-          this.emitter.emit('push-message', {
-            style: 'danger',
-            title: '訂單刪除失敗',
-            content: '發生錯誤，請洽工程師',
-          });
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     deleteAll() {
@@ -181,20 +164,15 @@ export default {
         .then((res) => {
           orderComponent.hideModal();
           if (res.data.success) {
-            this.$httpMessageState(res, '刪除全部訂單', '糟糕沒訂單了~!');
+            this.$httpMessageState('success', '成功清空訂單', '讓我們重新開始吧 !');
             this.getOrders();
           } else {
-            this.$httpMessageState(res, '刪除全部訂單');
+            this.$httpMessageState('warning', '刪除全部訂單失敗', res.data.message);
           }
         })
         .catch(() => {
           orderComponent.hideModal();
-          const errMessage = {
-            data: {
-              message: '發生錯誤，請洽工程師。',
-            },
-          };
-          this.$httpMessageState(errMessage, '刪除全部訂單');
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
   },

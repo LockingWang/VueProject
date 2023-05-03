@@ -66,7 +66,7 @@
 
                   <div class="col-sm-8">
                   <div class="my-3">
-                      <label for="title" class="form-label w-100">標題
+                      <label for="title" class="form-label w-100">標題 (Title)
                       <input type="text" class="form-control" id="title"
                       placeholder="請輸入標題"
                       v-model="tempProduct.title"
@@ -75,14 +75,14 @@
 
                   <div class="row gx-2">
                       <div class="mb-3 col-md-6">
-                      <label for="category" class="form-label w-100">分類
+                      <label for="category" class="form-label w-100">分類 (Category)
                       <input type="text" class="form-control" id="category"
                       placeholder="請輸入分類"
                       v-model="tempProduct.category"
                       ></label>
                       </div>
                       <div class="mb-3 col-md-6">
-                      <label for="price" class="form-label w-100">單位
+                      <label for="price" class="form-label w-100">單位 (Unit)
                       <input type="text" class="form-control" id="unit"
                       placeholder="請輸入單位"
                       v-model="tempProduct.unit"
@@ -92,14 +92,14 @@
 
                   <div class="row gx-2">
                       <div class="mb-3 col-md-6">
-                      <label for="origin_price" class="form-label w-100">原價
+                      <label for="origin_price" class="form-label w-100">原價 (Origin Price)
                       <input type="number" class="form-control" id="origin_price"
                       placeholder="請輸入原價"
                       v-model="tempProduct.origin_price"
                       ></label>
                       </div>
                       <div class="mb-3 col-md-6">
-                      <label for="price" class="form-label w-100">售價
+                      <label for="price" class="form-label w-100">售價 (Price)
                       <input type="number" class="form-control" id="price"
                       placeholder="請輸入售價"
                       v-model="tempProduct.price"
@@ -177,25 +177,27 @@ export default {
       const uploadFile = this.$refs.mainFile.files[0];
       const formData = new FormData();
       formData.append('file-to-upload', uploadFile);
+
+      this.isLoading = true;
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
       this.$http.post(url, formData)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             this.tempProduct.imageUrl = res.data.imageUrl;
+            this.$httpMessageState('success', '主商品圖上傳成功', '新增參考圖，可以提升消費者的購買意願喔 !');
+          } else {
+            this.$httpMessageState('warning', '主商品圖上傳失敗', '檔案必須小於 1MB 且為圖片格式');
           }
         })
-        .catch((err) => {
-          console.log('err : ', err);
+        .catch(() => {
+          this.isLoading = false;
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     uploadOthers(sign) {
       if (this.tempProduct.imagesUrl.length >= 5) {
-        const errMessage = {
-          data: {
-            message: '商品參考圖最多5張，請刪除先刪除不要的圖片。',
-          },
-        };
-        this.$httpMessageState(errMessage, '上傳圖片');
+        this.$httpMessageState('warning', '參考圖數量限制', '商品參考圖最多5張，請刪除先刪除不要的圖片。');
         return;
       }
 
@@ -212,24 +214,14 @@ export default {
             this.isLoading = false;
             if (res.data.success) {
               this.tempProduct.imagesUrl.push(res.data.imageUrl);
-              this.$httpMessageState(res, '上傳圖片', '繼續新增產品內容吧~!');
+              this.$httpMessageState('success', '上傳參考圖成功', '繼續新增完善商品吧 !');
             } else {
-              const errMessage = {
-                data: {
-                  message: '出現錯誤，請確認上傳的檔案為圖片檔以及檔案小於1MB。',
-                },
-              };
-              this.$httpMessageState(errMessage, '上傳圖片');
+              this.$httpMessageState('warning', '上傳參考圖失敗', '檔案必須小於 1MB 且為圖片格式');
             }
           })
           .catch(() => {
             this.isLoading = false;
-            const errMessage = {
-              data: {
-                message: '出現錯誤，請確認上傳的檔案為圖片檔以及檔案小於1MB。',
-              },
-            };
-            this.$httpMessageState(errMessage, '上傳圖片');
+            this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
           });
       }
     },

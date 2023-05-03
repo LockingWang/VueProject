@@ -17,11 +17,16 @@ export default {
       this.$http.post(url, { data: cart })
         .then((res) => {
           this.isLoading = false;
-          this.$httpMessageState(res, '加入購物車', '購物車感到很高興~');
-          this.getCart();
+          if (res.data.success) {
+            this.$httpMessageState('success', '成功加入購物車', '繼續購物吧 ~');
+            this.getCart();
+          } else {
+            this.$httpMessageState('warning', '加入失敗', '請再試一次');
+          }
         })
         .catch((err) => {
           console.log(err);
+          this.$httpMessageState('danger', '發生問題', '請聯繫工程師。');
         });
     },
     getCart() {

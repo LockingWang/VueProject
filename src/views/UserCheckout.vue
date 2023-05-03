@@ -12,9 +12,6 @@ export default {
         user: {},
       },
       isLoading: false,
-      test: {
-        apple: 'apple',
-      },
     };
   },
 };

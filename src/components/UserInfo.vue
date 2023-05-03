@@ -1,4 +1,5 @@
 <template>
+  <LoadingOverlay :active="isLoading"></LoadingOverlay>
   <div class="mt-5 row justify-content-center bg-light">
     <h5 class="text-center mt-3">訂購流程</h5>
     <div class="row justify-content-center">
@@ -100,15 +101,19 @@ export default {
     createOrder() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`;
       const order = this.form;
+      this.isLoading = true;
       this.$http.post(url, { data: order })
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
-            this.$httpMessageState(res, '建立訂單', '感謝您的訂購 !');
+            this.$httpMessageState('success', '建立訂單成功', '感謝您的訂購 !');
             this.$router.push(`/user/userCheckout/order/${res.data.orderId}`);
           }
         })
         .catch((err) => {
+          this.isLoading = false;
           console.log(err);
+          this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },
     backToCart() {

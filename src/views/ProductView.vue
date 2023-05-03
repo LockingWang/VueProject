@@ -132,12 +132,17 @@ export default {
       this.$http[httpMethod](api, { data: this.tempProduct })
         .then((res) => {
           this.isLoading = false;
-          productComponent.hideModal();
-          this.$httpMessageState(res, '更新', '繼續整理商品吧~');
-          this.getProducts();
+          if (res.data.success) {
+            productComponent.hideModal();
+            this.$httpMessageState('success', '更新成功', res.data.message);
+            this.getProducts();
+          } else {
+            this.$httpMessageState('warning', '更新失敗', res.data.message);
+          }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.isLoading = false;
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     deleteProduct() {
@@ -149,15 +154,15 @@ export default {
           if (res.data.success) {
             const productComponent = this.$refs.delModal;
             productComponent.hideModal();
+            this.$httpMessageState('success', '刪除成功', res.data.message);
             this.getProducts();
-            this.emitter.emit('push-message', {
-              style: 'warning',
-              title: '刪除成功',
-            });
+          } else {
+            this.$httpMessageState('warning', '刪除失敗', res.data.message);
           }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.isLoading = false;
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
   },

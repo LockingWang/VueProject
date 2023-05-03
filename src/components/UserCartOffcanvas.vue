@@ -68,7 +68,8 @@
                 <tr>
                 <td colspan="2">
                     <button type="button" class="btn btn-outline-danger"
-                            @click="removeCartItem('all')">清空購物車</button>
+                    @click="removeCartItem('all')"
+                    :disabled="cart.carts.length === 0">清空購物車</button>
                 </td>
                 <td colspan="1" class="text-end">總計</td>
                 <td class="text-end">{{ $filters.currency(cart.total) }}</td>
@@ -132,13 +133,14 @@ export default {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/${target}`;
       this.isLoading = true;
       this.$http.delete(url)
-        .then((res) => {
+        .then(() => {
           this.isLoading = false;
-          this.$httpMessageState(res, '刪除', '快去尋找更適合的商品吧 ~ !');
+          this.$httpMessageState('success', '刪除商品成功', '快去尋找更適合的商品吧 ~ !');
           this.$emit('change-cart');
         })
         .catch((err) => {
           console.log(err.response);
+          this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },
     toggleCanvas() {

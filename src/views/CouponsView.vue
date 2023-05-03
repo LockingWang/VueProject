@@ -100,10 +100,13 @@ export default {
         const unixTime = new Date(item.due_date);
         const year = unixTime.getFullYear();
         let month = unixTime.getMonth() + 1;
-        const date = unixTime.getDate();
+        let date = unixTime.getDate();
 
         if (month < 10) {
           month = 0 + month.toString();
+        }
+        if (date < 10) {
+          date = 0 + date.toString();
         }
 
         const newItem = { ...item };
@@ -136,12 +139,16 @@ export default {
       this.$http[httpMethod](api, { data: this.tempCoupon })
         .then((res) => {
           this.isLoading = false;
-          couponComponent.hideModal();
-          this.$httpMessageState(res, '更新');
-          this.getCoupons();
+          if (res.data.success) {
+            couponComponent.hideModal();
+            this.$httpMessageState('success', '更新成功', res.data.message);
+            this.getCoupons();
+          } else {
+            this.$httpMessageState('warning', '更新失敗', '請再檢查一次。');
+          }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     deleteCoupon() {
@@ -154,14 +161,13 @@ export default {
             const couponComponent = this.$refs.delModal;
             couponComponent.hideModal();
             this.getCoupons();
-            this.emitter.emit('push-message', {
-              style: 'warning',
-              title: '刪除成功',
-            });
+            this.$httpMessageState('success', '成功刪除優惠券', res.data.message);
+          } else {
+            this.$httpMessageState('warning', '刪除優惠券失敗', res.data.message);
           }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
   },

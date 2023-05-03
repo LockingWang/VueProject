@@ -1,4 +1,5 @@
 <template>
+  <LoadingOverlay :active="isLoading"></LoadingOverlay>
   <nav class="navbar navbar-expand-lg shadow-sm px-3 manager-navbar">
         <div class="container-fluid">
           <router-link class="nav-link logo-indent" to="/user/home" style="width: 200px;">
@@ -22,8 +23,8 @@
                   to="/dashboard/coupons">優惠券</router-link>
                 </li>
                 <li class="nav-item nav-li text-center">
-                <a class="nav-link nav-link-style"
-                href="#" @click.prevent="logout">登出</a>
+                  <a class="nav-link nav-link-style"
+                  href="#" @click.prevent="logout">登出</a>
                 </li>
             </ul>
           </div>
@@ -38,6 +39,7 @@ export default {
   data() {
     return {
       collapse: {},
+      isLoading: false,
     };
   },
   methods: {
@@ -47,14 +49,17 @@ export default {
     },
     logout() {
       const api = `${process.env.VUE_APP_API}logout`;
+      this.isLoading = true;
       this.$http.post(api, this.user)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             this.$router.push('/login');
           }
         })
         .catch((err) => {
           console.log(err.response);
+          this.isLoading = false;
         });
     },
   },
