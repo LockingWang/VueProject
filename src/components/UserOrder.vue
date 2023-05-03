@@ -24,6 +24,8 @@
         <hr>
 
         <h5 class="text-center mt-3">訂單成立</h5>
+        <p class="mb-0 text-center text-secondary fs-6">
+          於{{ $filters.date(order.create_at * 1000) }}成立</p>
         <form class="py-3 rounded">
             <h5 class="text-center bg-warning mb-0 py-1 rounded-top">
               訂單編號  <span class="fs-6">({{ this.$route.params.orderId }})</span>

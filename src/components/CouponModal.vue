@@ -83,6 +83,7 @@ export default {
   watch: {
     coupon() {
       this.tempCoupon = this.coupon;
+      this.tempCoupon.due_date = this.$filters.inputDateType(this.tempCoupon.due_date / 1000);
     },
   },
   mixins: [modalMixin],

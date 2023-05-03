@@ -143,19 +143,7 @@ export default {
   watch: {
     order() {
       this.tempOrder = this.order;
-      // 轉換時間格式
-      const unixTime = new Date(this.tempOrder.create_at * 1000);
-      const year = unixTime.getFullYear();
-      let month = unixTime.getMonth() + 1;
-      let date = unixTime.getDate();
-
-      if (date < 10) {
-        date = 0 + date.toString();
-      }
-      if (month < 10) {
-        month = 0 + month.toString();
-      }
-      this.tempOrder.create_at = `${year}-${month}-${date}`;
+      this.tempOrder.create_at = this.$filters.inputDateType(this.tempOrder.create_at);
     },
   },
   methods: {

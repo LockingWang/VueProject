@@ -18,7 +18,7 @@
           <tr v-for="item in coupons" :key="item.id">
             <td>{{item.title}}</td>
             <td>{{ `${item.percent}%` }}</td>
-            <td>{{ $filters.date(item.due_date) }}</td>
+            <td>{{ $filters.inputDateType(item.due_date / 1000) }}</td>
             <td>
                 <span class="text-success" v-if="item.is_enabled">啟用</span>
                 <span class="text-muted" v-else>未啟用</span>
@@ -96,23 +96,7 @@ export default {
           is_enabled: 0,
         };
       } else {
-        // 日期轉換為input可識別格式
-        const unixTime = new Date(item.due_date);
-        const year = unixTime.getFullYear();
-        let month = unixTime.getMonth() + 1;
-        let date = unixTime.getDate();
-
-        if (month < 10) {
-          month = 0 + month.toString();
-        }
-        if (date < 10) {
-          date = 0 + date.toString();
-        }
-
-        const newItem = { ...item };
-        newItem.due_date = `${year}-${month}-${date}`;
-
-        this.tempCoupon = newItem;
+        this.tempCoupon = { ...item };
       }
       this.isNew = isNew;
       const couponComponent = this.$refs.couponModal;

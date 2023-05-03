@@ -19,7 +19,7 @@
         <tbody>
             <tr v-for="order in orders" :key="order.id">
               <td>{{ order.id }}</td>
-              <td>{{ $filters.date(order.create_at * 1000) }}</td>
+              <td>{{ $filters.inputDateType(order.create_at) }}</td>
               <td>{{ order.user.name }}</td>
               <td>{{ $filters.currency(order.total) }}</td>
               <td>
