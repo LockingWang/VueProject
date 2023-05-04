@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="zn-tw">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="<%= BASE_URL %>japan_icon.png">
     <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link rel="apple-tough-icon" href="<%- htmlWebpackPlugin.options.meta.og.image %>" />
+    <link rel="shortcut icon" href="<%- htmlWebpackPlugin.options.meta.og.image %>" />
+    <meta name="description" content="<%- htmlWebpackPlugin.options.meta.og.title %>" />
+
+    <meta property="og:title" content="<%- htmlWebpackPlugin.options.meta.og.title %>" />
+    <meta property="og:url" content="<%- htmlWebpackPlugin.options.meta.og.url %>" />
+    <meta property="og:type" content="<%- htmlWebpackPlugin.options.meta.og.type %>" />
+    <meta property="og:description" content="<%- htmlWebpackPlugin.options.meta.og.description %>" />
+    <meta property="og:image" content="<%- htmlWebpackPlugin.options.meta.og.image %>" />
+
+
   </head>
-  <body>
+  <body style="font-family: 'Noto Serif TC', serif;">
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
