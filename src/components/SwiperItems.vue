@@ -12,7 +12,7 @@
         <swiper-slide v-for="item in items" :key="item.id">
             <div class="card h-100 border border-5">
                 <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                style="max-height: 300px;" alt="...">
+                  style="max-height: 300px;" alt="...">
                 <div class="card-body border-top d-flex flex-column">
                     <h5 class="card-title text-center d-block">{{ item.title }}</h5>
                     <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"

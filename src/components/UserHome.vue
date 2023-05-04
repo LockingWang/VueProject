@@ -14,7 +14,7 @@
     <div class="container py-5">
         <div class="row gy-3 justify-content-md-center flex-column flex-md-row-reverse">
             <div class="col-md-4">
-                <img class="w-100 object-fit-cover" height="500" src="https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80" alt="airplane">
+                <div class="h-100 bg-cover" style="background-image: url(https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80); background-position: center bottom;"></div>
             </div>
             <div class="col-md-5 d-flex flex-column justify-content-center">
                 <h2 class="display-4">自我介紹 : </h2>
@@ -33,13 +33,15 @@
     <div class="container bg-light p-md-5 py-5">
         <h2 class="display-4 text-center mb-4">人氣零食</h2>
         <SwiperItems class="container"
-        :items="products.filter(i => i.category === '零食')"></SwiperItems>
+        :items="products.filter(i => i.category === '零食')"
+        @changeProduct="toProductPage"></SwiperItems>
     </div>
 
     <div class="container bg-white p-md-5 py-5">
         <h2 class="display-4 text-center mb-4">熱門藥妝</h2>
         <SwiperItems class="container"
-        :items="products.filter(i => i.category === '醫藥')"></SwiperItems>
+        :items="products.filter(i => i.category === '醫藥')"
+        @changeProduct="toProductPage"></SwiperItems>
     </div>
 
     <footer class="bg-danger p-3 text-white">
