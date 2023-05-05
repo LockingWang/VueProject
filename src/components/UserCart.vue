@@ -60,9 +60,9 @@
                         </div>
                       </td>
                       <td class="text-end">
-                        <small v-if="cart.final_total !== cart.total" class="text-success">
-                          折扣價：</small>
+                        <p v-if="item.coupon" class="text-success mb-0">折扣價</p>
                         {{ $filters.currency(item.final_total) }}
+                        <span style="font-size: 8px;">NTD</span>
                       </td>
                     </tr>
                   </template>
@@ -80,11 +80,17 @@
                       :disabled="cart.carts.length == 0">清空購物車</button>
                     </td>
                     <td colspan="1" class="text-end">總計</td>
-                    <td class="text-end">{{ $filters.currency(cart.total) }}</td>
+                    <td class="text-end">
+                      {{ $filters.currency(cart.total) }}
+                      <span style="font-size: 8px;">NTD</span>
+                    </td>
                   </tr>
                   <tr v-if="cart.final_total !== cart.total">
                     <td colspan="3" class="text-end text-success">折扣價</td>
-                    <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
+                    <td class="text-end text-success">
+                      {{ $filters.currency(cart.final_total) }}
+                      <span style="font-size: 8px;">NTD</span>
+                    </td>
                   </tr>
                   </tfoot>
                 </table>
@@ -176,6 +182,7 @@ export default {
         });
     },
     addCouponCode() {
+      this.coupon_code = this.coupon_code.trim();
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`;
       const coupon = {
         code: this.coupon_code,

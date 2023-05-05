@@ -11,7 +11,8 @@
         </a>
     </div>
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1"
-    id="offcanvasWithBothOptions" ref="offCanvas">
+    id="offcanvasWithBothOptions" ref="offCanvas"
+    style="width: 600px">
         <LoadingOverlay :active="isLoading"></LoadingOverlay>
         <div class="offcanvas-header bg-danger text-white">
             <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">我的購物車</h5>
@@ -25,7 +26,7 @@
                     <th style="width: 48px">刪除</th>
                     <th>品名</th>
                     <th style="width: 120px">數量</th>
-                    <th>單價</th>
+                    <th style="width: 120px">單價</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,8 +54,11 @@
                     </div>
                     </td>
                     <td class="text-end">
-                    <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
-                    {{ $filters.currency(item.final_total) }}
+                    <p v-if="item.coupon" class="text-success mb-0">折扣價</p>
+                    <p class="mb-0">
+                      {{ $filters.currency(item.final_total) }}
+                      <span style="font-size: 8px;">NTD</span>
+                    </p>
                     </td>
                 </tr>
                 </template>
@@ -72,17 +76,25 @@
                     :disabled="cart.carts.length === 0">清空購物車</button>
                 </td>
                 <td colspan="1" class="text-end">總計</td>
-                <td class="text-end">{{ $filters.currency(cart.total) }}</td>
+                <td class="text-end">
+                  {{ $filters.currency(cart.total) }}
+                  <span style="font-size: 8px;">NTD</span>
+                </td>
                 </tr>
                 <tr v-if="cart.final_total !== cart.total">
                 <td colspan="3" class="text-end text-success">折扣價</td>
-                <td class="text-end text-success">{{ $filters.currency(cart.final_total) }}</td>
+                <td class="text-end text-success">
+                  {{ $filters.currency(cart.final_total) }}
+                  <span style="font-size: 8px;">NTD</span>
+                </td>
                 </tr>
                 </tfoot>
             </table>
             <div>
               <router-link class="btn btn-warning w-50 shadow-sm d-block mx-auto go-checkout-btn"
-              to="/user/userCheckout/cart" @click="offCanvas.hide()">
+              to="/user/userCheckout/cart"
+              @click="offCanvas.hide()"
+              v-if="cart.carts.length">
                 <i class="bi bi-coin mx-3"></i>我要結帳<i class="bi bi-coin mx-3"></i>
               </router-link>
             </div>
@@ -108,6 +120,10 @@ export default {
   inject: ['$httpMessageState'],
   methods: {
     updateCart(item) {
+      if (item.qty < 1) {
+        this.$httpMessageState('warning', '商品數量不得小於1', '請重新輸入 !');
+        return;
+      }
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
       this.isLoading = true;
       this.status.loadingItem = item.id;
