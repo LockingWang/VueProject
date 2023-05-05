@@ -9,26 +9,23 @@
     <div class="container mb-3">
       <div class="row g-3">
         <div class="col-6" v-for="item in filtedProducts" :key="item.id">
-          <div class="card mb-3 h-100">
+          <div class="card h-100 favor-card">
             <div class="row g-0">
               <div class="col-md-4">
                 <img :src="item.imageUrl" :alt="item.title"
                 class="rounded-start w-100 h-100 object-fit-cover">
               </div>
-              <div class="col-md-8">
+              <div class="col-md-8 border-start">
                 <div class="card-body">
-                  <h5 class="card-title mt-3 overflow-hidden"
-                  style="height: 50px;">{{ item.title }}</h5>
-                  <p class="card-text overflow-hidden text-secondary d-none d-md-block"
-                  style="height: 50px;">{{ item.description }}</p>
-                  <div>
+                  <h5 class="card-title mt-0 mt-md-3 text-ellipsis-multi">{{ item.title }}</h5>
+                  <div class="d-flex align-items-end">
                     <div class="h5" v-if="!item.price">
                       {{ $filters.currency(item.origin_price) }} 元
                     </div>
                     <del class="h6 d-none d-md-block" v-if="item.price">
                       原價 {{ $filters.currency(item.origin_price) }} 元
                     </del>
-                    <div class="h5" v-if="item.price">
+                    <div class="h5 ms-3 text-danger" v-if="item.price">
                       售價 {{ $filters.currency(item.price) }} 元
                     </div>
                   </div>
@@ -89,7 +86,7 @@ export default {
       }
       this.filtProducts();
     },
-    filtProducts(page = 1) {
+    filtProducts(page = this.pagination.current_page) {
       if (page === 'previous') {
         this.pagination.current_page -= 1;
       } else if (page === 'next') {

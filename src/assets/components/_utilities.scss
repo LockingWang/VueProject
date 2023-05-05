@@ -106,3 +106,11 @@
     z-index: 3;
     box-shadow: 0 0 5px rgb(255, 126, 126);
 }
+
+.favor-card {
+    transition: all 0.3s;
+    &:hover {
+        box-shadow: 0 3px 5px gray;
+        transform: translateY(-5px);
+    }
+}
