@@ -8,39 +8,41 @@
       :scrollbar="{ draggable: true }"
       @swiper="onSwiper"
       @slideChange="onSlideChange"
+      class="p-3"
     >
         <swiper-slide v-for="item in items" :key="item.id">
-            <div class="card h-100 border border-5">
+            <div class="card h-100 border border-5" :id="item.id">
                 <img :src="item.imageUrl" class="card-img-top object-fit-contain"
                   style="max-height: 300px;" alt="...">
                 <div class="card-body border-top d-flex flex-column">
                     <h5 class="card-title text-center d-block">{{ item.title }}</h5>
                     <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
-                    @click.prevent="emitChangeSign(item)">看更多</a>
+                    :data-id="item.id"
+                    @click.prevent="emitChangeSign(item)"
+                    @focus="hoverEffect('in', $event)"
+                    @focusout="hoverEffect('out', $event)"
+                    @mouseenter="hoverEffect('in', $event)"
+                    @mouseleave="hoverEffect('out', $event)">看更多</a>
                 </div>
             </div>
         </swiper-slide>
     </swiper>
   </template>
 <script>
-// import Swiper core and required modules
 import {
   Navigation, Pagination, Scrollbar, A11y,
 } from 'swiper';
-
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
-// Import Swiper styles
 import 'swiper/swiper-bundle.css';
+import ProductCard from '@/mixins/ProductCard';
 
-// Import Swiper styles
 export default {
   props: ['items'],
   components: {
     Swiper,
     SwiperSlide,
   },
+  mixins: [ProductCard],
   data() {
     return {
       itemsNum: 3,

@@ -99,3 +99,10 @@
     opacity: 0;
     z-index: 1;
 }
+
+.card-hover {
+    transition: all 0.3s;
+    transform: scale(1.05);
+    z-index: 3;
+    box-shadow: 0 0 5px rgb(255, 126, 126);
+}

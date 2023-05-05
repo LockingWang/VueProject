@@ -53,7 +53,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3"
                 v-if="filtedProducts.length !== 0">
                   <div class="col" v-for="item in filtedProducts" :key="item.id">
-                    <div class="card h-100">
+                    <div class="card h-100" :id="item.id">
                       <div class="position-absolute end-0" style="z-index: 2;">
                         <button type="button"
                         class="border-0 rounded"
@@ -64,30 +64,36 @@
                         </button>
                         <button type="button"
                         class="border-0 rounded"
-                        style="background-color: white;"
+                        style="background-color: rgba(255, 255, 255, 0.596);"
                         @click="toggleLoveProduct(item, 'del')" v-else>
                           <i class="bi bi-heart-fill text-danger fs-5"></i>
                           <span class="ms-1 text-danger fs-5">喜歡的商品</span>
                         </button>
                       </div>
-                      <img :src="item.imageUrl"
-                      class="card-img-top object-fit-cover" alt="..." style="height: 250px;">
+                      <div class="img-box">
+                        <div class="bg-img rounded-top"
+                        :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
+                      </div>
                       <div class="card-body position-relative pb-0 border-top">
                         <p class="text-white bg-danger d-inline px-1 position-absolute top-0 end-0">
                           {{ item.category }}</p>
-                        <h5 class="mt-2 overflow-hidden" style="height: 48px">{{ item.title }}</h5>
-                        <p class="overflow-hidden" style="height: 70px">
-                          {{ item.description }}</p>
-                        <div class="d-flex justify-content-between align-items-end">
-                          <span class="text-secondary fs-6 text-decoration-line-through">
+                        <h5 class="mt-2 text-ellipsis-multi">{{ item.title }}</h5>
+                        <div class="d-flex flex-wrap justify-content-between align-items-end">
+                          <span class="text-secondary fs-6
+                          text-decoration-line-through text-nowrap">
                             原價{{ $filters.currency(item.origin_price) }}元</span>
-                          <span class="text-danger fs-4">
+                          <span class="text-danger fs-5 text-nowrap">
                             售價{{ $filters.currency(item.price) }}元</span>
                         </div>
                       </div>
                       <div class="card-footer">
-                        <a class="btn btn-outline-primary btn-lg-sm stretched-link w-100 py-3"
-                        href="#" @click.prevent="getProduct(item.id)">商品頁</a>
+                        <a class="btn btn-outline-danger btn stretched-link w-100"
+                        :data-id="item.id"
+                        href="#" @click.prevent="getProduct(item.id)"
+                        @focus="hoverEffect('in', $event)"
+                        @focusout="hoverEffect('out', $event)"
+                        @mouseenter="hoverEffect('in', $event)"
+                        @mouseleave="hoverEffect('out', $event)">商品頁</a>
                       </div>
                     </div>
                   </div>
@@ -115,6 +121,7 @@
 import PaginationModel from '@/components/PaginationModel.vue';
 import UserCart from '@/components/UserCartOffcanvas.vue';
 import CartMixin from '@/mixins/CartMixin';
+import ProductCard from '@/mixins/ProductCard';
 
 export default {
   components: {
@@ -231,6 +238,6 @@ export default {
     this.getProducts();
     this.updateLovedItem();
   },
-  mixins: [CartMixin],
+  mixins: [CartMixin, ProductCard],
 };
 </script>
