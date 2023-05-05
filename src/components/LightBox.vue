@@ -45,8 +45,8 @@ export default defineComponent({
       onShow();
     };
     const showMultiple = (item) => {
-      imgsRef.value = item.imagesUrl;
-      imgsRef.value.unshift(item.imageUrl);
+      imgsRef.value = [item.imageUrl];
+      imgsRef.value = imgsRef.value.concat(item.imagesUrl);
       // or
       // imgsRef.value = [
       //   { title: 'test img', src: 'http://via.placeholder.com/350x150' },

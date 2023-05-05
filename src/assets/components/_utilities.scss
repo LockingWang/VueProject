@@ -114,3 +114,11 @@
         transform: translateY(-5px);
     }
 }
+
+.social-btn {
+    background: transparent;
+    transition: all 0.5s;
+    &:hover {
+        transform: rotateZ(360deg) scale(1.2);
+    }
+}

@@ -54,16 +54,16 @@
               <div class="row">
                 <div class="col-sm-7 d-flex flex-wrap fs-4 justify-content-center">
                   <span>分享 : </span>
-                  <button class="border-0" style="background: transparent;">
+                  <button class="border-0 social-btn" @click="openSocialPage('fb')">
                     <i class="bi bi-facebook" style="color: #4267B2;"></i>
                   </button>
-                  <button class="border-0" style="background: transparent;">
+                  <button class="border-0 social-btn" @click="openSocialPage('ig')">
                     <i class="bi bi-instagram" style="color: #E1306C;"></i>
                   </button>
-                  <button class="border-0" style="background: transparent;">
+                  <button class="border-0 social-btn" @click="openSocialPage('twi')">
                     <i class="bi bi-twitter" style="color: #1DA1F2;"></i>
                   </button>
-                  <button class="border-0" style="background: transparent;">
+                  <button class="border-0 social-btn" @click="openSocialPage('line')">
                     <i class="bi bi-line" style="color: #06C755;"></i>
                   </button>
                 </div>
@@ -427,6 +427,19 @@ export default {
       });
       event.target.classList.add('active');
     },
+    openSocialPage(type) {
+      let url = '';
+      if (type === 'fb') {
+        url = 'https://www.facebook.com/';
+      } else if (type === 'ig') {
+        url = 'https://www.instagram.com/';
+      } else if (type === 'twi') {
+        url = 'https://twitter.com/';
+      } else if (type === 'line') {
+        url = 'https://line.me/';
+      }
+      window.open(url);
+    },
   },
   created() {
     this.id = this.$route.params.productId;
@@ -435,11 +448,11 @@ export default {
     this.updateLovedItem();
   },
   setup() {
-    const onSwiper = (swiper) => {
-      console.log(swiper);
+    const onSwiper = () => {
+      // console.log(swiper);
     };
     const onSlideChange = () => {
-      console.log('slide change');
+      // console.log('slide change');
     };
     return {
       onSwiper,
