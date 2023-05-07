@@ -1,5 +1,6 @@
 <template>
     <router-view/>
+    <ToastMessages></ToastMessages>
 </template>
 
 <style lang="scss">
@@ -7,3 +8,22 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;900&display=swap');
 </style>
+
+<script>
+import ToastMessages from '@/components/ToastMessages.vue';
+import emitter from '@/methods/emitter';
+import $httpMessageState from '@/methods/pushMessageState';
+
+export default {
+  components: {
+    ToastMessages,
+  },
+  provide() {
+    return {
+      $httpMessageState,
+      emitter,
+    };
+  },
+};
+
+</script>

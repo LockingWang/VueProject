@@ -1,23 +1,39 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <div class="text-end mt-3 pe-5">
-        <button type="button" class="btn btn-primary"
-        @click="openModal(true)">新增產品</button>
+    <div class="row g-3 mt-3 justify-content-end">
+      <div class="col-sm-2">
+        <select class="form-select w-100" aria-label="Category"
+        v-model="filter" @change="filtProducts(1)">
+          <option value="" selected>全部</option>
+          <option v-for="itemType in category" :key="itemType" :value="itemType">
+            {{ itemType }}</option>
+        </select>
+      </div>
+      <div class="col-sm-2 ms-3">
+        <input type="text" class="form-control" placeholder="搜尋商品名稱"
+        aria-label="serach text" aria-describedby="serach product"
+        v-model="searchText" @change="filtProducts(1)">
+      </div>
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-primary w-100"
+        @click="openModal(true)"><i class="bi bi-plus"></i>新增產品</button>
+      </div>
     </div>
+    <h2 class="text-center d-sm-none mt-3">產品列表</h2>
     <div class="overflow-auto">
-      <table class="table mt-4">
+      <table class="table mt-3">
         <thead class="text-nowrap">
             <tr>
             <th width="120">分類</th>
             <th>產品名稱</th>
             <th width="120">原價</th>
             <th width="120">售價</th>
-            <th width="100">是否啟用</th>
+            <th width="100">商品狀態</th>
             <th width="200">編輯</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in products" :key="item.id">
+            <tr v-for="item in filtedProducts" :key="item.id">
             <td>{{item.category}}</td>
             <td>{{item.title}}</td>
             <td class="text-right">
@@ -27,11 +43,11 @@
                 {{ $filters.currency(item.price) }}
             </td>
             <td>
-                <span class="text-success" v-if="item.is_enabled">啟用</span>
-                <span class="text-muted" v-else>未啟用</span>
+                <span class="text-success" v-if="item.is_enabled">上架</span>
+                <span class="text-danger" v-else>未上架</span>
             </td>
             <td>
-                <div class="btn-group">
+                <div class="btn-group w-100">
                 <button class="btn btn-outline-primary btn-sm text-nowrap"
                 @click="openModal(false, item)">編輯</button>
                 <button class="btn btn-outline-danger btn-sm text-nowrap"
@@ -44,7 +60,7 @@
     </div>
 
     <PaginationModel :pages="pagination"
-      @emit-pages="getProducts"></PaginationModel>
+      @emit-pages="filtProducts"></PaginationModel>
     <ProductModal ref="productModal"
                   :product="tempProduct"
                   @update-product="updateProduct"></ProductModal>
@@ -57,12 +73,14 @@
 import ProductModal from '@/components/ProductModal.vue';
 import DelModal from '@/components/DelModal.vue';
 import PaginationModel from '@/components/PaginationModel.vue';
+import FiltedProducts from '@/mixins/FiltedProducts';
 
 export default {
   data() {
     return {
       products: [],
-      pagination: {},
+      category: [],
+      pageItems: 10,
       tempProduct: {},
       isNew: false,
       delItem: {},
@@ -75,37 +93,40 @@ export default {
     PaginationModel,
   },
   inject: ['emitter', '$httpMessageState'],
+  watch: {
+    products() {
+      this.products.forEach((item) => {
+        if (!this.category.includes(item.category)) {
+          this.category.push(item.category);
+        }
+      });
+    },
+  },
   methods: {
-    getProducts(page = 1) {
-      let toPage = '';
-      if (page === 'previous' && this.pagination.has_pre) {
-        toPage = this.pagination.current_page - 1;
-      } else if (page === 'next' && this.pagination.has_next) {
-        toPage = this.pagination.current_page + 1;
-      } else {
-        toPage = page;
-      }
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${toPage}`;
+    getProducts() {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products/all`;
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
-            this.products = res.data.products;
-            this.pagination = res.data.pagination;
+            this.products = Object.values(res.data.products);
+            this.filtProducts();
           }
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log(err);
         });
     },
     openModal(isNew, item) {
       if (isNew) {
         this.tempProduct = {
           imagesUrl: [],
+          header: '新增產品',
         };
       } else {
         this.tempProduct = { ...item };
+        this.tempProduct.header = '編輯產品';
       }
       this.isNew = isNew;
       const productComponent = this.$refs.productModal;
@@ -169,5 +190,6 @@ export default {
   created() {
     this.getProducts();
   },
+  mixins: [FiltedProducts],
 };
 </script>

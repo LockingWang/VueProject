@@ -54,14 +54,19 @@ export default {
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
+            this.$httpMessageState('success', '登出成功', '期待再次相遇。');
             this.$router.push('/login');
+          } else {
+            this.$httpMessageState('warning', '登出失敗', '請再試一次。');
           }
         })
         .catch((err) => {
           console.log(err.response);
+          this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
           this.isLoading = false;
         });
     },
   },
+  inject: ['$httpMessageState', 'emitter'],
 };
 </script>

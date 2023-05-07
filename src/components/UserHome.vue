@@ -1,11 +1,10 @@
 <template>
     <header class="min-vh-100 position-relative">
-        <div class="deco-box top-0 start-0"></div>
-        <div class="deco-box bottom-0 end-0"></div>
-        <div class="position-absolute bg-cover bg-attach-fixed" style="top:30px; left:30px; bottom:30px; right: 30px; background-image: url(https://images.unsplash.com/photo-1538080764242-cdf6089d2a97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);"></div>
-        <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+        <div class="deco-box top-0 start-0 rounded"></div>
+        <div class="deco-box bottom-0 end-0 rounded"></div>
+        <div class="position-absolute bg-cover bg-attach-fixed rounded" style="top:30px; left:30px; bottom:30px; right: 30px; background-image: url(https://images.unsplash.com/photo-1538080764242-cdf6089d2a97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);"></div>
+        <div class="user-home-h1 translate-middle rounded">
             <h1 class="display-1 fw-bold">我在日本</h1>
-            <hr class="mb-1 mx-n3">
             <h2>懷念日本的伴手禮嗎 ?! 我幫你買!!!</h2>
             <p>只需在家選購，無論是藥妝還是零食，下訂後一週送到府 !</p>
         </div>
@@ -25,7 +24,7 @@
                     某天突然想到，既然如此不如開放給更多有需要的人吧 ! 只要負擔一部份的代購費用，就可以買到台灣買不到的日本商品或以更優惠的價格買到喔~!!!
                 </p>
                 <router-link to="/user/products"
-                class="btn btn-outline-primary mt-4 w-100">立即選購日本人氣商品(點擊前往)</router-link>
+                class="btn btn-outline-danger mt-4 w-100">立即選購日本人氣商品(點擊前往)</router-link>
             </div>
         </div>
     </div>

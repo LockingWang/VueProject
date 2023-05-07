@@ -40,12 +40,18 @@
                     <tr v-for="item in order.products" :key="item.product_id">
                         <td>{{ item.product.title }}</td>
                         <td>{{ item.qty }} / {{ item.product.unit }}</td>
-                        <td>{{ $filters.currency(item.final_total) }}</td>
+                        <td class="text-end">{{ $filters.currency(item.final_total) }}
+                          <span style="font-size: 8px;">NTD</span>
+                        </td>
                     </tr>
                 </tbody>
-                <tfoot class="table-secondary table-group-divider">
+                <tfoot class="table-group-divider">
                     <td colspan="2" class="text-end">總計 : </td>
-                    <td>{{ $filters.currency(order.total)}}</td>
+                    <td class="text-end px-2">
+                      {{ $filters.currency(order.total)}}
+                      <span class="px-0"
+                      style="font-size: 8px; background-color: transparent;">NTD</span>
+                    </td>
                 </tfoot>
             </table>
             <hr>

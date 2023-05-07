@@ -5,7 +5,7 @@
           <div class="modal-content border-0">
               <div class="modal-header bg-danger text-white">
               <h5 class="modal-title" id="exampleModalLabel">
-                  <span>新增產品</span>
+                  <span>{{ tempProduct.header }}</span>
               </h5>
               <button type="button" class="btn-close"
                       data-bs-dismiss="modal" aria-label="Close"></button>
@@ -65,7 +65,7 @@
                   </div>
 
                   <div class="col-sm-8">
-                  <div class="my-3">
+                  <div>
                       <label for="title" class="form-label w-100">標題 (Title)
                       <input type="text" class="form-control" id="title"
                       placeholder="請輸入標題"
@@ -74,14 +74,14 @@
                   </div>
 
                   <div class="row gx-2">
-                      <div class="mb-3 col-md-6">
+                      <div class="col-md-6">
                       <label for="category" class="form-label w-100">分類 (Category)
                       <input type="text" class="form-control" id="category"
                       placeholder="請輸入分類"
                       v-model="tempProduct.category"
                       ></label>
                       </div>
-                      <div class="mb-3 col-md-6">
+                      <div class="col-md-6">
                       <label for="price" class="form-label w-100">單位 (Unit)
                       <input type="text" class="form-control" id="unit"
                       placeholder="請輸入單位"
@@ -91,14 +91,14 @@
                   </div>
 
                   <div class="row gx-2">
-                      <div class="mb-3 col-md-6">
+                      <div class="col-md-6">
                       <label for="origin_price" class="form-label w-100">原價 (Origin Price)
                       <input type="number" class="form-control" id="origin_price"
                       placeholder="請輸入原價"
                       v-model="tempProduct.origin_price"
                       ></label>
                       </div>
-                      <div class="mb-3 col-md-6">
+                      <div class="col-md-6">
                       <label for="price" class="form-label w-100">售價 (Price)
                       <input type="number" class="form-control" id="price"
                       placeholder="請輸入售價"
@@ -108,30 +108,34 @@
                   </div>
                   <hr>
 
-                  <div class="mb-3">
+                  <div>
                       <label for="description" class="form-label w-100">產品描述
                       <textarea type="text" class="form-control" id="description"
                       placeholder="請輸入產品描述"
                       v-model="tempProduct.description"
                       ></textarea></label>
                   </div>
-                  <div class="mb-3">
+                  <div>
                       <label for="content" class="form-label w-100">說明內容
                       <textarea type="text" class="form-control" id="content"
                       placeholder="請輸入產品說明內容"
                       v-model="tempProduct.content"
                       ></textarea></label>
                   </div>
-                  <div class="mb-3">
-                      <div class="form-check">
-                      <label class="form-check-label" for="is_enabled">
-                          <input class="form-check-input" type="checkbox"
-                              :true-value="1"
-                              :false-value="0"
-                              id="is_enabled"
-                              v-model="tempProduct.is_enabled">
-                          是否啟用
-                      </label>
+                  <div class="mb-3 d-flex">
+                      <div>
+                        <p class="mb-0">商品狀態 : </p>
+                      </div>
+                      <div class="form-check form-switch ms-2">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">
+                          <span class="text-success" v-if="tempProduct.is_enabled">上架</span>
+                          <span class="text-danger" v-else>未上架</span>
+                          <input class="form-check-input" type="checkbox" aria-checked=""
+                          role="switch" id="flexSwitchCheckDefault"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model="tempProduct.is_enabled">
+                        </label>
                       </div>
                   </div>
                   </div>
@@ -203,6 +207,7 @@ export default {
 
       if (sign === 'url') {
         this.tempProduct.imagesUrl.push(this.tempImagesUrl);
+        this.tempImagesUrl = '';
       } else {
         const uploadFile = this.$refs.otherFile.files[0];
         const formData = new FormData();

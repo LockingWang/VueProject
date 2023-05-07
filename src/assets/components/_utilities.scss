@@ -122,3 +122,13 @@
         transform: rotateZ(360deg) scale(1.2);
     }
 }
+
+.user-home-h1 {
+    width: 80vw;
+    background-color: rgba(0, 0, 0, 0.539);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    color: white;
+}
