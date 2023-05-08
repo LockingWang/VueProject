@@ -1,6 +1,6 @@
 <template>
     <Narbar></Narbar>
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 80px;">
         <ToastMessages></ToastMessages>
         <router-view></router-view>
     </div>

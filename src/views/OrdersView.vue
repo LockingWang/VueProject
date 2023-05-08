@@ -1,9 +1,32 @@
 <template>
   <LoadingOverlay :active="isLoading"></LoadingOverlay>
   <div class="container-fluid">
-    <div class="text-end mt-3 pe-5">
-      <button type="button" class="btn btn-danger" @click="openDelModal('all')">刪除全部訂單</button>
+
+    <div class="row g-3 mt-3 justify-content-end">
+
+      <div class="col-sm-4">
+        <div class="input-group">
+          <select class="form-select" aria-label="Category"
+          v-model="filter" @change="filtOrders(1)">
+            <option value="" selected>搜尋條件</option>
+            <option value="id" selected>訂單編號</option>
+            <option value="name" selected>姓名</option>
+            <option value="tel" selected>電話</option>
+            <option value="email" selected>Email</option>
+          </select>
+          <input type="text" class="form-control" placeholder="搜尋關鍵字"
+          aria-label="serach text" aria-describedby="serach order"
+          v-model="searchText" @change="filtOrders(1)" :disabled="this.filter === ''">
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-danger w-100"
+        @click="openDelModal('all')">刪除全部訂單</button>
+      </div>
+
     </div>
+
     <div class="overflow-auto">
       <table class="table mt-4 text-nowrap">
         <thead>
@@ -17,7 +40,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="order in orders" :key="order.id">
+            <tr v-for="order in filtedOrders" :key="order.id">
               <td>{{ order.id }}</td>
               <td>{{ $filters.inputDateType(order.create_at) }}</td>
               <td>{{ order.user.name }}</td>
@@ -27,7 +50,7 @@
                   <span class="text-muted" v-else>未付款</span>
               </td>
               <td>
-                  <div class="btn-group">
+                  <div class="btn-group w-100">
                     <button class="btn btn-outline-primary btn-sm text-nowrap"
                     @click="openModal(order)">編輯</button>
                     <button class="btn btn-outline-danger btn-sm text-nowrap"
@@ -40,7 +63,7 @@
     </div>
 
     <PaginationModel :pages="pagination"
-    @emit-pages="getOrders"></PaginationModel>
+    @emit-pages="filtOrders"></PaginationModel>
 
     <OrderModal ref="orderModal"
     :order="tempOrder"
@@ -67,37 +90,96 @@ export default {
   data() {
     return {
       orders: [],
+      allOrders: [],
+      filtedOrders: [],
+      pageOrders: 10,
       tempOrder: {},
       delOrder: {},
       isLoading: false,
-      pagination: {},
+      pagination: {
+        total_pages: '',
+        current_page: 1,
+        has_pre: false,
+        has_next: false,
+      },
+      filter: '',
+      searchText: '',
     };
   },
   methods: {
-    getOrders(page = 1) {
-      let toPage = '';
-      if (page === 'previous' && this.pagination.has_pre) {
-        toPage = this.pagination.current_page - 1;
-      } else if (page === 'next' && this.pagination.has_next) {
-        toPage = this.pagination.current_page + 1;
-      } else {
-        toPage = page;
-      }
-
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${toPage}`;
+    getTotalPages(currentPage = 1) {
       this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders`;
       this.$http.get(api)
         .then((res) => {
           this.isLoading = false;
-          if (res.data.success) {
-            this.orders = res.data.orders;
-            this.pagination = res.data.pagination;
-          }
+          this.allOrders = [];
+          this.getAllOrders(res.data.pagination.total_pages, currentPage, 1);
         })
         .catch((err) => {
           console.log('err', err);
-          this.isLoading = false;
         });
+    },
+    async getAllOrders(totalPage, currentPage, loadingPage) {
+      this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${loadingPage}`;
+      await this.$http.get(api)
+        .then((res1) => {
+          this.allOrders = this.allOrders.concat(res1.data.orders);
+          if (res1.data.pagination.current_page < totalPage) {
+            this.getAllOrders(totalPage, currentPage, loadingPage + 1);
+          } else {
+            this.isLoading = false;
+            this.filtOrders(currentPage);
+          }
+        });
+    },
+    filtOrders(page = 1) {
+      if (this.filter === 'id') {
+        this.filtedOrders = this.allOrders.filter((i) => i.id.match(this.searchText));
+      } else if (this.filter === 'name') {
+        this.filtedOrders = this.allOrders.filter((i) => i.user.name.match(this.searchText));
+      } else if (this.filter === 'tel') {
+        this.filtedOrders = this.allOrders.filter((i) => i.user.tel.match(this.searchText));
+      } else if (this.filter === 'email') {
+        this.filtedOrders = this.allOrders.filter((i) => i.user.email.match(this.searchText));
+      } else {
+        this.filtedOrders = this.allOrders;
+        this.searchText = '';
+      }
+
+      if (page === 'previous') {
+        this.pagination.current_page -= 1;
+      } else if (page === 'next') {
+        this.pagination.current_page += 1;
+      } else if (page === 1) {
+        this.pagination.current_page = 1;
+      } else {
+        this.pagination.current_page = page;
+      }
+
+      this.pagination.total_pages = Math.ceil(this.filtedOrders.length / this.pageOrders);
+      if (this.pagination.current_page === 1) {
+        this.pagination.has_pre = false;
+        this.pagination.has_next = true;
+        if (this.pagination.total_pages === 1) {
+          this.pagination.has_next = false;
+        }
+      } else if (this.pagination.current_page === this.pagination.total_pages) {
+        this.pagination.has_next = false;
+        this.pagination.has_pre = true;
+      } else {
+        this.pagination.has_next = true;
+        this.pagination.has_pre = true;
+      }
+      const showOrders = [];
+      const CP = this.pagination.current_page;
+      this.filtedOrders.forEach((item, i) => {
+        if (i <= CP * this.pageOrders - 1 && i >= CP * this.pageOrders - this.pageOrders) {
+          showOrders.push(item);
+        }
+      });
+      this.filtedOrders = showOrders;
     },
     openModal(order) {
       this.tempOrder = { ...order };
@@ -114,7 +196,8 @@ export default {
           if (res.data.success) {
             orderComponent.hideModal();
             this.$httpMessageState('success', '更新成功', res.data.message);
-            this.getOrders();
+            this.allOrders = [];
+            this.getAllOrders(this.pagination.total_pages, this.pagination.current_page, 1);
           } else {
             this.$httpMessageState('warning', '更新失敗', '請重新檢查內容，並再次嘗試。');
           }
@@ -145,7 +228,7 @@ export default {
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
-            this.getOrders();
+            this.getTotalPages(this.pagination.current_page);
             orderComponent.hideModal();
             this.$httpMessageState('success', '刪除訂單成功', res.data.message);
           } else {
@@ -165,7 +248,7 @@ export default {
           orderComponent.hideModal();
           if (res.data.success) {
             this.$httpMessageState('success', '成功清空訂單', '讓我們重新開始吧 !');
-            this.getOrders();
+            this.getTotalPages(this.pagination.current_page);
           } else {
             this.$httpMessageState('warning', '刪除全部訂單失敗', res.data.message);
           }
@@ -177,7 +260,7 @@ export default {
     },
   },
   created() {
-    this.getOrders();
+    this.getTotalPages(1);
   },
   inject: ['emitter', '$httpMessageState'],
 };

@@ -1,11 +1,16 @@
 <template>
   <LoadingOverlay :active="isLoading"></LoadingOverlay>
-  <div class="text-end mt-3 pe-5">
-      <button type="button" class="btn btn-primary"
+
+  <div class="row g-3 mt-3 justify-content-end">
+    <div class="col-sm-3">
+      <button type="button" class="btn btn-success w-100"
       @click="openModal(true)">新增優惠券</button>
+    </div>
   </div>
-  <table class="table mt-4">
-      <thead>
+  <div class="overflow-auto">
+
+    <table class="table mt-4">
+      <thead class="text-nowrap">
           <tr>
             <th>名稱</th>
             <th>折扣百分比(%)</th>
@@ -24,7 +29,7 @@
                 <span class="text-muted" v-else>未啟用</span>
             </td>
             <td>
-                <div class="btn-group">
+                <div class="btn-group w-100">
                 <button class="btn btn-outline-primary btn-sm"
                 @click="openModal(false, item)">編輯</button>
                 <button class="btn btn-outline-danger btn-sm"
@@ -33,7 +38,10 @@
             </td>
           </tr>
       </tbody>
-  </table>
+    </table>
+
+  </div>
+
   <PaginationModel :pages="pagination"
     @emit-pages="getCoupons"></PaginationModel>
   <CouponModal ref="couponModal"

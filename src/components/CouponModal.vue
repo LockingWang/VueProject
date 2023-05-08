@@ -19,9 +19,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="percent" class="form-label w-100">折扣百分比
+                          <span class="text-danger" v-if="percentWarning">(不能小於 1)</span>
                         <input type="number" class="form-control" id="percent"
                         placeholder="請輸入折扣百分比"
                         v-model="tempCoupon.percent"
+                        @change="percentWarning = false"
                         min="1"
                         ></label>
                     </div>
@@ -56,7 +58,7 @@
                 <button type="button" class="btn btn-outline-secondary"
                         data-bs-dismiss="modal">取消
                 </button>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-success"
                 @click="emitCoupon">確認</button>
                 </div>
             </div>
@@ -72,6 +74,7 @@ export default {
     return {
       modal: {},
       tempCoupon: {},
+      percentWarning: false,
     };
   },
   props: {
@@ -89,6 +92,10 @@ export default {
   mixins: [modalMixin],
   methods: {
     emitCoupon() {
+      if (this.tempCoupon.percent < 1) {
+        this.percentWarning = true;
+        return;
+      }
       const unixTime = new Date(this.tempCoupon.due_date).getTime();
       this.tempCoupon.due_date = unixTime;
       this.$emit('update-coupon', this.tempCoupon);

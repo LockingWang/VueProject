@@ -12,6 +12,13 @@
         </div>
         <div class="modal-body">
           是否刪除 <strong class="text-danger">{{ item.title }}</strong> <br>(刪除後將無法恢復)。
+          <div class="mt-3" v-if="item.title === '全部訂單'">
+            <label for="delPassword">
+              請輸入 [ delete1314 ] ，確認刪除所有訂單。
+              <input id="delPassword" type="text" v-model="delKey">
+              <p class="text-danger mb-0" v-if="wrongKey">輸入錯誤，請謹慎輸入 !</p>
+            </label>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary"
@@ -36,12 +43,18 @@ export default {
   data() {
     return {
       modal: {},
+      delKey: '',
+      wrongKey: false,
     };
   },
   methods: {
     deleteTarget() {
       if (this.item.title === '全部訂單') {
-        this.$emit('del-all');
+        if (this.delKey === 'delete1314') {
+          this.$emit('del-all');
+        } else {
+          this.wrongKey = true;
+        }
       } else {
         this.$emit('del-item');
       }
