@@ -38,7 +38,7 @@
           <section class="mb-3">
             <div class="row">
               <div class="col-md-2">
-                <div class="list-group text-center sticky-top" style="top: 70px;">
+                <div class="list-group text-center sticky-top mb-3" style="top: 70px;">
                   <button type="button" class="list-group-item list-group-item-action"
                   :class="{'active': filter == ''}" @click="changeFilter('')">全部商品</button>
                   <button type="button" class="list-group-item list-group-item-action"

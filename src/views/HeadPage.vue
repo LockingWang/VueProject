@@ -1,5 +1,5 @@
 <template>
-    <div class="head-page-bg row align-items-center justify-content-center">
+    <div class="head-page-bg row g-0 align-items-center justify-content-center">
         <div class="col-10 col-lg-6 p-5 rounded banner-animate"
         style="background-color: rgba(255, 255, 255, 0.698);">
             <h2 class="text-center text-danger fw-bold title-animate">歡迎來到DailyCheap</h2>
@@ -28,7 +28,7 @@
     100% {transform: scale(1);opacity: 1;}
 }
 @keyframes btn-animate {
-    0% {transform: translateY(120px)}
+    0% {transform: translateY(180px)}
     100% {transform: translateY(0px)}
 }
 .banner-animate {
@@ -46,7 +46,7 @@
     animation-fill-mode: forwards;
 }
 .btn-animate {
-    transform: translateY(120px);
+    transform: translateY(180px);
     animation-name: btn-animate;
     animation-duration: 1s;
     animation-iteration-count: 1;

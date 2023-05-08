@@ -2,13 +2,15 @@
     <div class="modal fade" ref="modal">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content border-0" style="width: 300px;">
+
                 <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    <span>新增優惠券</span>
-                </h5>
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
+                  <h5 class="modal-title" id="exampleModalLabel">
+                      <span>新增優惠券</span>
+                  </h5>
+                  <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="title" class="form-label w-100">優惠券名稱
@@ -54,13 +56,15 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary"
-                        data-bs-dismiss="modal">取消
-                </button>
-                <button type="button" class="btn btn-success"
-                @click="emitCoupon">確認</button>
+                  <button type="button" class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">取消
+                  </button>
+                  <button type="button" class="btn btn-success"
+                  @click="emitCoupon">確認</button>
                 </div>
+
             </div>
         </div>
     </div>

@@ -86,21 +86,29 @@
             </div>
             <div class="col-md-8">
               <div class="d-flex mb-3">
-                <span class="bg-danger text-white px-1">{{ product.category }}</span>
+                <span class="bg-danger text-white px-1 text-center">{{ product.category }}</span>
                 <h5 class="ms-3 mb-0">{{ product.title }}</h5>
               </div>
 
               <div class="d-flex">
-                <p class="text-warning pe-4 border-end">
+                <p class="text-warning text-center pe-4 border-end">
                   4.5
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
+                  <span class="text-nowrap">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                  </span>
                 </p>
-                <p class="ps-4 pe-4 border-end text-decoration-underline">666 則評價</p>
-                <p class="ps-4 text-decoration-underline">888 已售出</p>
+                <p class="ps-4 pe-4 border-end text-decoration-underline text-center">
+                  666
+                  <span class="text-nowrap">則評價</span>
+                </p>
+                <p class="ps-4 text-decoration-underline text-center">
+                  888
+                  <span class="text-nowrap">已售出</span>
+                </p>
               </div>
 
               <div class="bg-light p-3 d-flex align-items-center mb-3">
@@ -110,7 +118,7 @@
                 <span class="text-danger fs-3 ms-3">
                   售價 {{ $filters.currency(product.price) }} NTD
                 </span>
-                <span class="bg-danger text-white px-1 ms-3">
+                <span class="bg-danger text-white px-1 ms-3 text-center">
                   {{ Math.ceil((product.price / product.origin_price) * 10) }}
                   折起
                 </span>
@@ -135,25 +143,30 @@
                   <p class="text-center">數量</p>
                 </div>
                 <div class="col-9 fs-5">
-                  <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-secondary"
-                    @click="checkQty('minus')">
-                      <i class="bi bi-dash"></i>
-                    </button>
-                    <input type="number" aria-label="item-number" min="1" v-model="qty"
-                    class="text-center" @change="checkQty('input')"
-                    style="width: 60px;">
-                    <button type="button" class="btn btn-outline-secondary"
-                    @click="checkQty('add')">
-                      <i class="bi bi-plus"></i>
-                    </button>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary"
+                        @click="checkQty('minus')">
+                          <i class="bi bi-dash"></i>
+                        </button>
+                        <input type="number" aria-label="item-number" min="1" v-model="qty"
+                        class="text-center" @change="checkQty('input')"
+                        style="width: 60px;">
+                        <button type="button" class="btn btn-outline-secondary"
+                        @click="checkQty('add')">
+                          <i class="bi bi-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <button type="button" class="btn btn-danger"
+                      @click="addToCart(product.id, qty)">
+                        <i class="bi bi-cart-plus-fill"></i>
+                        加到購物車
+                      </button>
+                    </div>
                   </div>
-
-                  <button type="button" class="btn btn-danger ms-3"
-                  @click="addToCart(product.id, qty)">
-                    <i class="bi bi-cart-plus-fill"></i>
-                    加到購物車
-                  </button>
                 </div>
               </div>
 

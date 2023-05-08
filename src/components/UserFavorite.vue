@@ -12,8 +12,12 @@
           <div class="card h-100 favor-card">
             <div class="row g-0">
               <div class="col-md-4">
-                <img :src="item.imageUrl" :alt="item.title"
-                class="rounded-start w-100 h-100 object-fit-cover">
+                <div class="img-box rounded-start">
+                  <div class="bg-img rounded-start"
+                  :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
+                </div>
+                <!-- <img :src="item.imageUrl" :alt="item.title"
+                class="rounded-start w-100 h-100 object-fit-cover"> -->
               </div>
               <div class="col-md-8 border-start">
                 <div class="card-body">

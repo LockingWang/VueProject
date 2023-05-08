@@ -15,9 +15,9 @@
 
                   <div class="col-sm-4">
                   <h5>商品封面</h5>
-                  <div class="mb-3">
-                    <img class="img-fluid"
-                    alt="" :src="tempProduct.imageUrl">
+                  <div class="mb-3 img-box" v-if="tempProduct.imageUrl">
+                    <div class="bg-img"
+                    :style="{ 'background-image': 'url(' + tempProduct.imageUrl + ')' }"></div>
                   </div>
                   <div>
                     <label class="form-label w-100" for="img-url">圖片網址 :
@@ -41,7 +41,8 @@
                         <input type="text" class="form-control" placeholder="請輸入圖片網址"
                         aria-label="imageUrl" v-model="tempImagesUrl">
                         <button class="btn btn-outline-secondary" type="button"
-                        id="button-addon2" @click="uploadOthers('url')">新增參考圖</button>
+                        id="button-addon2" @click="uploadOthers('url')"
+                        :disabled="!tempImagesUrl">新增參考圖</button>
                       </div>
                       <div class="input-group mb-3">
                         <input type="file" class="form-control" aria-label="imageFile"
@@ -53,7 +54,11 @@
                       <div class="row g-2 justify-content-center">
                         <div class="col-6 col-lg-4 position-relative"
                         v-for="(url, i) in tempProduct.imagesUrl" :key="url">
-                          <img class="img-fluid" :src="url" alt="">
+                          <div class="img-box">
+                            <div class="bg-img"
+                            :style="{ 'background-image': 'url(' + url + ')' }"></div>
+                          </div>
+
                           <button type="button"
                           class="btn btn-danger position-absolute p-0 img-del-btn"
                           @click="delImages(i)">
