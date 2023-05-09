@@ -2,7 +2,7 @@
 ![](https://github.com/LockingWang/VueProject/blob/master/readme-Images/%E5%B0%8E%E8%A6%BD%E9%A0%81%E9%9D%A2.jpg)
 
 ## 專案說明
- > 網頁連結 : [https://lockingwang.github.io/VueProject/#/)
+ > 網頁連結 : [https://lockingwang.github.io/VueProject/#/]
  
 本網站是以日本商品代購為主題的 SPA 網站。
 
