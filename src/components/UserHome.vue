@@ -23,7 +23,7 @@
                 <p>
                     某天突然想到，既然如此不如開放給更多有需要的人吧 ! 只要負擔一部份的代購費用，就可以買到台灣買不到的日本商品或以更優惠的價格買到喔~!!!
                 </p>
-                <router-link to="/user/products"
+                <router-link to="/products"
                 class="btn btn-outline-danger mt-4 w-100">立即選購日本人氣商品(點擊前往)</router-link>
             </div>
         </div>
@@ -103,7 +103,7 @@ export default {
         });
     },
     toProductPage(item) {
-      this.$router.push(`/user/product/${item.id}`);
+      this.$router.push(`/product/${item.id}`);
     },
   },
   created() {

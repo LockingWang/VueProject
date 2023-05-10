@@ -107,7 +107,7 @@ export default {
           this.isLoading = false;
           if (res.data.success) {
             this.$httpMessageState('success', '建立訂單成功', '感謝您的訂購 !');
-            this.$router.push(`/user/userCheckout/order/${res.data.orderId}`);
+            this.$router.push(`/userCheckout/order/${res.data.orderId}`);
           }
         })
         .catch((err) => {

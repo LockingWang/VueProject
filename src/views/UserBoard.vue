@@ -29,5 +29,8 @@ export default {
       $httpMessageState,
     };
   },
+  created() {
+    this.$router.push('/home');
+  },
 };
 </script>

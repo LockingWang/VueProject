@@ -34,6 +34,8 @@
               <button class="btn btn-lg btn-danger btn-block w-100" type="submit">
                   登入</button>
               </div>
+              <router-link class="text-center d-block mt-2 link-secondary"
+              to="/home">回到官網</router-link>
           </div>
         </form>
       </div>

@@ -104,7 +104,7 @@
                 </div>
                 <p class="text-secondary">提示 : 請輸入[ japan666 ]</p>
               </div>
-              <router-link to="/user/userCheckout/userInfo" class="btn btn-danger w-100"
+              <router-link to="/userCheckout/userInfo" class="btn btn-danger w-100"
               v-if="!cart.carts.length == 0">
               下一步 : 填寫訂購資訊</router-link>
             </div>

@@ -92,7 +92,7 @@
             </table>
             <div>
               <router-link class="btn btn-warning w-50 shadow-sm d-block mx-auto go-checkout-btn"
-              to="/user/userCheckout/cart"
+              to="/userCheckout/cart"
               @click="offCanvas.hide()"
               v-if="cart.carts.length">
                 <i class="bi bi-coin mx-3"></i>我要結帳<i class="bi bi-coin mx-3"></i>

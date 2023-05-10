@@ -82,7 +82,7 @@
                 </tbody>
             </table>
             <div class="text-end" v-if="!order.is_paid">
-                <router-link to="/user/userCheckout/payment" class="btn btn-danger w-50">
+                <router-link to="/userCheckout/payment" class="btn btn-danger w-50">
                     下一步 : 付款去</router-link>
             </div>
         </form>

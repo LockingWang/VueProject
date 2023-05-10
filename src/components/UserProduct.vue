@@ -7,10 +7,10 @@
           <ol class="breadcrumb fs-5 ">
             <li class="breadcrumb-item"><router-link class="link-danger link-offset-2
               link-underline-opacity-25 link-underline-opacity-100-hover"
-              to="/user/home">首頁</router-link></li>
+              to="/home">首頁</router-link></li>
             <li class="breadcrumb-item"><router-link class="link-danger link-offset-2
               link-underline-opacity-25 link-underline-opacity-100-hover"
-              to="/user/products">商品頁</router-link></li>
+              to="/products">商品頁</router-link></li>
             <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
           </ol>
         </nav>
@@ -287,7 +287,7 @@
         <section class="py-3 mb-3">
           <div class="d-flex justify-content-between">
             <p>逛逛賣場其他好物</p>
-            <router-link to="/user/products" class="link-danger">
+            <router-link to="/products" class="link-danger">
               查看全部
               <i class="bi bi-caret-right-fill"></i>
             </router-link>
@@ -394,7 +394,7 @@ export default {
       this.getProduct();
       this.getProducts();
       this.updateLovedItem();
-      this.$router.push(`/user/product/${item.id}`);
+      this.$router.push(`/product/${item.id}`);
     },
     toggleLoveProduct(item, sign) {
       if (sign === 'add') {

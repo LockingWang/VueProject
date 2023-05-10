@@ -16,8 +16,6 @@
                   <div class="bg-img rounded-start"
                   :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
                 </div>
-                <!-- <img :src="item.imageUrl" :alt="item.title"
-                class="rounded-start w-100 h-100 object-fit-cover"> -->
               </div>
               <div class="col-md-8 border-start">
                 <div class="card-body">
@@ -127,7 +125,7 @@ export default {
       this.filtedProducts = showItems;
     },
     getProduct(id) {
-      this.$router.push(`/user/product/${id}`);
+      this.$router.push(`/product/${id}`);
     },
     delLoveProduct(item) {
       this.loveItemList = JSON.parse(localStorage.getItem('loveItemList'));

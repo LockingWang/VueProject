@@ -19,9 +19,9 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
-                    <router-link to="/user/products" class="btn btn-outline-danger">
+                    <router-link to="/products" class="btn btn-outline-danger">
                         繼續購物<i class="bi bi-cart3 ms-3"></i></router-link>
-                    <router-link to="/user/searchOrder" class="btn btn-danger">
+                    <router-link to="/searchOrder" class="btn btn-danger">
                         前往訂單查詢頁面<i class="bi bi-arrow-right-circle ms-3"></i></router-link>
                 </div>
             </div>
