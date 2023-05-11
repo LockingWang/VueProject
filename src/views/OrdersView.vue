@@ -16,8 +16,10 @@
           </select>
           <input type="text" class="form-control" placeholder="搜尋關鍵字"
           aria-label="serach text" aria-describedby="serach order"
-          v-model="searchText" @change="filtOrders(1)" :disabled="this.filter === ''">
+          v-model="searchText" @change="textCheck()" :disabled="this.filter === ''">
         </div>
+        <span class="text-danger d-block text-end mb-3"
+        :style="{opacity: specialText}">請勿輸入特殊字元</span>
       </div>
 
       <div class="col-sm-3">
@@ -39,7 +41,7 @@
             <th>編輯</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-if="filtedOrders.length !== 0">
             <tr v-for="order in filtedOrders" :key="order.id">
               <td>{{ order.id }}</td>
               <td>{{ $filters.inputDateType(order.create_at) }}</td>
@@ -58,6 +60,11 @@
                   </div>
               </td>
             </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="6" class="text-center text-secondary">歐歐~ 我們查不到有相關的訂單內 !</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -104,6 +111,7 @@ export default {
       },
       filter: '',
       searchText: '',
+      specialText: 0,
     };
   },
   methods: {
@@ -257,6 +265,15 @@ export default {
           orderComponent.hideModal();
           this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
+    },
+    textCheck() {
+      const newText = this.searchText.replace(/[`~!#$%^&*()+=<>?:"{}|,./;'\\[\]·~！#￥%……&*（）——+={}|《》？：“”【】、；‘’，。、]/g, '');
+      if (newText !== this.searchText) {
+        this.specialText = 1;
+      } else {
+        this.specialText = 0;
+        this.filtOrders(1);
+      }
     },
   },
   created() {

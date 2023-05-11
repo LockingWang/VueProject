@@ -27,8 +27,10 @@
         <v-field id="email" name="email" type="email" class="form-control"
                   :class="{ 'is-invalid': errors['email'] }"
                   placeholder="請輸入 Email" rules="email|required"
-                  v-model="form.user.email"></v-field>
+                  v-model="form.user.email"
+                  @change="textCheck('email')"></v-field>
         <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
+        <p class="text-danger mb-0" v-if="specialText.email">請勿輸入特殊符號</p>
       </div>
 
       <div class="mb-3">
@@ -36,8 +38,10 @@
         <v-field id="name" name="姓名" type="text" class="form-control"
                   :class="{ 'is-invalid': errors['姓名'] }"
                   placeholder="請輸入姓名" rules="required"
-                  v-model="form.user.name"></v-field>
+                  v-model="form.user.name"
+                  @change="textCheck('name')"></v-field>
         <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
+        <p class="text-danger mb-0" v-if="specialText.name">請勿輸入特殊符號</p>
       </div>
 
       <div class="mb-3">
@@ -45,8 +49,10 @@
         <v-field id="tel" name="電話" type="tel" class="form-control"
                   :class="{ 'is-invalid': errors['電話'] }"
                   placeholder="請輸入電話" rules="required"
-                  v-model="form.user.tel"></v-field>
+                  v-model="form.user.tel"
+                  @change="textCheck('tel')"></v-field>
         <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
+        <p class="text-danger mb-0" v-if="specialText.tel">請勿輸入特殊符號</p>
       </div>
 
       <div class="mb-3">
@@ -54,8 +60,10 @@
         <v-field id="address" name="地址" type="text" class="form-control"
                   :class="{ 'is-invalid': errors['地址'] }"
                   placeholder="請輸入地址" rules="required"
-                  v-model="form.user.address"></v-field>
+                  v-model="form.user.address"
+                  @change="textCheck('address')"></v-field>
         <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
+        <p class="text-danger mb-0" v-if="specialText.address">請勿輸入特殊符號</p>
       </div>
 
       <div class="mb-3">
@@ -82,6 +90,12 @@ export default {
   data() {
     return {
       isLoading: false,
+      specialText: {
+        email: false,
+        name: false,
+        tel: false,
+        address: false,
+      },
       status: {
         loadingItem: '', // 對應品項 id
       },
@@ -99,6 +113,8 @@ export default {
   inject: ['$httpMessageState'],
   methods: {
     createOrder() {
+      if (this.specialText.email && this.specialText.name && this.specialText.tel
+        && this.specialText.address) { return; }
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`;
       const order = this.form;
       this.isLoading = true;
@@ -108,6 +124,8 @@ export default {
           if (res.data.success) {
             this.$httpMessageState('success', '建立訂單成功', '感謝您的訂購 !');
             this.$router.push(`/userCheckout/order/${res.data.orderId}`);
+          } else {
+            this.$httpMessageState('warning', '建立訂單失敗', res.data.message);
           }
         })
         .catch((err) => {
@@ -118,6 +136,14 @@ export default {
     },
     backToCart() {
       this.$router.go(-1);
+    },
+    textCheck(type) {
+      const newText = this.form.user[type].replace(/[`~!#$%^&*()+=<>?:"{}|,/;'\\[\]·~！#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '');
+      if (newText !== this.form.user[type]) {
+        this.specialText[type] = true;
+      } else {
+        this.specialText[type] = false;
+      }
     },
   },
 };

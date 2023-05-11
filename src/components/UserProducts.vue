@@ -29,8 +29,10 @@
                   </button>
                   <input type="text" class="form-control"
                   placeholder="進一步搜尋商品" aria-label="search" v-model="searchText"
-                  @change="filtProducts(1)">
+                  @change="textCheck()">
                 </div>
+                <span class="text-danger d-block text-end mb-3"
+                v-if="specialText">請勿輸入特殊字元</span>
               </div>
             </div>
           </section>
@@ -136,6 +138,7 @@ export default {
       pageItems: 9,
 
       isLoading: false,
+      specialText: false,
       status: {
         loadingItem: '', // 對應品項 id
       },
@@ -184,6 +187,15 @@ export default {
     changeFilter(sign) {
       this.filter = sign;
       this.filtProducts();
+    },
+    textCheck() {
+      const newText = this.searchText.replace(/[`~!@#$%^&*()+=<>?:"{}|,./;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '');
+      if (newText !== this.searchText) {
+        this.specialText = true;
+      } else {
+        this.specialText = false;
+        this.filtProducts(1);
+      }
     },
   },
   created() {

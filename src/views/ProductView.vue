@@ -12,7 +12,9 @@
       <div class="col-sm-2 ms-3">
         <input type="text" class="form-control" placeholder="搜尋商品名稱"
         aria-label="serach text" aria-describedby="serach product"
-        v-model="searchText" @change="filtProducts(1)">
+        v-model="searchText" @change="textCheck()">
+        <span class="text-danger d-block text-center mb-3"
+        :style="{opacity: specialText}">請勿輸入特殊字元</span>
       </div>
       <div class="col-sm-3">
         <button type="button" class="btn btn-primary w-100"
@@ -85,6 +87,7 @@ export default {
       isNew: false,
       delItem: {},
       isLoading: false,
+      specialText: 0,
     };
   },
   components: {
@@ -185,6 +188,15 @@ export default {
           this.isLoading = false;
           this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
+    },
+    textCheck() {
+      const newText = this.searchText.replace(/[`~!@#$%^&*()+=<>?:"{}|,./;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '');
+      if (newText !== this.searchText) {
+        this.specialText = 1;
+      } else {
+        this.specialText = 0;
+        this.filtProducts(1);
+      }
     },
   },
   created() {
