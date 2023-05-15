@@ -1,5 +1,5 @@
 # DailyCheap 代你去 - 日本商品代購網
-![](https://github.com/LockingWang/VueProject/blob/master/readme-Images/%E5%B0%8E%E8%A6%BD%E9%A0%81%E9%9D%A2.jpg)
+![](https://github.com/LockingWang/VueProject/blob/master/readme-Images/%E5%AE%A2%E6%88%B6%E7%AB%AF-%E9%A6%96%E9%A0%81.jpg)
 
 ## 專案說明
  > 網頁連結 : [https://lockingwang.github.io/VueProject/#/]
