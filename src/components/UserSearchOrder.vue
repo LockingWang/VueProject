@@ -46,7 +46,7 @@ export default {
             if (!res.data.order) {
               this.warning = true;
             } else {
-              this.$router.push(`/user/userCheckout/order/${this.orderId}`);
+              this.$router.push(`/userCheckout/order/${this.orderId}`);
             }
           }
         })
