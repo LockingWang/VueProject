@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg shadow px-3 user-navbar">
+    <nav class="navbar navbar-expand-lg shadow-sm px-3 user-navbar">
         <div class="container-fluid">
             <router-link class="nav-link logo-indent" to="/home" style="width: 200px;"
             @click="activeLink">
@@ -8,7 +8,7 @@
             <button class="navbar-toggler" type="button" @click="toggleCollapse">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse pt-3" id="navbarNav" ref="collapse">
+            <div class="collapse navbar-collapse" id="navbarNav" ref="collapse">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item nav-li text-center">
                   <router-link class="nav-link nav-link-style" to="/home">首頁</router-link>
@@ -25,12 +25,6 @@
                 </li>
                 <li class="nav-item nav-li text-center">
                   <router-link class="nav-link nav-link-style" to="/searchOrder">訂單查詢</router-link>
-                </li>
-                <li class="nav-item nav-li text-center">
-                  <router-link class="nav-link nav-link-style" to="/login">
-                    <i class="bi bi-person-fill d-none d-lg-block"></i>
-                    <span class="d-lg-none">會員登入</span>
-                  </router-link>
                 </li>
             </ul>
             </div>

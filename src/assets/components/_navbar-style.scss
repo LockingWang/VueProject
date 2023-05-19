@@ -1,5 +1,5 @@
 .user-navbar {
-    background-color: #e3f2fd;
+    background-color: #ffe5e7;
 }
 
 .manager-navbar {
@@ -14,16 +14,16 @@
 }
 
 .user-navbar .nav-link-style, .manager-navbar .nav-link-style {
-    color: red;
+    color: #86473F;
     font-weight: bold;
     transition: all 0.3s;
     &:hover {
-        border-bottom: 3px solid red;
+        border-bottom: 3px solid #86473F;
     }
 }
 
 .user-navbar .nav-item .router-link-active, .manager-navbar .nav-item .router-link-active {
-    background: rgba(255, 0, 0, 0.723);
+    background: #86473F;
     border-radius: 10px;
     color: white;
     box-shadow: 0 0 3px grey;

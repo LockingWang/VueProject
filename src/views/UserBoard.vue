@@ -1,6 +1,6 @@
 <template>
       <UserNavBar class="fixed-top"></UserNavBar>
-      <div style="margin-top: 55px;">
+      <div style="margin-top: 70px;">
         <router-view></router-view>
         <p class="text-center py-3 mb-0 bg-light">
           <i class="bi bi-pencil"></i>

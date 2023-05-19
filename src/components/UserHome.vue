@@ -1,32 +1,61 @@
 <template>
-    <header class="min-vh-100 position-relative">
-        <div class="deco-box top-0 start-0 rounded"></div>
-        <div class="deco-box bottom-0 end-0 rounded"></div>
-        <div class="position-absolute bg-cover bg-attach-fixed rounded" style="top:30px; left:30px; bottom:30px; right: 30px; background-image: url(https://images.unsplash.com/photo-1538080764242-cdf6089d2a97?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);"></div>
-        <div class="user-home-h1 translate-middle rounded">
-            <h1 class="display-1 fw-bold">我在日本</h1>
-            <h2>懷念日本的伴手禮嗎 ?! 我幫你買!!!</h2>
-            <p>只需在家選購，無論是藥妝還是零食，下訂後一週送到府 !</p>
-        </div>
+    <header>
+      <swiper
+        :modules="modules"
+        :slides-per-view="1"
+        :space-between="50"
+        :autoplay="{ delay: 3000, }"
+        :loop="'true'"
+        :speed="'1000'"
+        :effect="'fade'"
+        :pagination="{ clickable: true }"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
+      >
+        <swiper-slide>
+          <router-link to="/products">
+            <img class="img-fluid"
+            src="../../public/home-banner/home-advert.svg" alt="Home Banner">
+          </router-link>
+        </swiper-slide>
+        <swiper-slide>
+          <router-link to="/products">
+            <img class="img-fluid"
+            src="../../public/home-banner/home-coupon.svg" alt="Coupon Banner">
+          </router-link>
+        </swiper-slide>
+        <swiper-slide>
+          <router-link to="/product/-NTlu05E8NVhW9i0r6hc">
+            <img class="img-fluid"
+            src="../../public/home-banner/home-promo.svg" alt="Promotion Banner">
+          </router-link>
+        </swiper-slide>
+        ...
+      </swiper>
     </header>
 
     <div class="container py-5">
-        <div class="row gy-3 justify-content-md-center flex-column flex-md-row-reverse">
-            <div class="col-md-4">
-                <div class="h-100 bg-cover" style="background-image: url(https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80); background-position: center bottom;"></div>
+      <div class="row justify-content-center">
+        <div class="col-md-9 position-relative">
+          <div class="d-none d-md-block">
+            <img class="img-fluid rounded-5" src="https://images.unsplash.com/photo-1572233052800-1394192b5404?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=435&q=80" alt="Making Mocha">
+          </div>
+          <div class="rounded-5 p-3 user-home-intro">
+            <h2 class="fw-bold" style="color: #9F353A;">關於DailyCheap</h2>
+            <span style="color: #9F353A;">- 擁有最新的商品資訊，提供時下最熱門的商品。</span>
+
+            <p class="mt-3 lh-lg">
+              隨著日本旅遊的興盛，日本商品的競爭也越來越激烈，
+              我們透過每天更新商品銷售資訊，掌握近期身受台灣人喜愛的日本商品，
+              並提供這個平台給大家選購，讓在台灣的你們，也都能買到高品質、高人氣的商品喔!!!
+            </p>
+            <div class="text-end">
+              <router-link class="fs-4"
+              to="/products" style="color: #9F353A;">看一眼就好</router-link>
             </div>
-            <div class="col-md-5 d-flex flex-column justify-content-center">
-                <h2 class="display-4">自我介紹 : </h2>
-                <p>
-                    我是一位經常台灣、日本兩地跑的工作者，因為太常來來回回了(每週)，親友如果有想要買日本的商品，都會請我幫忙買回來，因此對代購這塊已經非常熟悉了。
-                </p>
-                <p>
-                    某天突然想到，既然如此不如開放給更多有需要的人吧 ! 只要負擔一部份的代購費用，就可以買到台灣買不到的日本商品或以更優惠的價格買到喔~!!!
-                </p>
-                <router-link to="/products"
-                class="btn btn-outline-danger mt-4 w-100">立即選購日本人氣商品(點擊前往)</router-link>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="container bg-light p-md-5 py-5">
@@ -43,17 +72,17 @@
         @changeProduct="toProductPage"></SwiperItems>
     </div>
 
-    <footer class="bg-danger p-3 text-white">
+    <footer class="p-3" style="background-color: #ffe5e7; color: #86473F">
         <div class="container">
             <h2 class="display-6 text-center">聯絡資訊</h2>
             <div class="row justify-content-center my-2">
               <div class="col-12 col-md-4 text-center">
                 <h3 class="h4">聯絡方式</h3>
                 <ul class="list-unstyled">
-                    <li><a class="link-light text-decoration-none" href="#">
+                    <li><a class="text-decoration-none" style="color: #86473F;" href="#">
                         <i class="bi bi-envelope"></i> boom0525300@gmail.com
                     </a></li>
-                    <li><a class="link-light text-decoration-none" href="#">
+                    <li><a class="text-decoration-none" style="color: #86473F;" href="#">
                         <i class="bi bi-phone"></i> 0903-008-556
                     </a></li>
                 </ul>
@@ -61,13 +90,13 @@
               <div class="col-12 col-md-4 text-center">
                 <h3 class="h4">社群軟體</h3>
                   <ul class="list-unstyled">
-                      <li><a class="link-light text-decoration-none" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
                           <i class="bi bi-instagram"></i> boom_0525300
                       </a></li>
-                      <li><a class="link-light text-decoration-none" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
                           <i class="bi bi-facebook"></i> CongRen Wang
                       </a></li>
-                      <li><a class="link-light text-decoration-none" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
                           <i class="bi bi-youtube"></i> CongRen Wang
                       </a></li>
                   </ul>
@@ -80,9 +109,22 @@
 <script>
 import SwiperItems from '@/components/SwiperItems.vue';
 
+// import Swiper core and required modules
+import {
+  Pagination, A11y, Autoplay, EffectFade,
+} from 'swiper';
+
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+// Import Swiper styles
+import 'swiper/swiper-bundle.css';
+
 export default {
   components: {
     SwiperItems,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -108,6 +150,18 @@ export default {
   },
   created() {
     this.getProducts();
+  },
+  setup() {
+    const onSwiper = (swiper) => {
+      console.log(swiper);
+    };
+    const onSlideChange = () => {
+    };
+    return {
+      onSwiper,
+      onSlideChange,
+      modules: [Pagination, A11y, Autoplay, EffectFade],
+    };
   },
 };
 </script>
