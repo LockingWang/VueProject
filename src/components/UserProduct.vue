@@ -176,7 +176,7 @@
 
         <section class="bg-white p-3 mb-3">
           <div>
-            <h5 class="bg-light p-3">商品說明</h5>
+            <h5 class="bg-light p-3">商品介紹</h5>
             <p class="descripe-preLine ps-3">{{ product.description }}</p>
           </div>
           <div>

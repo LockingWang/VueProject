@@ -5,9 +5,10 @@
         <h1 class="text-white">喜歡的商品</h1>
       </div>
     </div>
-    <h5 class="text-center">一共收藏了 {{ loveItemList.length }} 項商品</h5>
+    <h5 class="text-center" v-if="filtedProducts.length !== 0">
+      一共收藏了 {{ loveItemList.length }} 項商品</h5>
     <div class="container mb-3">
-      <div class="row g-3">
+      <div class="row g-3" v-if="filtedProducts.length !== 0">
         <div class="col-6" v-for="item in filtedProducts" :key="item.id">
           <div class="card h-100 favor-card">
             <div class="row g-0">
@@ -48,6 +49,17 @@
         </div>
         <PaginationModel :pages="pagination"
           @emit-pages="filtProducts"></PaginationModel>
+      </div>
+      <div class="row justify-content-center" v-else>
+        <div class="col-md-6 text-center">
+          <h5>歐歐~ 似乎還沒有喜歡的商品呢 !</h5>
+          <div class="mx-auto" style="width: 200px;">
+            <img class="img-fluid rounded" src="https://stickershop.line-scdn.net/stickershop/v1/sticker/239057858/IOS/sticker.png" alt="Question Cat">
+          </div>
+          <router-link to="/products" class="btn btn-outline-warning">
+            趕快去看看
+          </router-link>
+        </div>
       </div>
     </div>
     <UserCart :cart="cart" @change-cart="getCart"></UserCart>

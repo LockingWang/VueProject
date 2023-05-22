@@ -114,7 +114,7 @@ export default {
           this.isLoading = false;
           if (res.data.success) {
             this.products = Object.values(res.data.products);
-            this.filtProducts();
+            this.filtProducts(this.pagination.current_page);
           }
         })
         .catch((err) => {
@@ -129,6 +129,9 @@ export default {
         };
       } else {
         this.tempProduct = { ...item };
+        if (!this.tempProduct.imagesUrl) {
+          this.tempProduct.imagesUrl = [];
+        }
         this.tempProduct.header = '編輯產品';
       }
       this.isNew = isNew;
