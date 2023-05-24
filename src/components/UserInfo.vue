@@ -1,6 +1,6 @@
 <template>
   <LoadingOverlay :active="isLoading"></LoadingOverlay>
-  <div class="mt-5 row justify-content-center bg-light">
+  <div class="row justify-content-center g-0 bg-light">
     <h5 class="text-center mt-3">訂購流程</h5>
     <div class="row justify-content-center">
       <div class="col-sm-4 mt-3" style="max-width: 200px;">

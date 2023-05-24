@@ -58,11 +58,13 @@
       </div>
     </div>
 
-    <div class="container bg-light p-md-5 py-5">
+    <div class="bg-light">
+      <div class="container p-md-5 py-5">
         <h2 class="display-4 text-center mb-4">人氣零食</h2>
         <SwiperItems class="container"
         :items="products.filter(i => i.category === '零食')"
         @changeProduct="toProductPage"></SwiperItems>
+      </div>
     </div>
 
     <div class="container bg-white p-md-5 py-5">
@@ -70,6 +72,15 @@
         <SwiperItems class="container"
         :items="products.filter(i => i.category === '醫藥')"
         @changeProduct="toProductPage"></SwiperItems>
+    </div>
+
+    <div class="bg-light py-3">
+      <div class="container rounded home-coupon-banner py-3">
+        <h3 class="display-6 text-white mb-3 text-center">現在完成首購，立享八折優惠 !</h3>
+        <button type="button" @click="copyCouponCode('firstBuy80')">
+          馬上領取 <i class="bi bi-hand-index-thumb-fill"></i></button>
+        <p ref="cuponCode" class="position-absolute d-none">firstBuy80</p>
+      </div>
     </div>
 
     <footer class="p-3" style="background-color: #ffe5e7; color: #86473F">
@@ -113,10 +124,8 @@ import SwiperItems from '@/components/SwiperItems.vue';
 import {
   Pagination, A11y, Autoplay, EffectFade,
 } from 'swiper';
-
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue';
-
 // Import Swiper styles
 import 'swiper/swiper-bundle.css';
 
@@ -147,6 +156,12 @@ export default {
     toProductPage(item) {
       this.$router.push(`/product/${item.id}`);
     },
+    copyCouponCode(text) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          this.$httpMessageState('success', '已複製優惠碼', '歡迎光臨!');
+        });
+    },
   },
   created() {
     this.getProducts();
@@ -163,5 +178,6 @@ export default {
       modules: [Pagination, A11y, Autoplay, EffectFade],
     };
   },
+  inject: ['$httpMessageState'],
 };
 </script>

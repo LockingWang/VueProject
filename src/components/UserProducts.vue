@@ -1,13 +1,13 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
 
-    <div class="products-banner mb-3">
+    <div class="products-banner">
       <div class="banner-text d-flex align-items-center justify-content-center">
         <h1 class="text-white">商品專區</h1>
       </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid bg-light pt-3">
       <div class="row justify-content-center">
         <div class="col-lg-9">
 
