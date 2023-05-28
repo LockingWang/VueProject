@@ -15,22 +15,19 @@
         @slideChange="onSlideChange"
       >
         <swiper-slide>
-          <router-link to="/products">
-            <img class="img-fluid"
-            src="../../public/user-products-banner/main-banner.svg" alt="Products Page Banner">
-          </router-link>
+          <img class="w-100"
+          src="../../public/user-products-banner/main-banner.svg" alt="Products Page Banner">
+          <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <router-link to="/product/-NTlt20QPr7IxM7ZdsrD">
-            <img class="img-fluid"
+          <img class="w-100"
             src="../../public/user-products-banner/tokyo-promo.svg" alt="Promotion Banner">
-          </router-link>
+          <router-link to="/product/-NTlt20QPr7IxM7ZdsrD" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <router-link to="/userCheckout/cart">
-            <img class="img-fluid"
+          <img class="w-100"
             src="../../public/user-products-banner/ninja-coupon.svg" alt="Coupon Banner">
-          </router-link>
+          <router-link to="/userCheckout/cart" class="stretched-link"></router-link>
         </swiper-slide>
       </swiper>
     </header>

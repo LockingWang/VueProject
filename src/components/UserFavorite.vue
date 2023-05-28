@@ -3,7 +3,7 @@
 
     <div>
       <img src="../../public/favorite-banner.svg" alt="Japan Style Room"
-      class="img-fluid">
+      class="w-100">
     </div>
     <h5 class="text-center py-3" v-if="filtedProducts.length !== 0">
       一共收藏了 {{ loveItemList.length }} 項商品</h5>

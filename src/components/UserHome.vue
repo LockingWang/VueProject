@@ -1,5 +1,5 @@
 <template>
-    <header ref="topElement">
+    <header>
       <swiper
         :modules="modules"
         :slides-per-view="1"
@@ -11,22 +11,16 @@
         @slideChange="onSlideChange"
       >
         <swiper-slide>
-          <router-link to="/products">
-            <img class="img-fluid"
-            src="../../public/home-banner/home-advert.svg" alt="Home Banner">
-          </router-link>
+          <img class="w-100" src="../../public/home-banner/home-advert.svg" alt="Home Banner">
+          <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <router-link to="/products">
-            <img class="img-fluid"
-            src="../../public/home-banner/home-coupon.svg" alt="Coupon Banner">
-          </router-link>
+          <img class="w-100" src="../../public/home-banner/home-coupon.svg" alt="Coupon Banner">
+          <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <router-link to="/product/-NTlu05E8NVhW9i0r6hc">
-            <img class="img-fluid"
-            src="../../public/home-banner/home-promo.svg" alt="Promotion Banner">
-          </router-link>
+          <img class="w-100" src="../../public/home-banner/home-promo.svg" alt="Promotion Banner">
+          <router-link to="/product/-NTlu05E8NVhW9i0r6hc" class="stretched-link"></router-link>
         </swiper-slide>
       </swiper>
     </header>
