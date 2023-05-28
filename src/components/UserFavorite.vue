@@ -1,11 +1,11 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <div class="favorite-banner mb-3">
-      <div class="banner-text d-flex align-items-center justify-content-center">
-        <h1 class="text-white">喜歡的商品</h1>
-      </div>
+
+    <div>
+      <img src="../../public/favorite-banner.svg" alt="Japan Style Room"
+      class="img-fluid">
     </div>
-    <h5 class="text-center" v-if="filtedProducts.length !== 0">
+    <h5 class="text-center py-3" v-if="filtedProducts.length !== 0">
       一共收藏了 {{ loveItemList.length }} 項商品</h5>
     <div class="container mb-3">
       <div class="row g-3" v-if="filtedProducts.length !== 0">

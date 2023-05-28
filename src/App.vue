@@ -1,6 +1,7 @@
 <template>
     <router-view/>
     <ToastMessages></ToastMessages>
+    <TopButton></TopButton>
 </template>
 
 <style lang="scss">
@@ -13,10 +14,12 @@
 import ToastMessages from '@/components/ToastMessages.vue';
 import emitter from '@/methods/emitter';
 import $httpMessageState from '@/methods/pushMessageState';
+import TopButton from '@/components/BackToTop.vue';
 
 export default {
   components: {
     ToastMessages,
+    TopButton,
   },
   provide() {
     return {

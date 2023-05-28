@@ -1,0 +1,21 @@
+.start-btn-group {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+}
+
+.start-btn {
+    border: 1px solid white;
+    &:hover {
+        background-color: yellow;
+        color: brown;
+    }
+}
+
+.game-result {
+    width: 30%;
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    transition: all 0.5s;
+}

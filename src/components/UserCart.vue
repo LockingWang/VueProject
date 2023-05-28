@@ -94,16 +94,21 @@
                   </tr>
                   </tfoot>
                 </table>
-                <div class="input-group input-group-sm mb-1" style="max-width: 300px;">
-                  <input type="text" class="form-control" aria-label="coupon_code"
-                  v-model="coupon_code" placeholder="請輸入優惠碼">
-                  <button class="btn btn-warning" type="button" @click="textCheck"
-                  :disabled="coupon_code === '' || cart.carts.length == 0">
-                      套用優惠碼
-                  </button>
+
+                <div class="d-flex justify-content-between">
+                  <div class="input-group input-group-sm mb-1" style="max-width: 300px;">
+                    <input type="text" class="form-control" aria-label="coupon_code"
+                    v-model="coupon_code" placeholder="請輸入優惠碼">
+                    <button class="btn btn-warning" type="button" @click="textCheck"
+                    :disabled="coupon_code === '' || cart.carts.length == 0">
+                        套用優惠碼
+                    </button>
+                  </div>
+                  <router-link to="/couponGame" class="btn btn-outline-warning">
+                    優惠券專區</router-link>
                 </div>
+
                 <p class="text-danger" v-if="specialText">優惠碼不含特殊符號</p>
-                <p class="text-secondary">提示 : 請輸入[ japan666 ]</p>
               </div>
               <router-link to="/userCheckout/userInfo" class="btn btn-danger w-100"
               v-if="!cart.carts.length == 0">

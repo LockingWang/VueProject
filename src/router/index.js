@@ -69,6 +69,10 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'couponGame',
+        component: () => import('../components/CouponGame.vue'),
+      },
     ],
   },
   {

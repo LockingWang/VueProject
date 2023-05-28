@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed-cart d-none d-md-block">
+    <div class="fixed-cart d-none d-md-block" v-if="cart.carts.length !== 0">
         <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions"
         role="button" aria-controls="offcanvasExample">
         <img src="https://img-bsy.txrpic.com/preview/Element/00/00/96/60/E-966041-F44B8F15.png?imageMogr2/quality/90/thumbnail/!800x%3E" alt="cart"

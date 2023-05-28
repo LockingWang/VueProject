@@ -142,15 +142,16 @@ export default {
   },
   watch: {
     order() {
-      this.tempOrder = this.order;
+      this.tempOrder = JSON.parse(JSON.stringify(this.order));
       this.tempOrder.create_at = this.$filters.inputDateType(this.tempOrder.create_at);
     },
   },
   methods: {
     emitOrder() {
-      const unixTime = new Date(this.tempOrder.create_at).getTime();
-      this.tempOrder.create_at = unixTime / 1000;
-      this.$emit('update-order', this.tempOrder);
+      const emitOrder = JSON.parse(JSON.stringify(this.tempOrder));
+      const unixTime = new Date(emitOrder.create_at).getTime();
+      emitOrder.create_at = unixTime / 1000;
+      this.$emit('update-order', emitOrder);
     },
   },
   mixins: [modalMixin],

@@ -2,20 +2,25 @@
     <swiper
       :modules="modules"
       :slides-per-view="itemsNum"
-      :space-between="50"
+      :space-between="20"
       navigation
+      :loop="true"
       :pagination="{ clickable: true }"
-      :scrollbar="{ draggable: true }"
       @swiper="onSwiper"
       @slideChange="onSlideChange"
       class="p-3"
     >
         <swiper-slide v-for="item in items" :key="item.id">
             <div class="card h-100 border border-5" :id="item.id">
-                <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                  style="max-height: 300px;" alt="...">
+                <div class="img-box position-relative">
+                  <div class="bg-img"
+                  :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
+                </div>
+                <!-- <img :src="item.imageUrl" class="card-img-top object-fit-contain"
+                  style="max-height: 300px;" alt="..."> -->
                 <div class="card-body border-top d-flex flex-column">
-                    <h5 class="card-title text-center d-block">{{ item.title }}</h5>
+                    <h5 class="card-title text-center text-ellipsis-multi">
+                      {{ item.title }}</h5>
                     <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
                     :data-id="item.id"
                     @click.prevent="emitChangeSign(item)"
@@ -30,7 +35,7 @@
   </template>
 <script>
 import {
-  Navigation, Pagination, Scrollbar, A11y,
+  Navigation, Pagination, A11y,
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
@@ -51,7 +56,11 @@ export default {
   methods: {
     checkViewWidth() {
       if (window.innerWidth >= 768) {
+        this.itemsNum = 4;
+      } else if (window.innerWidth < 768 && window.innerWidth >= 576) {
         this.itemsNum = 3;
+      } else if (window.innerWidth < 576 && window.innerWidth >= 400) {
+        this.itemsNum = 2;
       } else {
         this.itemsNum = 1;
       }
@@ -71,7 +80,7 @@ export default {
     return {
       onSwiper,
       onSlideChange,
-      modules: [Navigation, Pagination, Scrollbar, A11y],
+      modules: [Navigation, Pagination, A11y],
     };
   },
 };

@@ -4,10 +4,9 @@
         <strong class="me-auto text-white">{{ msg.title }}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-      <div class="toast-body" v-if="msg.content">
+      <div class="toast-body">
         {{ msg.content }}
       </div>
-      <div class="toast-body" v-else></div>
     </div>
   </template>
 <script>
@@ -21,7 +20,7 @@ export default {
   mounted() {
     const toastEl = this.$refs.toast;
     const toast = new Toast(toastEl, {
-      delay: 6000,
+      delay: 2000,
     });
     toast.show();
   },

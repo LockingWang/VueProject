@@ -2,7 +2,7 @@
   <LoadingOverlay :active="isLoading"></LoadingOverlay>
   <nav class="navbar navbar-expand-lg shadow-sm px-3 manager-navbar fixed-top">
         <div class="container-fluid">
-          <router-link class="nav-link logo-indent" to="/dashboard" style="width: 200px;">
+          <router-link class="nav-link logo-indent" to="/dashboard/products" style="width: 200px;">
             <img class="img-fluid" src="https://storage.googleapis.com/vue-course-api.appspot.com/cong-ren/1683082602645.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=BCYzXPtK8OCGLNLZh2BHGdZ74Vlx04qpqSFQbmmsnLDY4IrqtfBQupiPSTm8I9cSDgDjot6y6A6BaGNrFZxT%2FRnxw1HDCKyU%2BjBSCbvqf3EAu78K4da4ldoHhGzWOxRDBCqm1ZQfuS4FEzY5KIgsjq7DHlfIHTKxGcpwzwVp4%2FGKCKdekqcUSN8yLt31QzC3orS5h8ZGA2WqfPHHLI6%2FTGJ9ZhJmYbZorKAcI%2BpDCXo6ScyQ98IbGRWQjD3NTEmAYapTcA9yPDoRUXhz86rrNWuRKTx8vctF5PfHeR3UkXJOvN15i8Rmw%2B%2F5zAGslc2OqTnKCgdShTjNmU7jy1sjHQ%3D%3D" alt="logo">
           </router-link>
           <button class="navbar-toggler" type="button" @click="toggleCollapse">

@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade" ref="modal">
         <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content border-0" style="width: 300px;">
+            <div class="modal-content border-0 mx-auto" style="width: 300px;">
 
                 <div class="modal-header bg-success text-white">
                   <h5 class="modal-title" id="exampleModalLabel">
@@ -89,7 +89,7 @@ export default {
   },
   watch: {
     coupon() {
-      this.tempCoupon = this.coupon;
+      this.tempCoupon = JSON.parse(JSON.stringify(this.coupon));
       this.tempCoupon.due_date = this.$filters.inputDateType(this.tempCoupon.due_date / 1000);
     },
   },
@@ -100,9 +100,10 @@ export default {
         this.percentWarning = true;
         return;
       }
-      const unixTime = new Date(this.tempCoupon.due_date).getTime();
-      this.tempCoupon.due_date = unixTime;
-      this.$emit('update-coupon', this.tempCoupon);
+      const emitCoupon = JSON.parse(JSON.stringify(this.tempCoupon));
+      const unixTime = new Date(emitCoupon.due_date).getTime();
+      emitCoupon.due_date = unixTime;
+      this.$emit('update-coupon', emitCoupon);
     },
   },
 };

@@ -9,18 +9,15 @@
           created with Vue.
         </p>
       </div>
-      <ToastMessages></ToastMessages>
 </template>
 
 <script>
 import emitter from '@/methods/emitter';
-import ToastMessages from '@/components/ToastMessages.vue';
 import $httpMessageState from '@/methods/pushMessageState';
 import UserNavBar from '@/components/UserNavBar.vue';
 
 export default {
   components: {
-    ToastMessages,
     UserNavBar,
   },
   provide() {
@@ -29,8 +26,15 @@ export default {
       $httpMessageState,
     };
   },
+  methods: {
+    toHomePage() {
+      if (this.$route.fullPath === '/') {
+        this.$router.push('/home');
+      }
+    },
+  },
   created() {
-    this.$router.push('/home');
+    this.toHomePage();
   },
 };
 </script>

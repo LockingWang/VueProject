@@ -1,7 +1,6 @@
 <template>
     <Narbar></Narbar>
     <div class="container-fluid" style="margin-top: 80px;">
-        <ToastMessages></ToastMessages>
         <router-view></router-view>
     </div>
 </template>
@@ -9,13 +8,11 @@
 <script>
 import emitter from '@/methods/emitter';
 import Narbar from '@/components/NavBar.vue';
-import ToastMessages from '@/components/ToastMessages.vue';
 import $httpMessageState from '@/methods/pushMessageState';
 
 export default {
   components: {
     Narbar,
-    ToastMessages,
   },
   provide() {
     return {
@@ -31,7 +28,9 @@ export default {
     this.$http.post(api, this.user)
       .then((res) => {
         if (res.data.success) {
-          this.$router.push('/dashboard/products');
+          if (this.$route.fullPath === '/dashboard') {
+            this.$router.push('/dashboard/products');
+          }
         } else {
           this.$router.push('/login');
         }

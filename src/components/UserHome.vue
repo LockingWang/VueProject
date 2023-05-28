@@ -1,12 +1,10 @@
 <template>
-    <header>
+    <header ref="topElement">
       <swiper
         :modules="modules"
         :slides-per-view="1"
         :space-between="50"
         :autoplay="{ delay: 3000, }"
-        :loop="'true'"
-        :speed="'1000'"
         :effect="'fade'"
         :pagination="{ clickable: true }"
         @swiper="onSwiper"
@@ -30,7 +28,6 @@
             src="../../public/home-banner/home-promo.svg" alt="Promotion Banner">
           </router-link>
         </swiper-slide>
-        ...
       </swiper>
     </header>
 
@@ -46,7 +43,7 @@
 
             <p class="mt-3 lh-lg">
               隨著日本旅遊的興盛，日本商品的競爭也越來越激烈，
-              我們透過每天更新商品銷售資訊，掌握近期身受台灣人喜愛的日本商品，
+              我們透過每天更新商品銷售資訊，掌握近期深受台灣人喜愛的日本商品，
               並提供這個平台給大家選購，讓在台灣的你們，也都能買到高品質、高人氣的商品喔!!!
             </p>
             <div class="text-end">
@@ -90,10 +87,12 @@
               <div class="col-12 col-md-4 text-center">
                 <h3 class="h4">聯絡方式</h3>
                 <ul class="list-unstyled">
-                    <li><a class="text-decoration-none" style="color: #86473F;" href="#">
+                    <li><a class="text-decoration-none" style="color: #86473F;"
+                      href="mailto: boom0525300@gmail.com">
                         <i class="bi bi-envelope"></i> boom0525300@gmail.com
                     </a></li>
-                    <li><a class="text-decoration-none" style="color: #86473F;" href="#">
+                    <li><a class="text-decoration-none" style="color: #86473F;"
+                      href="tel: 0903008556">
                         <i class="bi bi-phone"></i> 0903-008-556
                     </a></li>
                 </ul>
@@ -101,13 +100,13 @@
               <div class="col-12 col-md-4 text-center">
                 <h3 class="h4">社群軟體</h3>
                   <ul class="list-unstyled">
-                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="https://www.instagram.com/">
                           <i class="bi bi-instagram"></i> boom_0525300
                       </a></li>
-                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="https://www.facebook.com/">
                           <i class="bi bi-facebook"></i> CongRen Wang
                       </a></li>
-                      <li><a class="text-decoration-none" style="color: #86473F;" href="#">
+                      <li><a class="text-decoration-none" style="color: #86473F;" href="https://www.youtube.com/">
                           <i class="bi bi-youtube"></i> CongRen Wang
                       </a></li>
                   </ul>
@@ -167,8 +166,7 @@ export default {
     this.getProducts();
   },
   setup() {
-    const onSwiper = (swiper) => {
-      console.log(swiper);
+    const onSwiper = () => {
     };
     const onSlideChange = () => {
     };

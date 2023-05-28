@@ -9,8 +9,8 @@
   </div>
   <div class="overflow-auto">
 
-    <table class="table mt-4">
-      <thead class="text-nowrap">
+    <table class="table mt-4 text-nowrap">
+      <thead>
           <tr>
             <th>名稱</th>
             <th>折扣百分比(%)</th>
@@ -45,11 +45,11 @@
   <PaginationModel :pages="pagination"
     @emit-pages="getCoupons"></PaginationModel>
   <CouponModal ref="couponModal"
-                :coupon="tempCoupon"
-                @update-coupon="updateCoupon"></CouponModal>
+    :coupon="tempCoupon"
+    @update-coupon="updateCoupon"></CouponModal>
   <DelModal ref="delModal"
-            :item="delItem"
-            @del-item="deleteCoupon"></DelModal>
+    :item="delItem"
+    @del-item="deleteCoupon"></DelModal>
 </template>
 
 <script>
@@ -102,9 +102,10 @@ export default {
       if (isNew) {
         this.tempCoupon = {
           is_enabled: 0,
+          due_date: new Date().getTime(),
         };
       } else {
-        this.tempCoupon = { ...item };
+        this.tempCoupon = JSON.parse(JSON.stringify(item));
       }
       this.isNew = isNew;
       const couponComponent = this.$refs.couponModal;

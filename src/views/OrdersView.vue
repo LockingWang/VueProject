@@ -190,7 +190,7 @@ export default {
       this.filtedOrders = showOrders;
     },
     openModal(order) {
-      this.tempOrder = { ...order };
+      this.tempOrder = JSON.parse(JSON.stringify(order));
       const orderComponent = this.$refs.orderModal;
       orderComponent.showModal();
     },
@@ -198,7 +198,7 @@ export default {
       const orderComponent = this.$refs.orderModal;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${tempOrder.id}`;
       this.isLoading = true;
-      this.$http.put(api, { data: this.tempOrder })
+      this.$http.put(api, { data: tempOrder })
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
