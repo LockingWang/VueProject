@@ -1,5 +1,5 @@
 <template>
-  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <LoadingOverlay :active="isLoading" />
 
   <div class="row g-3 mt-3 justify-content-end">
     <div class="col-sm-3">
@@ -21,7 +21,7 @@
       </thead>
       <tbody>
           <tr v-for="item in coupons" :key="item.id">
-            <td>{{item.title}}</td>
+            <td>{{ item.title }}</td>
             <td>{{ `${item.percent}%` }}</td>
             <td>{{ $filters.inputDateType(item.due_date / 1000) }}</td>
             <td>
@@ -30,9 +30,9 @@
             </td>
             <td>
                 <div class="btn-group w-100">
-                <button class="btn btn-outline-primary btn-sm"
+                <button type="button" class="btn btn-outline-primary btn-sm"
                 @click="openModal(false, item)">編輯</button>
-                <button class="btn btn-outline-danger btn-sm"
+                <button type="button" class="btn btn-outline-danger btn-sm"
                 @click="openDelModal(item)">刪除</button>
                 </div>
             </td>
@@ -42,14 +42,9 @@
 
   </div>
 
-  <PaginationModel :pages="pagination"
-    @emit-pages="getCoupons"></PaginationModel>
-  <CouponModal ref="couponModal"
-    :coupon="tempCoupon"
-    @update-coupon="updateCoupon"></CouponModal>
-  <DelModal ref="delModal"
-    :item="delItem"
-    @del-item="deleteCoupon"></DelModal>
+  <PaginationModel :pages="pagination" @emit-pages="getCoupons" />
+  <CouponModal ref="couponModal" :coupon="tempCoupon" @update-coupon="updateCoupon" />
+  <DelModal ref="delModal" :item="delItem" @del-item="deleteCoupon" />
 </template>
 
 <script>
@@ -92,10 +87,12 @@ export default {
           if (res.data.success) {
             this.coupons = res.data.coupons;
             this.pagination = res.data.pagination;
+          } else {
+            this.$httpMessageState('warning', '取得資料失敗', '請重新整理頁面');
           }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.$httpMessageState('danger', '發生問題', '請聯繫工程師。');
         });
     },
     openModal(isNew, item) {

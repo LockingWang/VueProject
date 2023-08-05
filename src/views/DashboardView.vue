@@ -1,7 +1,7 @@
 <template>
-    <Narbar></Narbar>
+    <Narbar />
     <div class="container-fluid" style="margin-top: 80px;">
-        <router-view></router-view>
+        <router-view />
     </div>
 </template>
 
@@ -34,9 +34,6 @@ export default {
         } else {
           this.$router.push('/login');
         }
-      })
-      .catch((err) => {
-        console.log(err.response);
       });
   },
 };

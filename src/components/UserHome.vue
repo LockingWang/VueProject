@@ -141,9 +141,6 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
           }
-        })
-        .catch((err) => {
-          console.log(err);
         });
     },
     toProductPage(item) {

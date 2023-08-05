@@ -1,5 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <LoadingOverlay :active="isLoading" />
     <div class="row g-3 mt-3 justify-content-end">
       <div class="col-sm-2">
         <select class="form-select w-100" aria-label="Category"
@@ -11,8 +11,8 @@
       </div>
       <div class="col-sm-2 ms-3">
         <input type="text" class="form-control" placeholder="搜尋商品名稱"
-        aria-label="serach text" aria-describedby="serach product"
-        v-model="searchText" @change="textCheck()">
+        aria-label="search text" aria-describedby="search product"
+        v-model="searchText" @change="textCheck">
         <span class="text-danger d-block text-center mb-3"
         :style="{opacity: specialText}">請勿輸入特殊字元</span>
       </div>
@@ -36,8 +36,8 @@
         </thead>
         <tbody>
             <tr v-for="item in filtedProducts" :key="item.id">
-            <td>{{item.category}}</td>
-            <td>{{item.title}}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.title }}</td>
             <td class="text-right">
                 {{ $filters.currency(item.origin_price) }}
             </td>
@@ -50,9 +50,9 @@
             </td>
             <td>
                 <div class="btn-group w-100">
-                <button class="btn btn-outline-primary btn-sm text-nowrap"
+                <button type="button" class="btn btn-outline-primary btn-sm text-nowrap"
                 @click="openModal(false, item)">編輯</button>
-                <button class="btn btn-outline-danger btn-sm text-nowrap"
+                <button type="button" class="btn btn-outline-danger btn-sm text-nowrap"
                 @click="openDelModal(item)">刪除</button>
                 </div>
             </td>
@@ -61,14 +61,9 @@
       </table>
     </div>
 
-    <PaginationModel :pages="pagination"
-      @emit-pages="filtProducts"></PaginationModel>
-    <ProductModal ref="productModal"
-                  :product="tempProduct"
-                  @update-product="updateProduct"></ProductModal>
-    <DelModal ref="delModal"
-              :item="delItem"
-              @del-item="deleteProduct"></DelModal>
+    <PaginationModel :pages="pagination" @emit-pages="filtProducts" />
+    <ProductModal ref="productModal" :product="tempProduct" @update-product="updateProduct" />
+    <DelModal ref="delModal" :item="delItem" @del-item="deleteProduct" />
 </template>
 
 <script>
@@ -115,10 +110,12 @@ export default {
           if (res.data.success) {
             this.products = Object.values(res.data.products);
             this.filtProducts(this.pagination.current_page);
+          } else {
+            this.$httpMessageState('warning', '取得商品資料失敗', '請重新整理網頁。');
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.$httpMessageState('danger', '發生錯誤', '請洽工程師。');
         });
     },
     openModal(isNew, item) {

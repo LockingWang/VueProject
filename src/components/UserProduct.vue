@@ -1,5 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <LoadingOverlay :active="isLoading" />
     <div class="bg-light">
       <div class="container pt-3">
 
@@ -54,16 +54,16 @@
               <div class="row">
                 <div class="col-sm-7 d-flex flex-wrap fs-4 justify-content-center">
                   <span>分享 : </span>
-                  <button class="border-0 social-btn" @click="openSocialPage('fb')">
+                  <button type="button" class="border-0 social-btn" @click="openSocialPage('fb')">
                     <i class="bi bi-facebook" style="color: #4267B2;"></i>
                   </button>
-                  <button class="border-0 social-btn" @click="openSocialPage('ig')">
+                  <button type="button" class="border-0 social-btn" @click="openSocialPage('ig')">
                     <i class="bi bi-instagram" style="color: #E1306C;"></i>
                   </button>
-                  <button class="border-0 social-btn" @click="openSocialPage('twi')">
+                  <button type="button" class="border-0 social-btn" @click="openSocialPage('twi')">
                     <i class="bi bi-twitter" style="color: #1DA1F2;"></i>
                   </button>
-                  <button class="border-0 social-btn" @click="openSocialPage('line')">
+                  <button type="button" class="border-0 social-btn" @click="openSocialPage('line')">
                     <i class="bi bi-line" style="color: #06C755;"></i>
                   </button>
                 </div>
@@ -177,11 +177,11 @@
         <section class="bg-white p-3 mb-3">
           <div>
             <h5 class="bg-light p-3">商品介紹</h5>
-            <p class="descripe-preLine ps-3">{{ product.description }}</p>
+            <p class="description-preLine ps-3">{{ product.description }}</p>
           </div>
           <div>
             <h5 class="bg-light p-3">商品規格</h5>
-            <p class="descripe-preLine ps-3">{{ product.content }}</p>
+            <p class="description-preLine ps-3">{{ product.content }}</p>
           </div>
         </section>
 
@@ -275,9 +275,9 @@
                   <i class="bi bi-star"></i>
                 </p>
               </div>
-              <p class="text-secondary fs-6">2023-01-27 00:48 | 商品: dejavu 就是自然輕盈眉彩膏(灰棕)</p>
+              <p class="text-secondary fs-6">2023-01-27 00:48 | 商品: Dejavu 就是自然輕盈眉彩膏(灰棕)</p>
               <p class="fs-5">
-                包裝完整，商品正確無誤 ！dejavu眼膠筆非常好用已經回購了好幾次，不會暈！
+                包裝完整，商品正確無誤 ！Dejavu眼膠筆非常好用已經回購了好幾次，不會暈！
               </p>
             </div>
           </div>
@@ -369,9 +369,6 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
           }
-        })
-        .catch((err) => {
-          console.log(err);
         });
     },
     getProduct() {
@@ -383,10 +380,12 @@ export default {
           if (res.data.success) {
             this.product = res.data.product;
             this.mainImgUrl = this.product.imageUrl;
+          } else {
+            this.$httpMessageState('warning', '商品資料載入失敗', '請重試一次');
           }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.$httpMessageState('danger', '系統錯誤', '請洽工程師');
         });
     },
     toProductPage(item) {
@@ -461,15 +460,7 @@ export default {
     this.updateLovedItem();
   },
   setup() {
-    const onSwiper = () => {
-      // console.log(swiper);
-    };
-    const onSlideChange = () => {
-      // console.log('slide change');
-    };
     return {
-      onSwiper,
-      onSlideChange,
       modules: [Navigation, Pagination, Scrollbar, A11y],
     };
   },

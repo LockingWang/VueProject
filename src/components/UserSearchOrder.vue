@@ -1,5 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <LoadingOverlay :active="isLoading" />
     <div class="container-fluid border-bottom">
         <div class="row justify-content-center bg-light">
             <div class="col-md-6">
@@ -14,7 +14,7 @@
                     </div>
                     <p class="text-danger" v-if="warning">查詢不到該筆訂單，請重新輸入。</p>
                     <div>
-                      <button class="btn btn-success w-50" @click="getOrder"
+                      <button type="button" class="btn btn-success w-50" @click="getOrder"
                       v-if="orderId">搜尋訂單</button>
                       <p v-else>忘記訂單編號 ? 請聯絡我們
                         <i class="bi bi-telephone-fill ms-1 text-success"></i>
@@ -50,9 +50,8 @@ export default {
             }
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
         });
     },
   },

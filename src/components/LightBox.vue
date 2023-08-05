@@ -1,7 +1,5 @@
 <template>
     <div>
-      <!-- <button @click="showSingle">Show single picture.</button> -->
-      <!-- <button @click="showMultiple">Show a group of pictures.</button> -->
       <a href="#" class="lightbox-link" @click.prevent="showMultiple(product)">light-box-link</a>
 
       <vue-easy-lightbox

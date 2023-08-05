@@ -24,8 +24,7 @@ export default {
             this.$httpMessageState('warning', '加入失敗', '請再試一次');
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           this.$httpMessageState('danger', '發生問題', '請聯繫工程師。');
         });
     },
@@ -34,8 +33,15 @@ export default {
       this.isLoading = true;
       this.$http.get(url)
         .then((res) => {
-          this.cart = res.data.data;
           this.isLoading = false;
+          if (res.data.success) {
+            this.cart = res.data.data;
+          } else {
+            this.$httpMessageState('warning', '取得購物車資料失敗', '請重新整理頁面');
+          }
+        })
+        .catch(() => {
+          this.$httpMessageState('danger', '發生問題', '請聯繫工程師。');
         });
     },
   },

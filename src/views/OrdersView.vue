@@ -1,5 +1,5 @@
 <template>
-  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <LoadingOverlay :active="isLoading" />
   <div class="container-fluid">
 
     <div class="row g-3 mt-3 justify-content-end">
@@ -15,7 +15,7 @@
             <option value="email" selected>Email</option>
           </select>
           <input type="text" class="form-control" placeholder="搜尋關鍵字"
-          aria-label="serach text" aria-describedby="serach order"
+          aria-label="search text" aria-describedby="search order"
           v-model="searchText" @change="textCheck()" :disabled="this.filter === ''">
         </div>
         <span class="text-danger d-block text-end mb-3"
@@ -53,9 +53,9 @@
               </td>
               <td>
                   <div class="btn-group w-100">
-                    <button class="btn btn-outline-primary btn-sm text-nowrap"
+                    <button type="button" class="btn btn-outline-primary btn-sm text-nowrap"
                     @click="openModal(order)">編輯</button>
-                    <button class="btn btn-outline-danger btn-sm text-nowrap"
+                    <button type="button" class="btn btn-outline-danger btn-sm text-nowrap"
                     @click="openDelModal(order)">刪除</button>
                   </div>
               </td>
@@ -69,17 +69,11 @@
       </table>
     </div>
 
-    <PaginationModel :pages="pagination"
-    @emit-pages="filtOrders"></PaginationModel>
+    <PaginationModel :pages="pagination" @emit-pages="filtOrders" />
 
-    <OrderModal ref="orderModal"
-    :order="tempOrder"
-    @update-order="updateOrder"></OrderModal>
+    <OrderModal ref="orderModal" :order="tempOrder" @update-order="updateOrder" />
 
-    <DelModal ref="delModal"
-    :item="delOrder"
-    @del-item="deleteOrder"
-    @del-all="deleteAll"></DelModal>
+    <DelModal ref="delModal" :item="delOrder" @del-item="deleteOrder" @del-all="deleteAll" />
   </div>
 </template>
 
@@ -121,25 +115,36 @@ export default {
       this.$http.get(api)
         .then((res) => {
           this.isLoading = false;
-          this.allOrders = [];
-          this.getAllOrders(res.data.pagination.total_pages, currentPage, 1);
+          if (res.data.success) {
+            this.allOrders = [];
+            this.getAllOrders(res.data.pagination.total_pages, currentPage, 1);
+          } else {
+            this.$httpMessageState('warning', '取得資料失敗', '請重新整理頁面。');
+          }
         })
-        .catch((err) => {
-          console.log('err', err);
+        .catch(() => {
+          this.$httpMessageState('warning', '系統錯誤', '請洽工程師。');
         });
     },
-    async getAllOrders(totalPage, currentPage, loadingPage) {
+    getAllOrders(totalPage, currentPage, loadingPage) {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${loadingPage}`;
-      await this.$http.get(api)
-        .then((res1) => {
-          this.allOrders = this.allOrders.concat(res1.data.orders);
-          if (res1.data.pagination.current_page < totalPage) {
-            this.getAllOrders(totalPage, currentPage, loadingPage + 1);
+      this.$http.get(api)
+        .then((res) => {
+          if (res.data.success) {
+            this.allOrders = this.allOrders.concat(res.data.orders);
+            if (res.data.pagination.current_page < totalPage) {
+              this.getAllOrders(totalPage, currentPage, loadingPage + 1);
+            } else {
+              this.isLoading = false;
+              this.filtOrders(currentPage);
+            }
           } else {
-            this.isLoading = false;
-            this.filtOrders(currentPage);
+            this.$httpMessageState('warning', '取得資料失敗', '請重新整理頁面。');
           }
+        })
+        .catch(() => {
+          this.$httpMessageState('warning', '系統錯誤', '請洽工程師。');
         });
     },
     filtOrders(page = 1) {

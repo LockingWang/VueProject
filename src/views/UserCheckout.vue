@@ -1,6 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
-    <router-view></router-view>
+    <router-view />
 </template>
 
 <script>
@@ -11,7 +10,6 @@ export default {
       order: {
         user: {},
       },
-      isLoading: false,
     };
   },
 };

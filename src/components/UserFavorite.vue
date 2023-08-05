@@ -1,5 +1,4 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
 
     <div>
       <img src="../../public/favorite-banner.svg" alt="Japan Style Room"
@@ -33,9 +32,9 @@
                     </div>
                   </div>
                   <div class="btn-group">
-                    <button class="btn btn-outline-primary btn-sm"
+                    <button class="btn btn-outline-primary btn-sm" type="button"
                     @click="getProduct(item.id)">查看更多</button>
-                    <button class="btn btn-outline-danger btn-sm"
+                    <button class="btn btn-outline-danger btn-sm" type="button"
                     @click="addToCart(item.id)">加到購物車</button>
                     </div>
                     <div class="position-absolute top-0 end-0">
@@ -62,7 +61,7 @@
         </div>
       </div>
     </div>
-    <UserCart :cart="cart" @change-cart="getCart"></UserCart>
+    <UserCart :cart="cart" @change-cart="getCart" />
 </template>
 
 <script>
@@ -79,7 +78,6 @@ export default {
     return {
       loveItemList: [],
       filtedProducts: [],
-      isLoading: false,
       status: {
         loadingItem: '', // 對應品項 id
       },

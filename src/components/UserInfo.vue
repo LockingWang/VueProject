@@ -1,5 +1,5 @@
 <template>
-  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <LoadingOverlay :active="isLoading" />
   <div class="row justify-content-center g-0 bg-light">
     <h5 class="text-center mt-3">訂購流程</h5>
     <div class="row justify-content-center">
@@ -76,7 +76,7 @@
         @click="backToCart">
           <i class="bi bi-arrow-bar-left"></i>回到購物車
         </button>
-        <button class="btn btn-danger w-50">
+        <button type="button" class="btn btn-danger w-50">
           建立訂單<i class="bi bi-arrow-bar-right"></i>
         </button>
       </div>
@@ -128,9 +128,8 @@ export default {
             this.$httpMessageState('warning', '建立訂單失敗', res.data.message);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
           this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },

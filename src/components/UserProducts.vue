@@ -1,5 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <LoadingOverlay :active="isLoading" />
 
     <header>
       <swiper
@@ -49,7 +49,7 @@
               </div>
               <div class="col-md-6">
                 <div class="input-group mb-3">
-                  <button class="input-group-text border-0 bg-light">
+                  <button type="button" class="input-group-text border-0 bg-light">
                     <i class="bi bi-search"></i>
                   </button>
                   <input type="text" class="form-control"
@@ -141,7 +141,7 @@
       </div>
     </div>
 
-    <UserCart :cart="cart" @change-cart="getCart"></UserCart>
+    <UserCart :cart="cart" @change-cart="getCart" />
 </template>
 
 <script>
@@ -182,16 +182,20 @@ export default {
   inject: ['emitter', '$httpMessageState'],
   methods: {
     getProducts() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
+            this.isLoading = false;
             this.products = res.data.products;
             this.filtProducts();
+          } else {
+            this.$httpMessageState('warning', '商品資料載入失敗', '請重試一次');
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.$httpMessageState('warning', '系統錯誤', '請洽工程師');
         });
     },
     getProduct(id) {

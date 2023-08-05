@@ -1,14 +1,8 @@
 <template>
     <router-view/>
-    <ToastMessages></ToastMessages>
-    <TopButton></TopButton>
+    <ToastMessages/>
+    <TopButton/>
 </template>
-
-<style lang="scss">
-@import "./assets/all";
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;900&display=swap');
-</style>
 
 <script>
 import ToastMessages from '@/components/ToastMessages.vue';
@@ -30,3 +24,9 @@ export default {
 };
 
 </script>
+
+<style lang="scss">
+@import "./assets/all";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;900&display=swap');
+</style>

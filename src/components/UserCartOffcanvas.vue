@@ -2,8 +2,7 @@
     <div class="fixed-cart d-none d-md-block" v-if="cart.carts.length !== 0">
         <a class="btn" data-bs-toggle="offcanvas" href="#offcanvasWithBothOptions"
         role="button" aria-controls="offcanvasExample">
-        <img src="https://img-bsy.txrpic.com/preview/Element/00/00/96/60/E-966041-F44B8F15.png?imageMogr2/quality/90/thumbnail/!800x%3E" alt="cart"
-        class="img-fluid">
+        <img src="@/assets/images/cart.svg" alt="cart" class="img-fluid">
         <span class="position-absolute start-50 translate-middle badge rounded-pill bg-info"
         style="top: 10%;">
             {{ cart.carts.length }}
@@ -13,7 +12,7 @@
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1"
     id="offcanvasWithBothOptions" ref="offCanvas"
     style="width: 600px">
-        <LoadingOverlay :active="isLoading"></LoadingOverlay>
+        <LoadingOverlay :active="isLoading" />
         <div class="offcanvas-header bg-danger text-white">
             <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">我的購物車</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
@@ -132,13 +131,17 @@ export default {
         qty: item.qty,
       };
       this.$http.put(url, { data: cart })
-        .then(() => {
-          this.isLoading = false;
-          this.status.loadingItem = '';
-          this.$emit('change-cart');
+        .then((res) => {
+          if (res.data.success) {
+            this.isLoading = false;
+            this.status.loadingItem = '';
+            this.$emit('change-cart');
+          } else {
+            this.$httpMessageState('warning', '購物車更新失敗', '請重試一次。');
+          }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },
     removeCartItem(id) {
@@ -154,8 +157,7 @@ export default {
           this.$httpMessageState('success', '刪除商品成功', '快去尋找更適合的商品吧 ~ !');
           this.$emit('change-cart');
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
           this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },

@@ -1,5 +1,5 @@
 <template>
-  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <LoadingOverlay :active="isLoading" />
   <div class="container-fluid">
     <div class="row justify-content-center bg-light">
       <div class="col-md-6 bg-white mt-5">
@@ -112,9 +112,6 @@ export default {
           if (res.data.success) {
             this.order = res.data.order;
           }
-        })
-        .catch((err) => {
-          console.log(err.response);
         });
     },
   },

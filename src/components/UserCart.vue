@@ -1,5 +1,5 @@
 <template>
-  <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <LoadingOverlay :active="isLoading" />
   <div class="bg-light">
     <div class="container bg-light">
       <div class="row justify-content-center">
@@ -144,8 +144,15 @@ export default {
       this.isLoading = true;
       this.$http.get(url)
         .then((res) => {
-          this.cart = res.data.data;
-          this.isLoading = false;
+          if (res.data.success) {
+            this.cart = res.data.data;
+            this.isLoading = false;
+          } else {
+            this.$httpMessageState('warning', '取得購物車資料失敗', '請重新整理網頁。');
+          }
+        })
+        .catch(() => {
+          this.$httpMessageState('danger', '系統出錯', '請洽工程師。');
         });
     },
     updateCart(item) {
@@ -161,13 +168,18 @@ export default {
         qty: modifyQty,
       };
       this.$http.put(url, { data: cart })
-        .then(() => {
-          this.isLoading = false;
-          this.status.loadingItem = '';
-          this.getCart();
+        .then((res) => {
+          if (res.data.success) {
+            this.isLoading = false;
+            this.status.loadingItem = '';
+            this.getCart();
+          } else {
+            this.isLoading = false;
+            this.$httpMessageState('warning', '更新商品失敗', '請重試一次。');
+          }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
+          this.$httpMessageState('danger', '系統出錯', '請洽工程師。');
         });
     },
     removeCartItem(id) {
@@ -178,13 +190,16 @@ export default {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/${target}`;
       this.isLoading = true;
       this.$http.delete(url)
-        .then(() => {
-          this.isLoading = false;
-          this.$httpMessageState('success', '刪除商品成功', '快去尋找更適合的商品吧 ~ !');
-          this.getCart();
+        .then((res) => {
+          if (res.data.success) {
+            this.isLoading = false;
+            this.$httpMessageState('success', '刪除商品成功', '快去尋找更適合的商品吧 ~ !');
+            this.getCart();
+          } else {
+            this.$httpMessageState('warning', '刪除失敗', '請重試一次。');
+          }
         })
-        .catch((err) => {
-          console.log(err.response);
+        .catch(() => {
           this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },
@@ -205,8 +220,7 @@ export default {
             this.$httpMessageState('warning', '套用優惠券失敗', res.data.message);
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           this.$httpMessageState('danger', '發生錯誤', '請聯繫工程師。');
         });
     },

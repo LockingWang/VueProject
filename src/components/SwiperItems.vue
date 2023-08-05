@@ -1,38 +1,39 @@
 <template>
-    <swiper
-      :modules="modules"
-      :slides-per-view="itemsNum"
-      :space-between="20"
-      navigation
-      :loop="true"
-      :pagination="{ clickable: true }"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-      class="p-3"
-    >
-        <swiper-slide v-for="item in items" :key="item.id">
-            <div class="card h-100 border border-5" :id="item.id">
-                <div class="img-box position-relative">
-                  <div class="bg-img"
-                  :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
-                </div>
-                <!-- <img :src="item.imageUrl" class="card-img-top object-fit-contain"
-                  style="max-height: 300px;" alt="..."> -->
-                <div class="card-body border-top d-flex flex-column">
-                    <h5 class="card-title text-center text-ellipsis-multi">
-                      {{ item.title }}</h5>
-                    <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
-                    :data-id="item.id"
-                    @click.prevent="emitChangeSign(item)"
-                    @focus="hoverEffect('in', $event)"
-                    @focusout="hoverEffect('out', $event)"
-                    @mouseenter="hoverEffect('in', $event)"
-                    @mouseleave="hoverEffect('out', $event)">看更多</a>
-                </div>
-            </div>
-        </swiper-slide>
-    </swiper>
-  </template>
+  <swiper
+    :modules="modules"
+    :slides-per-view="itemsNum"
+    :space-between="20"
+    navigation
+    :loop="true"
+    :pagination="{ clickable: true }"
+    @swiper="onSwiper"
+    @slideChange="onSlideChange"
+    class="p-3"
+  >
+      <swiper-slide v-for="item in items" :key="item.id">
+          <div class="card h-100 border border-5" :id="item.id">
+              <div class="img-box position-relative">
+                <div class="bg-img"
+                :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
+              </div>
+              <!-- <img :src="item.imageUrl" class="card-img-top object-fit-contain"
+                style="max-height: 300px;" alt="..."> -->
+              <div class="card-body border-top d-flex flex-column">
+                  <h5 class="card-title text-center text-ellipsis-multi">
+                    {{ item.title }}</h5>
+                  <a href="#" class="btn btn-outline-danger stretched-link d-block mt-auto"
+                  :data-id="item.id"
+                  @click.prevent="emitChangeSign(item)"
+                  @focus="hoverEffect('in', $event)"
+                  @focusout="hoverEffect('out', $event)"
+                  @mouseenter="hoverEffect('in', $event)"
+                  @mouseleave="hoverEffect('out', $event)">看更多</a>
+              </div>
+          </div>
+      </swiper-slide>
+  </swiper>
+</template>
+
 <script>
 import {
   Navigation, Pagination, A11y,

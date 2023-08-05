@@ -1,7 +1,7 @@
 <template>
-      <UserNavBar class="fixed-top"></UserNavBar>
+      <UserNavBar class="fixed-top" />
       <div style="margin-top: 70px;">
-        <router-view></router-view>
+        <router-view />
         <p class="text-center py-3 mb-0 bg-light">
           <i class="bi bi-pencil"></i>
           2023 by CongRen Wang 王琮仁.

@@ -1,6 +1,5 @@
 <template>
     <div class="modal fade" ref="modal">
-      <LoadingOverlay :active="isLoading"></LoadingOverlay>
       <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content border-0">
               <div class="modal-header bg-danger text-white">
@@ -136,7 +135,6 @@ export default {
         products: {},
         user: {},
       },
-      isLoading: false,
       is_paid: '',
     };
   },

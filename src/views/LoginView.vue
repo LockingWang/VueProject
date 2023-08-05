@@ -1,5 +1,5 @@
 <template>
-    <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <LoadingOverlay :active="isLoading" />
     <div class="bg-light pt-3" style="margin-top: -48px; height: 110vh;">
       <div class="container mt-5">
         <form class="row justify-content-center" @submit.prevent="signIn">

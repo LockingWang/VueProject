@@ -1,5 +1,5 @@
 <template>
-    <button class="go-top-btn d-none" @click="scrollTop">
+    <button type="button" class="go-top-btn d-none" @click="scrollTop">
     </button>
 </template>
 
