@@ -16,17 +16,17 @@
       >
         <swiper-slide>
           <img class="w-100"
-          src="../../public/user-products-banner/main-banner.svg" alt="Products Page Banner">
+          src="../../../public/user-products-banner/main-banner.svg" alt="Products Page Banner">
           <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
           <img class="w-100"
-            src="../../public/user-products-banner/tokyo-promo.svg" alt="Promotion Banner">
+            src="../../../public/user-products-banner/tokyo-promo.svg" alt="Promotion Banner">
           <router-link to="/product/-NTlt20QPr7IxM7ZdsrD" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
           <img class="w-100"
-            src="../../public/user-products-banner/ninja-coupon.svg" alt="Coupon Banner">
+            src="../../../public/user-products-banner/ninja-coupon.svg" alt="Coupon Banner">
           <router-link to="/userCheckout/cart" class="stretched-link"></router-link>
         </swiper-slide>
       </swiper>

@@ -3,81 +3,81 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: '/login',
-    component: () => import('../views/LoginView.vue'),
+    component: () => import('../views/ManagerPage/LoginView.vue'),
   },
   {
     path: '/dashboard',
-    component: () => import('../views/DashboardView.vue'),
+    component: () => import('../views/ManagerPage/DashboardView.vue'),
     children: [
       {
         path: 'products',
-        component: () => import('../views/ProductView.vue'),
+        component: () => import('../views/ManagerPage/ProductView.vue'),
       },
       {
         path: 'orders',
-        component: () => import('../views/OrdersView.vue'),
+        component: () => import('../views/ManagerPage/OrdersView.vue'),
       },
       {
         path: 'coupons',
-        component: () => import('../views/CouponsView.vue'),
+        component: () => import('../views/ManagerPage/CouponsView.vue'),
       },
     ],
   },
   {
     path: '',
-    component: () => import('../views/UserBoard.vue'),
+    component: () => import('../views/UserPage/UserBoard.vue'),
     children: [
       {
         path: 'home',
-        component: () => import('../components/UserHome.vue'),
+        component: () => import('../views/UserPage/UserHome.vue'),
       },
       {
         path: 'products',
-        component: () => import('../components/UserProducts.vue'),
+        component: () => import('../views/UserPage/UserProducts.vue'),
       },
       {
         path: 'product/:productId',
-        component: () => import('../components/UserProduct.vue'),
+        component: () => import('../views/UserPage/UserProduct.vue'),
       },
       {
         path: 'favorite',
-        component: () => import('../components/UserFavorite.vue'),
+        component: () => import('../views/UserPage/UserFavorite.vue'),
       },
       {
         path: 'searchOrder',
-        component: () => import('../components/UserSearchOrder.vue'),
+        component: () => import('../views/UserPage/UserSearchOrder.vue'),
       },
       {
         path: 'userCheckout',
-        component: () => import('../views/UserCheckout.vue'),
+        component: () => import('../views/UserPage/UserCheckout.vue'),
         children: [
           {
             path: 'cart',
-            component: () => import('../components/UserCart.vue'),
+            component: () => import('../views/UserPage/UserCart.vue'),
           },
           {
             path: 'userInfo',
-            component: () => import('../components/UserInfo.vue'),
+            component: () => import('../views/UserPage/UserInfo.vue'),
           },
           {
             path: 'order/:orderId',
-            component: () => import('../components/UserOrder.vue'),
+            component: () => import('../views/UserPage/UserOrder.vue'),
           },
           {
             path: 'payment',
-            component: () => import('../components/UserPayment.vue'),
+            component: () => import('../views/UserPage/UserPayment.vue'),
           },
         ],
       },
       {
         path: 'couponGame',
-        component: () => import('../components/CouponGame.vue'),
+        component: () => import('../views/UserPage/CouponGame.vue'),
       },
     ],
   },
   {
     path: '/:pathMatch(.*)*',
-    component: () => import('../components/NotFound.vue'),
+    component: () => import('../views/NotFound.vue'),
   },
 ];
 

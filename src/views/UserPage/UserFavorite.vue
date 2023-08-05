@@ -1,7 +1,7 @@
 <template>
 
     <div>
-      <img src="../../public/favorite-banner.svg" alt="Japan Style Room"
+      <img src="../../../public/favorite-banner.svg" alt="Japan Style Room"
       class="w-100">
     </div>
     <h5 class="text-center py-3" v-if="filtedProducts.length !== 0">
