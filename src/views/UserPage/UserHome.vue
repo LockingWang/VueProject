@@ -11,15 +11,15 @@
         @slideChange="onSlideChange"
       >
         <swiper-slide>
-          <img class="w-100" src="../../../public/home-banner/home-advert.svg" alt="Home Banner">
+          <img class="w-100" src="@/assets/images/home-banner/home-advert.svg" alt="Home Banner">
           <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <img class="w-100" src="../../../public/home-banner/home-coupon.svg" alt="Coupon Banner">
+          <img class="w-100" src="@/assets/images/home-banner/home-coupon.svg" alt="Coupon Banner">
           <router-link to="/products" class="stretched-link"></router-link>
         </swiper-slide>
         <swiper-slide>
-          <img class="w-100" src="../../../public/home-banner/home-promo.svg"
+          <img class="w-100" src="@/assets/images/home-banner/home-promo.svg"
           alt="Promotion Banner">
           <router-link to="/product/-NTlu05E8NVhW9i0r6hc" class="stretched-link"></router-link>
         </swiper-slide>

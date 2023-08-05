@@ -1,6 +1,6 @@
 <template>
     <div class="position-relative">
-        <img src="../../../public/Coupon-Game/Coupon-Game-Backgroung.svg" alt="Japan Style Room"
+        <img src="@/assets/images/Coupon-Game/Coupon-Game-Backgroung.svg" alt="Japan Style Room"
         class="img-fluid">
         <div class="start-btn-group">
             <button type="button" class="btn btn-primary rounded-pill start-btn fs-3"
